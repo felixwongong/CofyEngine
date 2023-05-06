@@ -1,0 +1,16 @@
+{
+    "name": "com.cofy.ui.editor",
+    "rootNamespace": "",
+    "references": ["GUID:b8192a8e339c6c2458f4088bf7e77ec5","GUID:facaf781ac90ec54cacfd362b9346c70"],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

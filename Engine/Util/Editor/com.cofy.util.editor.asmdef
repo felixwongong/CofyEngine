@@ -1,0 +1,18 @@
+{
+    "name": "com.cofy.util.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:facaf781ac90ec54cacfd362b9346c70"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
