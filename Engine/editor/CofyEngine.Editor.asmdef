@@ -1,8 +1,8 @@
 {
-    "name": "com.cofy.util.editor",
-    "rootNamespace": "",
+    "name": "CofyEngine.Editor",
+    "rootNamespace": "CofyEngine.Editor",
     "references": [
-        "GUID:facaf781ac90ec54cacfd362b9346c70"
+        "GUID:d8b4a77b7f182b842bb2ad68ac707fb8"
     ],
     "includePlatforms": [
         "Editor"

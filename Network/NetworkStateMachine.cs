@@ -1,9 +1,11 @@
 ﻿using System;
+using cofydev.util.StateMachine;
+using Unity.Netcode;
 using UnityEngine;
 
-namespace cofydev.util.StateMachine
+namespace CofyEngine.Network
 {
-    public abstract class UnityStateMachine : MonoBehaviour, IStateMachine
+    public abstract class NetworkStateMachine : NetworkBehaviour, IStateMachine
     {
         private Coroutine currentContext;
         protected IStateContext curStateContext;
@@ -16,6 +18,7 @@ namespace cofydev.util.StateMachine
             currentContext = StartCoroutine(routine);
         }
 
+        [ClientRpc]
         public void GoToNextStateClientRpc(string stateName)
         {
             var state = (EState)stateName;

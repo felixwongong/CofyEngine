@@ -1,7 +1,10 @@
 {
-    "name": "com.cofy.ui.editor",
+    "name": "CofyUI.Editor",
     "rootNamespace": "",
-    "references": ["GUID:b8192a8e339c6c2458f4088bf7e77ec5","GUID:facaf781ac90ec54cacfd362b9346c70"],
+    "references": [
+        "GUID:974595cb7bbe4a54d82a292d0ba0a488",
+        "GUID:d8b4a77b7f182b842bb2ad68ac707fb8"
+    ],
     "includePlatforms": [
         "Editor"
     ],

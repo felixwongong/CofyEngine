@@ -1,0 +1,26 @@
+{
+    "name": "CofyNetwork",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d8b4a77b7f182b842bb2ad68ac707fb8",
+        "GUID:03058786646e84a4587858e9302c3f41",
+        "GUID:5540e30183c82e84b954c033c388e06c",
+        "GUID:4c3f49d89436d478ea78315c03159dcc",
+        "GUID:be0d2672886cc45b2bcea5a5053a5347",
+        "GUID:fe25561d224ed4743af4c60938a59d0b",
+        "GUID:3b8ed52f1b5c64994af4c4e0aa4b6c4b",
+        "GUID:1491147abca9d7d4bb7105af628b223e",
+        "GUID:70ea675efa2644cef98c7ece24158333",
+        "GUID:5f94b3bb5603bb5489cba7d6df77444c",
+        "GUID:e0cd26848372d4e5c891c569017e11f1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
