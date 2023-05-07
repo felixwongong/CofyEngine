@@ -7,7 +7,6 @@ public class BootstrapUI: MonoBehaviour
 {
     [SerializeField] private string uiRootPath = "Assets/Prefab/UI";
 
-    public List<Promise> promises = new List<Promise>();
 
     public virtual void LoadAll()
     {

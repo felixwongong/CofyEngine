@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Dumb interface for generic typeless Promise 
@@ -24,9 +26,9 @@ public class PromiseImpl<T>: Promise
 
     public void Resolve(T result)
     {
+        isDone = true;
         Completed?.Invoke(new Validation<T>(new Success<T>(result)));
         Succeed?.Invoke(result);
-        isDone = true;
         clear();
     }
 
@@ -38,9 +40,9 @@ public class PromiseImpl<T>: Promise
 
     public void Reject(Exception ex)
     {
+        isDone = true;
         Completed?.Invoke(new Validation<T>(new Failure<T>(ex)));
         Failed?.Invoke(new Failure<T>(ex));
-        isDone = true;
         clear();
     }
 
@@ -68,22 +70,24 @@ public class PromiseImpl<T>: Promise
     public PromiseImpl<A> TryMap<A>(Func<T, A> mapFunc)
     {
         PromiseImpl<A> promise = new PromiseImpl<A>(this.progresFunc);
-        this.Completed += future =>
+        this.Completed += validation =>
         {
-            if (future.hasException)
+            if (validation.hasException)
             {
-                var failure = future.target as Failure<T>;
+                var failure = validation.target as Failure<T>;
                 promise.Reject(failure.ex);
             }
             else
             {
-                var success = future.target as Success<T>;
+                var success = validation.target as Success<T>;
                 A mappedValue = mapFunc(success.result);
                 promise.Resolve(mappedValue);
             }
         };
         return promise;
     }
+
+
 
     private void clear()
     {
