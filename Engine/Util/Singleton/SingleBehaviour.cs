@@ -26,6 +26,7 @@ namespace CM.Util.Singleton
 
                 return _singleton;
             }
+            set => _singleton = value;
         }
 
         protected virtual void Awake()

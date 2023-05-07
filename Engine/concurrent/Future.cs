@@ -26,7 +26,7 @@ public sealed class Failure<T> : Future<T>
     }
 }
 
-public sealed class Validation<T> : Future<T>
+public sealed class Validation<T> 
 {
     public bool hasException;
     public Future<T> target;
