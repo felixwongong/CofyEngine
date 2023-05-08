@@ -3,9 +3,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class ToPromiseHandler
 {
-    public static PromiseImpl<T> ToPromise<T>(this AsyncOperationHandle<T> op)
+    public static Promise<T> ToPromise<T>(this AsyncOperationHandle<T> op)
     {
-        PromiseImpl<T> promise = new PromiseImpl<T>(() => op.PercentComplete);
+        Promise<T> promise = new Promise<T>(() => op.PercentComplete);
         op.Completed += handle =>
         {
             switch (handle.Status)

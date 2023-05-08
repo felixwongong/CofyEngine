@@ -5,7 +5,7 @@ namespace CofyEngine
 {
     public class UIRoot : SingleBehaviour<UIRoot>
     {
-        public PromiseImpl<GameObject> Bind<T>(PromiseImpl<GameObject> uiInstantiation) where T: UIInstance<T>
+        public Promise<GameObject> Bind<T>(Promise<GameObject> uiInstantiation) where T: UIInstance<T>
         {
             return uiInstantiation.TryMap(go => go.GetComponent<T>())
                 .Then(future =>

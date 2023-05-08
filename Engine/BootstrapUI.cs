@@ -12,10 +12,9 @@ public class BootstrapUI: MonoBehaviour
     {
     }
 
-    public PromiseImpl<GameObject> SpawnAddressableUI(string path)
+    public Promise<GameObject> SpawnAddressableUI(string path)
     {
-        return
-            Addressables.InstantiateAsync($"{uiRootPath}/{path}.prefab")
-                .ToPromise();
+        var handle = Addressables.InstantiateAsync($"{uiRootPath}/{path}.prefab");
+        return handle.ToPromise().Then(_ => Addressables.Release(handle));
     }
 }

@@ -5,9 +5,9 @@ namespace CofyEngine
 {
     public static class PromiseExtension
     {
-        public static PromiseImpl<List<T>> Sequence<T>(this List<PromiseImpl<T>> listOfPromise)
+        public static Promise<List<T>> Sequence<T>(this List<Promise<T>> listOfPromise)
         {
-            PromiseImpl<List<T>> sequence = new PromiseImpl<List<T>>(() =>
+            Promise<List<T>> sequence = new Promise<List<T>>(() =>
             {
                 float sum = 0;
                 for (var i = 0; i < listOfPromise.Count; i++)

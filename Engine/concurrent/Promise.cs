@@ -5,12 +5,12 @@ using UnityEngine;
 /// <summary>
 /// Dumb interface for generic typeless Promise 
 /// </summary>
-public interface Promise
+public interface IPromise
 {
 
 }
 
-public class PromiseImpl<T>: Promise
+public class Promise<T>: IPromise
 {
     public bool isDone = false;
     public Func<float> progresFunc;
@@ -19,7 +19,7 @@ public class PromiseImpl<T>: Promise
     public event Action<T> Succeed;
     public event Action<Failure<T>> Failed;
 
-    public PromiseImpl(Func<float> progressFunc)
+    public Promise(Func<float> progressFunc)
     {
         this.progresFunc = progressFunc;
     }
@@ -46,9 +46,9 @@ public class PromiseImpl<T>: Promise
         clear();
     }
 
-    public PromiseImpl<T> Then(Action<Future<T>> action)
+    public Promise<T> Then(Action<Future<T>> action)
     {
-        PromiseImpl<T> promise = new PromiseImpl<T>(this.progresFunc);
+        Promise<T> promise = new Promise<T>(this.progresFunc);
         this.Completed += future =>
         {
             if (future.hasException)
@@ -67,9 +67,9 @@ public class PromiseImpl<T>: Promise
         return promise;
     }
 
-    public PromiseImpl<A> TryMap<A>(Func<T, A> mapFunc)
+    public Promise<A> TryMap<A>(Func<T, A> mapFunc)
     {
-        PromiseImpl<A> promise = new PromiseImpl<A>(this.progresFunc);
+        Promise<A> promise = new Promise<A>(this.progresFunc);
         this.Completed += validation =>
         {
             if (validation.hasException)
