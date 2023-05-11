@@ -5,10 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Dumb interface for generic typeless Promise 
 /// </summary>
-public interface IPromise
-{
-
-}
+public interface IPromise { }
 
 public class Promise<T>: IPromise
 {

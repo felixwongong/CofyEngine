@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using cofydev.util.UI;
 using UnityEngine;
 
 namespace cofydev.util.StateMachine
@@ -8,19 +10,43 @@ namespace cofydev.util.StateMachine
         private Coroutine currentContext;
         protected IStateContext curStateContext;
 
+        private Dictionary<string, IStateContext> _stateDictionary;
+
+        private void Awake()
+        {
+            _stateDictionary = new Dictionary<string, IStateContext>();
+        }
+
+        protected void RegisterState(IStateContext state)
+        {
+            _stateDictionary[state.ToString()] = state;
+        }
+
         public void GoToNextState(IStateContext context)
         {
             if (currentContext != null) StopCoroutine(currentContext);
-            curStateContext = context;
+            curStateContext = _stateDictionary[context.GetType().ToString()];
+            if (currentContext == null)
+            {
+                FLog.LogException(new Exception($"context {context.GetType().ToString()} not registered"));
+                return;
+            }
             var routine = curStateContext.StartContext(this);
             currentContext = StartCoroutine(routine);
         }
-
-        public void GoToNextStateClientRpc(string stateName)
+        
+        public void GoToNextState<T>() where T: IStateContext
         {
-            var state = (EState)stateName;
-            var context = FindObjectOfType((Type)state) as IStateContext;
-            GoToNextState(context);
+            if (currentContext != null) StopCoroutine(currentContext);
+            FLog.Log(typeof(T).ToString());
+            curStateContext = _stateDictionary[typeof(T).ToString()];
+            if (curStateContext == null)
+            {
+                FLog.LogException(new Exception($"context {typeof(T).ToString()} not registered"));
+                return;
+            }
+            var routine = curStateContext.StartContext(this);
+            currentContext = StartCoroutine(routine);
         }
     }
 }

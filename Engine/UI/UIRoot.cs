@@ -1,19 +1,36 @@
-﻿using CM.Util.Singleton;
+﻿using System;
+using System.Collections.Generic;
+using CM.Util.Singleton;
+using cofydev.util;
 using UnityEngine;
 
-namespace CofyEngine
+namespace CofyUI 
 {
     public class UIRoot : SingleBehaviour<UIRoot>
     {
+        private Dictionary<Type, GameObject> uiMap = new Dictionary<Type, GameObject>(); 
+        
         public Promise<GameObject> Bind<T>(Promise<GameObject> uiInstantiation) where T: UIInstance<T>
         {
-            return uiInstantiation.TryMap(go => go.GetComponent<T>())
-                .Then(future =>
-                {
-                    UIInstance<T>.instance = future.result;
-                    future.result.transform.SetParent(transform);
-                })
-                .TryMap(t => t.gameObject);
+            return uiInstantiation.Then(future =>
+            {
+                uiMap[typeof(T)] = future.result;
+            });
+        }
+
+        public T GetInstance<T>()
+        {
+            bool hasBind = uiMap.TryGetValue(typeof(T), out var reference);
+            if (!hasBind)
+            {
+                FLog.LogException(new Exception($"{typeof(T)} has not been binded but you are trying to access it."));
+                return default;
+            }
+            reference = uiMap[typeof(T)];
+
+            GameObject go = Instantiate(reference, transform);
+
+            return go.GetComponent<T>();
         }
     }
 }
