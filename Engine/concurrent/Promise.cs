@@ -7,13 +7,17 @@ using UnityEngine;
 /// </summary>
 public interface IPromise
 {
-    public bool isDone { get; set; }
+    public bool isCompleted { get; set; }
+    public bool isSucceed { get; set; }
+    public bool isFailure { get; set; }
     public Func<float> progressFunc { get; set; }
 }
 
 public class Promise<T>: IPromise
 {
-    public bool isDone { get; set; }
+    public bool isCompleted { get; set; }
+    public bool isSucceed { get; set; }
+    public bool isFailure { get; set; }
     public Func<float> progressFunc { get; set; }
     
     public event Action<Validation<T>> Completed;
@@ -27,7 +31,8 @@ public class Promise<T>: IPromise
 
     public void Resolve(T result)
     {
-        isDone = true;
+        isCompleted = true;
+        isSucceed = true;
         Completed?.Invoke(new Validation<T>(new Success<T>(result)));
         Succeed?.Invoke(result);
         clear();
@@ -41,7 +46,8 @@ public class Promise<T>: IPromise
 
     public void Reject(Exception ex)
     {
-        isDone = true;
+        isCompleted = true;
+        isFailure = true;
         Completed?.Invoke(new Validation<T>(new Failure<T>(ex)));
         Failed?.Invoke(new Failure<T>(ex));
         clear();

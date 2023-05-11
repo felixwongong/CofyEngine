@@ -13,7 +13,7 @@ namespace CofyEngine
                 for (var i = 0; i < listOfPromise.Count; i++)
                 {
                     var promise = listOfPromise[i];
-                    sum += promise.progresFunc();
+                    sum += promise.progressFunc();
                 }
 
                 return sum / listOfPromise.Count;
@@ -34,7 +34,7 @@ namespace CofyEngine
                     {
                         result.Add(validation.target.result);
                         if (listOfPromise.TrueForAll(
-                                p => p.isDone && Mathf.Approximately(p.progresFunc(), 1)))
+                                p => p.isCompleted && Mathf.Approximately(p.progressFunc(), 1)))
                         {
                             sequence.Resolve(result);
                         }

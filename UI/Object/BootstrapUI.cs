@@ -34,6 +34,9 @@ namespace CofyUI
                     var loadingScreen = LoadingScreen.instance;
                     loadingScreen.SetGoActive(true);
                     uiPromise = LoadAll();
+                    
+                    loadingScreen.MonitorProgress(uiPromise);
+                    
                     uiPromise.Succeed += list => loadingFinished = true;
                 });
 
