@@ -15,7 +15,6 @@ public class BootstrapStateMachine : UnityStateMachine
     private void Start()
     {
         var bootstrapUI = GetComponent<BootstrapUI>();
-        GetComponent(typeof(BootstrapUI));
         RegisterState(bootstrapUI);
 
         terminateState = bootstrapUI;
