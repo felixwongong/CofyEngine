@@ -1,4 +1,5 @@
 ﻿using cofydev.util;
+using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class ToPromiseHandler
@@ -16,6 +17,24 @@ public static class ToPromiseHandler
                 case AsyncOperationStatus.Failed:
                     promise.Reject(op.OperationException);
                     break;
+            }
+        };
+        
+        return promise;
+    }
+    
+    public static Promise<bool> ToPromise(this AsyncOperation op)
+    {
+        Promise<bool> promise = new Promise<bool>(() => op.progress);
+        op.completed += aop =>
+        {
+            if (Mathf.Approximately(op.progress, 1))
+            {
+                promise.Resolve(true);
+            }
+            else
+            {
+                promise.Reject("Async operation failed");
             }
         };
         
