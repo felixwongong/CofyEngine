@@ -18,6 +18,8 @@ namespace CofyEngine.Network
             currentContext = StartCoroutine(routine);
         }
 
+        public abstract void Terminate();
+
         [ClientRpc]
         public void GoToNextStateClientRpc(string stateName)
         {

@@ -8,8 +8,10 @@ namespace CofyUI
 {
     public class UIRoot : SingleBehaviour<UIRoot>
     {
-        private Dictionary<Type, GameObject> uiMap = new Dictionary<Type, GameObject>(); 
-        
+        public override bool destroyWithScene => false;
+
+        private Dictionary<Type, GameObject> uiMap = new Dictionary<Type, GameObject>();
+
         public Promise<GameObject> Bind<T>(Promise<GameObject> uiInstantiation) where T: UIInstance<T>
         {
             return uiInstantiation.Then(future =>

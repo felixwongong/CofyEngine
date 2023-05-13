@@ -4,6 +4,7 @@ using cofydev.util;
 using cofydev.util.StateMachine;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement;
 
 namespace CofyUI
 {
@@ -41,7 +42,6 @@ namespace CofyUI
                 });
 
             yield return new WaitUntil(() => loadingFinished == true);
-            
         }
     }
 }
