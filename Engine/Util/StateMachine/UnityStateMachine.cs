@@ -42,12 +42,23 @@ namespace cofydev.util.StateMachine
         
         public void GoToNextState<T>() where T: IStateContext
         {
+            GoToNextState(typeof(T));
+        }
+
+        public void GoToNextState(Type type)
+        {
+            if (!typeof(IStateContext).IsAssignableFrom(type))
+            {
+                FLog.LogException(new Exception($"{type} is not a state."));
+                return;
+            }
+            
             if (currentContext != null) StopCoroutine(currentContext);
-            FLog.Log(typeof(T).ToString());
-            curStateContext = _stateDictionary[typeof(T)];
+            FLog.Log(type.ToString());
+            curStateContext = _stateDictionary[type];
             if (curStateContext == null)
             {
-                FLog.LogException(new Exception($"context {typeof(T).ToString()} not registered"));
+                FLog.LogException(new Exception($"context {type} not registered"));
                 return;
             }
             var routine = curStateContext.StartContext(this);
@@ -61,7 +72,7 @@ namespace cofydev.util.StateMachine
                 currentContext = StartCoroutine(routine);
             }
         }
-
+        
         private IEnumerator StartTerminateState(IEnumerator routine)
         {
             currentContext = StartCoroutine(routine);

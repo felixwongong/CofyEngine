@@ -8,14 +8,9 @@ using UnityEngine.ResourceManagement;
 
 namespace CofyUI
 {
-    public abstract class BootstrapUI : IStateContext
+    public abstract class BootstrapUI : MonoBehaviour, IStateContext
     {
-        private string uiRootPath;
-
-        public BootstrapUI(string uiRootPath)
-        {
-            this.uiRootPath = uiRootPath;
-        }
+        [SerializeField] private string uiRootPath = "Assets/Prefab/UI";
 
         public abstract Promise<List<GameObject>> LoadAll();
 
@@ -35,9 +30,9 @@ namespace CofyUI
                     var loadingScreen = LoadingScreen.instance;
                     loadingScreen.SetGoActive(true);
                     uiPromise = LoadAll();
-                    
+
                     loadingScreen.MonitorProgress(uiPromise);
-                    
+
                     uiPromise.Succeed += list => loadingFinished = true;
                 });
 
