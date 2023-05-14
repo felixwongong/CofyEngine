@@ -19,15 +19,9 @@ namespace CofyEngine
 
             LoadingScreen.instance.MonitorProgress(promise);
             
-            promise.Succeed += b =>
-            {
-                initialized = true;
-            };
+            promise.Succeed += b => { initialized = true; };
 
-            promise.Failed += failure =>
-            {
-                FLog.LogException(failure.ex);
-            };
+            promise.Failed += failure => { FLog.LogException(failure.ex); };
             
             yield return new WaitUntil(() => initialized);
         }
