@@ -17,6 +17,8 @@ namespace CofyEngine.Engine.Game
             Scene disposingScene = SceneManager.GetActiveScene();
             before?.Invoke(disposingScene);
 
+            UIRoot.Singleton.DisableAllInstances();
+            
             Promise<bool> sceneLoadPromise =
                 SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive).ToPromise();
             LoadingScreen.instance.MonitorProgress(sceneLoadPromise);

@@ -34,5 +34,13 @@ namespace CofyUI
 
             return go.GetComponent<T>();
         }
+
+        public void DisableAllInstances()
+        {
+            for (var i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
     }
 }
