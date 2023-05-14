@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using cofydev.util;
 using cofydev.util.StateMachine;
+using CofyUI;
 using Unity.Services.Core;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace CofyEngine
 
             var promise = UnityServices.InitializeAsync(options).ToPromise();
 
+            LoadingScreen.instance.MonitorProgress(promise);
+            
             promise.Succeed += b =>
             {
                 initialized = true;

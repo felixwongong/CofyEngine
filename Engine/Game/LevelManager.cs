@@ -2,6 +2,7 @@
 using CM.Util.Singleton;
 using cofydev.util;
 using CofyUI;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CofyEngine.Engine.Game
@@ -10,7 +11,7 @@ namespace CofyEngine.Engine.Game
     {
         public override bool destroyWithScene => false;
 
-        public void LoadLevel(string sceneName, Action<Scene> before = null, Action<Scene, Scene> after = null)
+        public void LoadLevelFull(string sceneName, Action<Scene> before = null, Action<Scene, Scene> after = null)
         {
             FLog.Log($"{sceneName} load start");
 
@@ -18,15 +19,19 @@ namespace CofyEngine.Engine.Game
             before?.Invoke(disposingScene);
 
             UIRoot.Singleton.DisableAllInstances();
-            
-            Promise<bool> sceneLoadPromise =
-                SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive).ToPromise();
+
+            var aop = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            aop.allowSceneActivation = true;
+
+            Promise<AsyncOperation> sceneLoadPromise = aop.ToPromise();
+
             LoadingScreen.instance.MonitorProgress(sceneLoadPromise);
 
             sceneLoadPromise.Succeed += _ =>
             {
                 after?.Invoke(disposingScene, SceneManager.GetSceneByName(sceneName));
                 SceneManager.UnloadSceneAsync(disposingScene);
+                LoadingScreen.instance.EndMonitoring();
                 FLog.Log($"{sceneName} load end");
             };
         }

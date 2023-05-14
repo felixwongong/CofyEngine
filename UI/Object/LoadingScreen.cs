@@ -27,7 +27,6 @@ namespace CofyUI
                 if (target.isCompleted)
                 {
                     target = null;
-                    this.SetGoActive(false);
                 }
             }
         }
@@ -36,6 +35,12 @@ namespace CofyUI
         {
             this.SetGoActive(true);
             target = promise;
+        }
+
+        public void EndMonitoring()
+        {
+            target = null;
+            this.SetGoActive(false);
         }
     }
 }

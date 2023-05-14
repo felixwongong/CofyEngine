@@ -26,7 +26,7 @@ public class BootstrapStateMachine : UnityStateMachine
 
     public override void Terminate()
     {
-        LevelManager.Singleton.LoadLevel(firstScene, after: (old, newScene) =>
+        LevelManager.Singleton.LoadLevelFull(firstScene, after: (old, newScene) =>
         {
             GameStateMachine.instance.Init();
         });

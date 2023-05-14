@@ -24,14 +24,14 @@ public static class ToPromiseHandler
         return promise;
     }
     
-    public static Promise<bool> ToPromise(this AsyncOperation op)
+    public static Promise<AsyncOperation> ToPromise(this AsyncOperation op)
     {
-        Promise<bool> promise = new Promise<bool>(() => op.progress);
+        Promise<AsyncOperation> promise = new Promise<AsyncOperation>(() => op.progress);
         op.completed += aop =>
         {
             if (Mathf.Approximately(op.progress, 1))
             {
-                promise.Resolve(true);
+                promise.Resolve(aop);
             }
             else
             {
