@@ -1,10 +1,9 @@
-using cofydev.util;
 using cofydev.util.StateMachine;
+using CofyEngine;
 using CofyEngine.Engine.Game;
 using CofyEngine.Engine.util.Editor;
 using CofyUI;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BootstrapStateMachine : UnityStateMachine
 {
@@ -15,9 +14,12 @@ public class BootstrapStateMachine : UnityStateMachine
     private void Start()
     {
         var bootstrapUI = GetComponent<BootstrapUI>();
+        var bootstrapUGS = GetComponent<BootstrapUGS>();
+        
         RegisterState(bootstrapUI);
+        RegisterState(bootstrapUGS);
 
-        terminateState = bootstrapUI;
+        terminateState = bootstrapUGS;
 
         GoToNextState(bootstrapUI.GetType());
     }

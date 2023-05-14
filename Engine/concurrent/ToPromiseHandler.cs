@@ -1,4 +1,5 @@
-﻿using cofydev.util;
+﻿using System.Threading.Tasks;
+using cofydev.util;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -38,6 +39,41 @@ public static class ToPromiseHandler
             }
         };
         
+        return promise;
+    }
+
+    public static Promise<bool> ToPromise(this Task task)
+    {
+        Promise<bool> promise = new Promise<bool>(() =>
+        {
+            switch (task.Status)
+            {
+                case TaskStatus.Created:
+                case TaskStatus.WaitingForActivation:
+                case TaskStatus.WaitingToRun:
+                case TaskStatus.WaitingForChildrenToComplete:
+                    return 0;
+
+                case TaskStatus.Canceled: case TaskStatus.Faulted: case TaskStatus.Running:
+                    return 0.5f;
+                case TaskStatus.RanToCompletion:
+                    return 1;
+                default:
+                    return -1;
+            }
+        });
+
+        task.ContinueWith((t, o) =>
+        {
+            if (t.IsCompletedSuccessfully)
+            {
+                promise.Resolve(true);
+            }
+            else
+            {
+                promise.Reject(t.Exception);
+            }
+        }, TaskContinuationOptions.RunContinuationsAsynchronously);
         return promise;
     }
 }

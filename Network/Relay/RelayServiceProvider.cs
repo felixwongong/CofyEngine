@@ -11,7 +11,6 @@ namespace CM.Network.RelayUtil
 {
     public class RelayServiceProvider : BaseService
     {
-        [SerializeField] private string envir = "DEVELOPMENT";
         [SerializeField] [Range(2, 10)] private int numConnections = 2;
 
         private UnityTransport transport => NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
@@ -22,9 +21,6 @@ namespace CM.Network.RelayUtil
 
         public async Task<RelayHostData> SetupHostRelay()
         {
-            var options = new InitializationOptions();
-            options.SetEnvironmentName(envir);
-
             var allocation = await Relay.Instance.CreateAllocationAsync(numConnections);
 
             var relayServ = allocation.ServerEndpoints.First(e => e.ConnectionType == "dtls");

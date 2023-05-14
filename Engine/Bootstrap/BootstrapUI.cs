@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using cofydev.util;
 using cofydev.util.StateMachine;
+using CofyUI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement;
 
-namespace CofyUI
+namespace CofyEngine
 {
     public abstract class BootstrapUI : MonoBehaviour, IStateContext
     {
@@ -33,7 +34,11 @@ namespace CofyUI
 
                     loadingScreen.MonitorProgress(uiPromise);
 
-                    uiPromise.Succeed += list => loadingFinished = true;
+                    uiPromise.Succeed += list =>
+                    {
+                        loadingFinished = true;
+                        sm.GoToNextState<BootstrapUGS>();
+                    };
                 });
 
             yield return new WaitUntil(() => loadingFinished == true);

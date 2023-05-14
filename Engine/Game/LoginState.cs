@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-using cofydev.util;
 using cofydev.util.StateMachine;
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
 namespace CofyEngine.Engine.Game
 {

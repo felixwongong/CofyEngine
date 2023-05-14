@@ -1,5 +1,4 @@
 ﻿using CM.Util.Singleton;
-using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
