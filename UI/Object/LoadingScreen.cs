@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using cofydev.util;
 using CofyUI;
 using UnityEngine;
 
@@ -22,13 +23,18 @@ namespace CofyUI
         {
             if (target != null)
             {
-                bar.SetPercentage(target.progressFunc());    
-                if (target.isCompleted) target = null;
+                bar.SetPercentage(target.progressFunc());
+                if (target.isCompleted)
+                {
+                    target = null;
+                    this.SetGoActive(false);
+                }
             }
         }
 
         public void MonitorProgress(IPromise promise)
         {
+            this.SetGoActive(true);
             target = promise;
         }
     }

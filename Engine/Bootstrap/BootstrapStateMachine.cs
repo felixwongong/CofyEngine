@@ -24,11 +24,9 @@ public class BootstrapStateMachine : UnityStateMachine
 
     public override void Terminate()
     {
-        Promise<bool> promise = SceneManager.LoadSceneAsync(firstScene).ToPromise();
-        promise.Succeed += _ =>
+        LevelManager.Singleton.LoadLevel(firstScene, after: (old, newScene) =>
         {
             GameStateMachine.instance.Init();
-            LoadingScreen.instance.SetGoActive(false);
-        };
+        });
     }
 }
