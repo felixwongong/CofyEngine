@@ -2,7 +2,6 @@ using cofydev.util.StateMachine;
 using CofyEngine;
 using CofyEngine.Engine.Game;
 using CofyEngine.Engine.util.Editor;
-using CofyUI;
 using UnityEngine;
 
 public class BootstrapStateMachine : UnityStateMachine

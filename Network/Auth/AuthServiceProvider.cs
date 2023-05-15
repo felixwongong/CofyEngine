@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CM.Network.CloudSave;
 using cofydev.util;
-using Firebase.Auth;
-using Mono.CSharp;
 using Unity.Services.Authentication;
-using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
 
