@@ -58,20 +58,6 @@ namespace CM.Network.Auth
                         var platform = GetPlatformFromId(ids[0]);
                         await SignInFirebase(platform);
                     }
-                    else
-                    {
-                        var pid = AuthenticationService.Instance.PlayerId;
-                        var email = $"{pid.Substring(0, 20)}@cofy.com";
-                        var pw = pid.Substring(pid.Length - 20, 20);
-                        await FirebaseAuthHelper.Singleton.HandleEmailSignIn(email, pw);
-                    }
-                    break;
-                case ESignInPlatform.FACEBOOK:
-                    string token = await SignInFacebookAsync();
-                    FLog.Log(token);
-                    await cloudSave.SaveOne(new Dictionary<string, object>()
-                        { { SaveKey.TOKEN, token } });
-                    await SignInFirebase(ESignInPlatform.FACEBOOK);
                     break;
                 default:
                     print("Sign In option not provided");
@@ -87,28 +73,10 @@ namespace CM.Network.Auth
             {
                 case ESignInPlatform.ANONYMOUS:
                     break;
-                case ESignInPlatform.FACEBOOK:
-                    var token = await GetComponent<CloudSaveServiceProvider>().GetOne(SaveKey.TOKEN);
-                    await FirebaseAuthHelper.Singleton.SignInFB(token);
-                    break;
                 default:
                     FLog.Log("Sign In option not provided");
                     break;
             }
-        }
-
-        private async Task<string> SignInFacebookAsync()
-        {
-            var fb = FacebookUtil.Singleton;
-            fb.Login();
-            while (string.IsNullOrEmpty(fb.Token))
-            {
-                await Task.Delay(100);
-            }
-
-            await AuthenticationService.Instance.SignInWithFacebookAsync(fb.Token);
-            Debug.Log("FB signed in successfully");
-            return fb.Token;
         }
 
         private async Task SignInAnonymouslyAsync()
@@ -138,7 +106,6 @@ namespace CM.Network.Auth
         public async Task DeleteCurAccountAsync()
         {
             await AuthenticationService.Instance.DeleteAccountAsync();
-            await FirebaseAuthHelper.Singleton.DeleteCurrentAccount();
         }
 
         private ESignInPlatform GetPlatformFromId(Identity id)
