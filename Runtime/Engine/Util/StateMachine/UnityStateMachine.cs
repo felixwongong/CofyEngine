@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using cofydev.util.UI;
+using CofyEngine.Runtime.Engine.Util.UI;
 using UnityEngine;
 
-namespace cofydev.util.StateMachine
+namespace CofyEngine.Runtime.Engine.Util.StateMachine
 {
     public abstract class UnityStateMachine : MonoBehaviour, IStateMachine
     {

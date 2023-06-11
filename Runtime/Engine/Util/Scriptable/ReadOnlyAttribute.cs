@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace cofydev.util.Scriptable
+namespace CofyEngine.Runtime.Engine.Util.Scriptable
 {
     public class ReadOnlyAttribute : PropertyAttribute
     {

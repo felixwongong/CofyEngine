@@ -8,7 +8,7 @@ using System.Text;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace cofydev.util
+namespace CofyEngine.Runtime.Engine.Util
 {
     public static class FLog
     {

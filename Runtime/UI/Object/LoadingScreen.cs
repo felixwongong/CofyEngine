@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using cofydev.util;
+using CofyEngine.Runtime.Engine.Util;
 using CofyUI;
 using UnityEngine;
 

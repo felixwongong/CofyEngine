@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace cofydev.util
+namespace CofyEngine.Runtime.Engine.Util
 {
     [Serializable]
     public class State<T>: IDisposable, ISerializationCallbackReceiver

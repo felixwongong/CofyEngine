@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace cofydev.util.UI
+namespace CofyEngine.Runtime.Engine.Util.UI
 {
     //TODO: Add image loading
     public class AsyncImageBinder : UIBinder<Image>

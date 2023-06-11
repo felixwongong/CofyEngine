@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UI;
 
-namespace cofydev.util.UI
+namespace CofyEngine.Runtime.Engine.Util.UI
 {
     public class ButtonBinder : UIBinder<Button>
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace cofydev.util
+namespace CofyEngine.Runtime.Engine.Util
 {
     [Serializable]
     public class SerializedList<T>

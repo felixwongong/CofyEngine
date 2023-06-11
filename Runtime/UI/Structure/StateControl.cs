@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace cofydev.util.UI
+namespace CofyEngine.Runtime.Engine.Util.UI
 {
     public class StateControl : UIBinder<StateControl>
     {

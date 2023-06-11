@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = System.Object;
 
-namespace cofydev.util
+namespace CofyEngine.Runtime.Engine.Util
 {
     [Serializable]
     public class FolderRef

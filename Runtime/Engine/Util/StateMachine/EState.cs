@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace cofydev.util.StateMachine
+namespace CofyEngine.Runtime.Engine.Util.StateMachine
 {
     public class EState
     {

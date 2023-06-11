@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace cofydev.util.UI.Editor
+namespace CofyEngine.Runtime.Engine.Util.UI.Editor
 {
     [CustomEditor(typeof(StateControl), true)]
     public class StateControlEditor : UnityEditor.Editor

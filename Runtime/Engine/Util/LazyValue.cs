@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace cofydev.util
+namespace CofyEngine.Runtime.Engine.Util
 {
     public class LazyValue<T>
     {

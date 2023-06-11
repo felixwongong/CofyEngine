@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using CofyEngine.Runtime.Engine.Util.Editor;
 using UnityEngine;
 #if UNITY_EDITOR
-using cofydev.util.Editor;
 #endif
 using TMPro;
 
-namespace cofydev.util.UI
+namespace CofyEngine.Runtime.Engine.Util.UI
 {
     public class UIScope : MonoBehaviour
     {

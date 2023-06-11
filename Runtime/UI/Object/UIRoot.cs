@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CM.Util.Singleton;
-using cofydev.util;
+using CofyEngine.Runtime.Engine.Util;
 using UnityEngine;
 
 namespace CofyUI 
