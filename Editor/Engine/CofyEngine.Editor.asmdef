@@ -1,7 +1,10 @@
 {
     "name": "CofyEngine.Editor",
     "rootNamespace": "CofyEngine.Editor",
-    "references": ["GUID:3ad23890ce2989d4ea0e85638307509a"],
+    "references": [
+        "GUID:3ad23890ce2989d4ea0e85638307509a",
+        "GUID:84651a3751eca9349aac36a66bba901b"
+    ],
     "includePlatforms": [
         "Editor"
     ],

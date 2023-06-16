@@ -1,6 +1,5 @@
 ﻿using System;
 using CM.Util.Singleton;
-using CofyEngine.Runtime.Engine.Util;
 using CofyUI;
 using UnityEngine;
 using UnityEngine.SceneManagement;

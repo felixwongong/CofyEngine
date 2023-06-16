@@ -25,7 +25,7 @@ namespace CofyEngine
         {
             bool loadingFinished = false;
             Promise<List<GameObject>> uiPromise;
-            UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("LoadingScreen"))
+            UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("loading_panel"))
                 .Then(future =>
                 {
                     var loadingScreen = LoadingScreen.instance;
@@ -37,6 +37,7 @@ namespace CofyEngine
                     uiPromise.Succeed += list =>
                     {
                         loadingFinished = true;
+                        FLog.Log("UI load finished.");
                         sm.GoToNextState<BootstrapUGS>();
                     };
                 });

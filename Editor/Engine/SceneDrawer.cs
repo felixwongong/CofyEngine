@@ -1,5 +1,4 @@
-﻿
-namespace CofyEngine.Engine.util.Editor
+﻿namespace CofyEngine.Engine.util.Editor
 {
     using UnityEditor;
     using UnityEngine;
@@ -50,7 +49,7 @@ namespace CofyEngine.Engine.util.Editor
                 }
             }
 
-            Debug.LogWarning("Scene [" + sceneObjectName +
+            FLog.LogWarning("Scene [" + sceneObjectName +
                              "] cannot be used. Add this scene to the 'Scenes in the Build' in build settings.");
             return null;
         }

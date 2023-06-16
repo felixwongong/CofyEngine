@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CofyEngine
-{
     public static class PromiseExtension
     {
         public static Promise<List<T>> Sequence<T>(this List<Promise<T>> listOfPromise)
@@ -45,4 +43,3 @@ namespace CofyEngine
             return sequence;
         }
     }
-}

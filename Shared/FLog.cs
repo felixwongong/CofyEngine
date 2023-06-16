@@ -8,8 +8,7 @@ using System.Text;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace CofyEngine.Runtime.Engine.Util
-{
+
     public static class FLog
     {
         public static void Log(object inMsg, object inObj = null)
@@ -91,7 +90,6 @@ namespace CofyEngine.Runtime.Engine.Util
 
         public static void LogException(Exception e)
         {
-            throw new Exception(MakeLogString(e.Message), e);
+            Debug.LogException(new Exception(MakeLogString(e.Message), e));
         }
     }
-}
