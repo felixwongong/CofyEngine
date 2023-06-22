@@ -4,6 +4,10 @@ public abstract class Future<T>
 {
     public virtual T result { get; set; }
     public virtual Exception ex { get; set; }
+
+    public static Success<T> success(T result) { return new Success<T>(result); }
+
+    public static Failure<T> failure(Exception ex) { return new Failure<T>(ex); }
 }
 
 public sealed class Success<T> : Future<T>

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
-namespace CofyEngine.Runtime.Engine.Util.Editor
+namespace CofyEngine.Engine.Util.Editor
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class MethodButtonAttribute : Attribute

@@ -25,6 +25,12 @@ public class Promise<T>: IPromise
     public event Action<T> Succeed;
     public event Action<Failure<T>> Failed;
 
+    public Promise()
+    {
+        isCompleted = isSucceed = isFailure = false;
+        progressFunc = null;
+    }
+
     public Promise(Func<float> progressFunc)
     {
         this.progressFunc = progressFunc;

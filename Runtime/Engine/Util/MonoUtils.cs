@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace CofyEngine.Runtime.Engine.Util
+namespace CofyEngine.Engine.Util
 {
     public class MonoUtils : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace CofyEngine.Runtime.Engine.Util.StateMachine
+namespace CofyEngine.Engine.Util.StateMachine
 {
     public interface IStateContext
     {

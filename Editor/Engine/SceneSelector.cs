@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace CofyEngine.Runtime.Engine.Util.Editor
+namespace CofyEngine.Engine.Util.Editor
 {
 public class SceneSelectorWindow : EditorWindow
 {

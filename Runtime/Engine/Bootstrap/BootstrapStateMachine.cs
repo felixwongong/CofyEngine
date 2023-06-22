@@ -1,7 +1,7 @@
-using CofyEngine.Runtime.Engine.Util.StateMachine;
+using CofyEngine.Engine.Util.StateMachine;
 using CofyEngine;
 using CofyEngine.Engine.Game;
-using CofyEngine.Engine.util.Editor;
+using CofyEngine.Engine.Util.Editor;
 using UnityEngine;
 
 public class BootstrapStateMachine : UnityStateMachine

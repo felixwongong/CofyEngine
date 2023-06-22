@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace CofyEngine.Runtime.Engine.Util
+namespace CofyEngine.Engine.Util
 {
     public static class Extension
     {

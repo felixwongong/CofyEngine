@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CofyEngine.Runtime.Engine.Util.Scriptable
+namespace CofyEngine.Engine.Util.Scriptable
 {
     public abstract class CofyScriptableObject : ScriptableObject
     {

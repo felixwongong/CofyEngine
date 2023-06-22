@@ -1,5 +1,5 @@
 ﻿using System;
-using CofyEngine.Runtime.Engine.Util.StateMachine;
+using CofyEngine.Engine.Util.StateMachine;
 using Unity.Netcode;
 using UnityEngine;
 

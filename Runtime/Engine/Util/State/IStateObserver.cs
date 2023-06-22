@@ -1,4 +1,4 @@
-﻿namespace CofyEngine.Runtime.Engine.Util
+﻿namespace CofyEngine.Engine.Util
 {
     public interface IStateObserver
     {
