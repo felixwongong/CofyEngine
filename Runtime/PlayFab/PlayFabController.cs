@@ -18,7 +18,7 @@ namespace CofyEngine.PlayFab
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
                 //TODO: add localized exception
-                return new Failure<bool>(new Exception("Network not reachable"));
+                return Future<bool>.failure(new Exception("Network not reachable"));
 
             var _activeClient = new PlayFabClientInstanceAPI();
 

@@ -1,32 +1,21 @@
 ﻿using System;
 
-public abstract class Future<T>
+public class Future<T>
 {
-    public virtual T result { get; set; }
-    public virtual Exception ex { get; set; }
+    public T result { get; set; }
+    public Exception ex { get; set; }
 
-    public static Success<T> success(T result) { return new Success<T>(result); }
-
-    public static Failure<T> failure(Exception ex) { return new Failure<T>(ex); }
-}
-
-public sealed class Success<T> : Future<T>
-{
-    public override T result { get; set; }
+    public bool hasException => ex != null;
     
-    public Success(T result)
-    {
-        this.result = result;
-    }
-}
+    public Future() { }
 
-public sealed class Failure<T> : Future<T>
-{
-    public override Exception ex { get; set; }
-
-    public Failure(Exception ex)
+    public static Future<T> failure(Exception ex)
     {
-        this.ex = ex;
+        var failure = new Future<T>
+        {
+            ex = ex
+        };
+        return failure;
     }
 }
 
@@ -35,15 +24,9 @@ public sealed class Validation<T>
     public bool hasException;
     public Future<T> target;
 
-    public Validation(Success<T> success)
+    public Validation(Future<T> future)
     {
-        hasException = false;
-        target = success;
-    }
-
-    public Validation(Failure<T> failure)
-    {
-        hasException = false;
-        target = failure;
+        hasException = future.hasException;
+        target = future;
     }
 }

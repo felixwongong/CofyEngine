@@ -20,10 +20,17 @@ public class Promise<T>: IPromise
     public bool isSucceed { get; set; }
     public bool isFailure { get; set; }
     public Func<float> progressFunc { get; set; }
-    
+
+    private Future<T> _future = null;
+
+    public Future<T> future
+    {
+        get => _future ??= new Future<T>();
+    }
+
     public event Action<Validation<T>> Completed;
     public event Action<T> Succeed;
-    public event Action<Failure<T>> Failed;
+    public event Action<Future<T>> Failed;
 
     public Promise()
     {
@@ -40,7 +47,8 @@ public class Promise<T>: IPromise
     {
         isCompleted = true;
         isSucceed = true;
-        Completed?.Invoke(new Validation<T>(new Success<T>(result)));
+        future.result = result;
+        Completed?.Invoke(new Validation<T>(_future));
         Succeed?.Invoke(result);
         clear();
     }
@@ -55,28 +63,23 @@ public class Promise<T>: IPromise
     {
         isCompleted = true;
         isFailure = true;
-        Completed?.Invoke(new Validation<T>(new Failure<T>(ex)));
-        Failed?.Invoke(new Failure<T>(ex));
+        future.ex = ex;
+        Completed?.Invoke(new Validation<T>(_future));
+        Failed?.Invoke(_future);
         clear();
     }
 
     public Promise<T> Then(Action<Future<T>> action)
     {
         Promise<T> promise = new Promise<T>(this.progressFunc);
-        this.Completed += future =>
+        this.Completed += validation =>
         {
-            if (future.hasException)
-            {
-                var failure = future.target as Failure<T>;
-                action(failure);
-                promise.Reject(failure.ex);
-            }
+            var future = validation.target;
+            action(future);
+            if (validation.hasException)
+                promise.Reject(future.ex);
             else
-            {
-                var success = future.target as Success<T>;
-                action(success);
-                promise.Resolve(success.result);
-            }
+                promise.Resolve(future.result);
         };
         return promise;
     }
@@ -88,12 +91,12 @@ public class Promise<T>: IPromise
         {
             if (validation.hasException)
             {
-                var failure = validation.target as Failure<T>;
+                var failure = validation.target;
                 promise.Reject(failure.ex);
             }
             else
             {
-                var success = validation.target as Success<T>;
+                var success = validation.target;
                 A mappedValue = mapFunc(success.result);
                 promise.Resolve(mappedValue);
             }
