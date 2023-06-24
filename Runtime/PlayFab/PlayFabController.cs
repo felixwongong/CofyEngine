@@ -8,7 +8,13 @@ namespace CofyEngine.PlayFab
 {
     public class PlayFabController: Instance<PlayFabController>
     {
-        private Future<bool> _initLogin()
+        public Future<bool> InitLogin()
+        {
+            //TODO: add recovery
+            return _InitLogin();
+        }
+
+        private Future<bool> _InitLogin()
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
                 //TODO: add localized exception
@@ -16,11 +22,7 @@ namespace CofyEngine.PlayFab
 
             var _activeClient = new PlayFabClientInstanceAPI();
 
-            var param = CreatePlayerParams();
-
-            var request = new LoginWithCustomIDRequest();
-            
-            return new Success<bool>(true);
+            return PlayFabAuth.LoginWithCustomID(_activeClient, BootstrapPlayFab.instance.devCustomId).TryMap((_ => true)).future;
         }
 
         private GetPlayerCombinedInfoRequestParams CreatePlayerParams()

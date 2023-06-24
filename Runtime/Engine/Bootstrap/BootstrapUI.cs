@@ -38,7 +38,7 @@ namespace CofyEngine
                     {
                         loadingFinished = true;
                         FLog.Log("UI load finished.");
-                        sm.GoToNextState<BootstrapUGS>();
+                        sm.GoToNextState<BootstrapPlayFab>();
                     };
                 });
 

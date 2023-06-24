@@ -13,12 +13,12 @@ public class BootstrapStateMachine : UnityStateMachine
     private void Start()
     {
         var bootstrapUI = GetComponent<BootstrapUI>();
-        var bootstrapUGS = GetComponent<BootstrapUGS>();
+        var bootstrapPlayFab = GetComponent<BootstrapPlayFab>();
         
         RegisterState(bootstrapUI);
-        RegisterState(bootstrapUGS);
+        RegisterState(bootstrapPlayFab);
 
-        terminateState = bootstrapUGS;
+        terminateState = bootstrapPlayFab;
 
         GoToNextState(bootstrapUI.GetType());
     }

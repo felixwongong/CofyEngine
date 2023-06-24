@@ -2,7 +2,7 @@
 {
     public class Instance<T> where T: new ()
     {
-        internal T _instance;
-        public T instance => _instance ??= new T();
+        private static T _instance;
+        public static T instance => _instance ??= new T();
     }
 }
