@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using CofyEngine.Engine;
 using CofyEngine.Engine.Util;
 using CofyEngine.Engine.Util.StateMachine;
 using CofyUI;
@@ -9,11 +10,11 @@ using UnityEngine.ResourceManagement;
 
 namespace CofyEngine
 {
-    public abstract class BootstrapUI : MonoBehaviour, IStateContext
+    public abstract class BootstrapUI : MonoBehaviour, IPromiseState
     {
         [SerializeField] private string uiRootPath = "Assets/Prefab/UI";
 
-        public abstract Promise<List<GameObject>> LoadAll();
+        public abstract Future<List<GameObject>> LoadAll();
 
         public Promise<GameObject> LoadUIAssetAsync(string path)
         {
@@ -21,10 +22,9 @@ namespace CofyEngine
             return handle.ToPromise();
         }
 
-        public IEnumerator StartContext(IStateMachine sm)
+        void IPromiseState.StartContext(IPromiseSM sm)
         {
-            bool loadingFinished = false;
-            Promise<List<GameObject>> uiPromise;
+            Future<List<GameObject>> uiPromise;
             UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("loading_panel"))
                 .Then(future =>
                 {
@@ -32,17 +32,14 @@ namespace CofyEngine
                     loadingScreen.SetGoActive(true);
                     uiPromise = LoadAll();
 
-                    loadingScreen.MonitorProgress(uiPromise);
+                    loadingScreen.MonitorProgress(uiPromise.promise);
 
-                    uiPromise.Succeed += list =>
+                    uiPromise.Then(_ =>
                     {
-                        loadingFinished = true;
                         FLog.Log("UI load finished.");
                         sm.GoToNextState<BootstrapPlayFab>();
-                    };
+                    });
                 });
-
-            yield return new WaitUntil(() => loadingFinished == true);
         }
     }
 }

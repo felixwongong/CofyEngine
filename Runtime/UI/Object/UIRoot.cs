@@ -12,9 +12,9 @@ namespace CofyUI
 
         private Dictionary<Type, GameObject> uiMap = new Dictionary<Type, GameObject>();
 
-        public Promise<GameObject> Bind<T>(Promise<GameObject> uiInstantiation) where T: UIInstance<T>
+        public Future<GameObject> Bind<T>(Promise<GameObject> uiInstantiation) where T: UIInstance<T>
         {
-            return uiInstantiation.Then(future =>
+            return uiInstantiation.future.Then(future =>
             {
                 uiMap[typeof(T)] = future.result;
             });

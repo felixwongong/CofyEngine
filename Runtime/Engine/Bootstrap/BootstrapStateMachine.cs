@@ -1,33 +1,24 @@
-using CofyEngine.Engine.Util.StateMachine;
 using CofyEngine;
+using CofyEngine.Engine;
 using CofyEngine.Engine.Game;
-using CofyEngine.Engine.Util.Editor;
-using UnityEngine;
 
-public class BootstrapStateMachine : UnityStateMachine
+public class BootstrapStateMachine : PromiseStateMachine
 {
-    [Scene] 
-    [SerializeField]
-    private string firstScene;
-
     private void Start()
     {
-        var bootstrapUI = GetComponent<BootstrapUI>();
-        var bootstrapPlayFab = GetComponent<BootstrapPlayFab>();
-        
-        RegisterState(bootstrapUI);
-        RegisterState(bootstrapPlayFab);
+        RegisterState(GetComponent<BootstrapUI>());
+        RegisterState(GetComponent<BootstrapPlayFab>());
+        RegisterState(new TerminateState());
 
-        terminateState = bootstrapPlayFab;
-
-        GoToNextState(bootstrapUI.GetType());
+        GoToNextState<BootstrapUI>();
     }
 
-    public override void Terminate()
+    private class TerminateState : IPromiseState
     {
-        LevelManager.Singleton.LoadLevelFull(firstScene, after: (old, newScene) =>
+        void IPromiseState.StartContext(IPromiseSM sm)
         {
-            GameStateMachine.instance.Init();
-        });
+            LevelManager.Singleton.LoadLevelFull(ClientMain.instance.firstScene,
+                after: (old, newScene) => { GameStateMachine.instance.Init(); });
+        }
     }
 }

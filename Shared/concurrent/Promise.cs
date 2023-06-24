@@ -25,7 +25,7 @@ public class Promise<T>: IPromise
 
     public Future<T> future
     {
-        get => _future ??= new Future<T>();
+        get => _future ??= new Future<T>(this);
     }
 
     public event Action<Validation<T>> Completed;
@@ -68,43 +68,6 @@ public class Promise<T>: IPromise
         Failed?.Invoke(_future);
         clear();
     }
-
-    public Promise<T> Then(Action<Future<T>> action)
-    {
-        Promise<T> promise = new Promise<T>(this.progressFunc);
-        this.Completed += validation =>
-        {
-            var future = validation.target;
-            action(future);
-            if (validation.hasException)
-                promise.Reject(future.ex);
-            else
-                promise.Resolve(future.result);
-        };
-        return promise;
-    }
-
-    public Promise<A> TryMap<A>(Func<T, A> mapFunc)
-    {
-        Promise<A> promise = new Promise<A>(this.progressFunc);
-        this.Completed += validation =>
-        {
-            if (validation.hasException)
-            {
-                var failure = validation.target;
-                promise.Reject(failure.ex);
-            }
-            else
-            {
-                var success = validation.target;
-                A mappedValue = mapFunc(success.result);
-                promise.Resolve(mappedValue);
-            }
-        };
-        return promise;
-    }
-
-
 
     private void clear()
     {

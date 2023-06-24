@@ -58,11 +58,11 @@ namespace CofyEngine.Editor
         private void LoadPreviewTexture(string jfifPath)
         {
             var texturePromise = LoadTextureFromPath(jfifPath);
-            texturePromise.Succeed += texture =>
+            texturePromise.Then(texture =>
             {
-                previewTexture = texture;
+                previewTexture = texture.result;
                 Repaint();
-            };
+            });
         }
 
         private void ImportJfifAsSprite()
@@ -83,7 +83,7 @@ namespace CofyEngine.Editor
             }
         }
 
-        private Promise<Texture2D> LoadTextureFromPath(string path)
+        private Future<Texture2D> LoadTextureFromPath(string path)
         {
             string url = new System.Uri(path).AbsoluteUri;
 
@@ -91,7 +91,7 @@ namespace CofyEngine.Editor
 
             Promise<Texture2D> texturePromise = new Promise<Texture2D>(() => webRequest.downloadProgress);
 
-            webRequest.SendWebRequest().ToPromise()
+            webRequest.SendWebRequest().ToPromise().future
                 .Then(op =>
                 {
                     if (webRequest.result == UnityWebRequest.Result.Success)
@@ -101,7 +101,7 @@ namespace CofyEngine.Editor
                 })
                 .Then(op => webRequest.Dispose());
 
-            return texturePromise;
+            return texturePromise.future;
         }
     }
 }

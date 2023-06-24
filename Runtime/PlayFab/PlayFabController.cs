@@ -18,11 +18,11 @@ namespace CofyEngine.PlayFab
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
                 //TODO: add localized exception
-                return Future<bool>.failure(new Exception("Network not reachable"));
+                return Future<bool>.failure(new Exception("Network not reachable."));
 
             var _activeClient = new PlayFabClientInstanceAPI();
 
-            return PlayFabAuth.LoginWithCustomID(_activeClient, BootstrapPlayFab.instance.devCustomId).TryMap((_ => true)).future;
+            return PlayFabAuth.LoginWithCustomID(_activeClient, BootstrapPlayFab.instance.devCustomId).future.TryMap((_ => true));
         }
 
         private GetPlayerCombinedInfoRequestParams CreatePlayerParams()
