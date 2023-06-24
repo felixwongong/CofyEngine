@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using CofyEngine.Engine;
-using CofyEngine.Engine.Util.StateMachine;
+﻿using CofyEngine.Engine;
 using CofyEngine.PlayFab;
 using Engine.Util;
 
@@ -14,7 +12,10 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            PlayFabController.instance.InitLogin();
+            PlayFabController.instance.InitLogin().Then(success =>
+            {
+                if(success.result) sm.GoToNextState<TerminateState>();
+            });
         }
     }
 }

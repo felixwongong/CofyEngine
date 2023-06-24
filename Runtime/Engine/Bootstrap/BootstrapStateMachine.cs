@@ -12,13 +12,13 @@ public class BootstrapStateMachine : PromiseStateMachine
 
         GoToNextState<BootstrapUI>();
     }
+}
 
-    private class TerminateState : IPromiseState
+class TerminateState : IPromiseState
+{
+    void IPromiseState.StartContext(IPromiseSM sm)
     {
-        void IPromiseState.StartContext(IPromiseSM sm)
-        {
-            LevelManager.Singleton.LoadLevelFull(ClientMain.instance.firstScene,
-                after: (old, newScene) => { GameStateMachine.instance.Init(); });
-        }
+        LevelManager.Singleton.LoadLevelFull(ClientMain.instance.firstScene,
+            after: (old, newScene) => { GameStateMachine.instance.Init(); });
     }
 }

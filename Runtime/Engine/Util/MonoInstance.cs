@@ -9,8 +9,13 @@ namespace Engine.Util
         {
             get
             {
-                GameObject go = new GameObject($"_{typeof(T)}");
-                _instance = go.AddComponent<T>();
+                if (_instance != null) return _instance;
+                
+                _instance ??= FindObjectOfType<T>();
+
+                if (_instance != null) return _instance;
+                
+                _instance = new GameObject($"_{typeof(T)}").AddComponent<T>();
                 return _instance;
             }
         }
