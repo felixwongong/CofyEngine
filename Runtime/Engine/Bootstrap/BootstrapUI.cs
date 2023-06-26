@@ -37,7 +37,7 @@ namespace CofyEngine
                     uiPromise.Then(_ =>
                     {
                         FLog.Log("UI load finished.");
-                        sm.GoToNextState<BootstrapPlayFab>();
+                        sm.GoToNextState<BootstrapUGS>();
                     });
                 });
         }

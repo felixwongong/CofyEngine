@@ -7,7 +7,7 @@ public class BootstrapStateMachine : PromiseStateMachine
     private void Start()
     {
         RegisterState(GetComponent<BootstrapUI>());
-        RegisterState(GetComponent<BootstrapPlayFab>());
+        RegisterState(GetComponent<BootstrapUGS>());
         RegisterState(new TerminateState());
 
         GoToNextState<BootstrapUI>();

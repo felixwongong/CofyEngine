@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CofyEngine.Engine.Game
 {
-    public class GameStateMachine: UnityStateMachine
+    public class GameStateMachine: PromiseStateMachine
     {
         private static GameStateMachine _instance;
 
@@ -23,14 +23,7 @@ namespace CofyEngine.Engine.Game
 
         public void Init()
         {
-            RegisterState(new LoginState());
-            
-            GoToNextState<LoginState>();
-        }
 
-        public override void Terminate()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

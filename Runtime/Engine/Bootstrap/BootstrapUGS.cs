@@ -1,10 +1,10 @@
 ﻿using CofyEngine.Engine;
-using CofyEngine.PlayFab;
+using CofyEngine.UGS;
 using Engine.Util;
 
 namespace CofyEngine 
 {
-    public class BootstrapPlayFab : MonoInstance<BootstrapPlayFab>, IPromiseState
+    public class BootstrapUGS : MonoInstance<BootstrapUGS>, IPromiseState
     {
 #if UNITY_EDITOR
         public string devCustomId = "Tester";
@@ -12,7 +12,7 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            PlayFabController.instance.InitLogin().Then(success =>
+            UGSController.instance.InitLogin().Then(success =>
             {
                 if(success.result) sm.GoToNextState<TerminateState>();
             });

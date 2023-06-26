@@ -1,4 +1,4 @@
-namespace CofyEngine.PlayFab
+namespace CofyEngine.UGS
 {
     public class CofyPlayFab
     {
