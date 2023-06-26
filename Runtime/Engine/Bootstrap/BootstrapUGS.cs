@@ -1,5 +1,4 @@
 ﻿using CofyEngine.Engine;
-using CofyEngine.UGS;
 using Engine.Util;
 
 namespace CofyEngine 
@@ -12,10 +11,6 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            UGSController.instance.InitLogin().Then(success =>
-            {
-                if(success.result) sm.GoToNextState<TerminateState>();
-            });
         }
     }
 }
