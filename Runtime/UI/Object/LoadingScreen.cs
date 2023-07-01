@@ -21,7 +21,7 @@ namespace CofyUI
 
         private void Update()
         {
-            if (target != null)
+            if (target != null && bar != null)
             {
                 bar.SetPercentage(target.progressFunc());
                 if (target.isCompleted)
