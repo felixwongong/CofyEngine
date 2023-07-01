@@ -1,23 +1,18 @@
 ﻿using System.Collections.Generic;
-using CM.UI;
 using CofyEngine;
 using CofyUI;
 using UnityEngine;
 
-namespace CM.Core
+public class CMBootstrapUI : BootstrapUI
 {
-    public class CMBootstrapUI : BootstrapUI
+    public override Future<List<GameObject>> LoadAll()
     {
-        public override Promise<List<GameObject>> LoadAll()
-        {
-            // var uiRoot = UIRoot.Singleton;
-            //
-            // List<Future<GameObject>> promises = new List<Promise<GameObject>>();
-            //
-            // promises.Add(uiRoot.Bind<LoginUI>(LoadUIAssetAsync("LoginUI")));
-            //
-            // return promises.Sequence();
-            return null;
-        }
+        var uiRoot = UIRoot.Singleton;
+
+        List<Future<GameObject>> promises = new List<Future<GameObject>>();
+
+        // promises.Add(uiRoot.Bind<LoginUI>(LoadUIAssetAsync("LoginUI")));
+
+        return promises.Sequence();
     }
 }
