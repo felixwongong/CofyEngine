@@ -31,11 +31,16 @@ public class Future<T>
         this.promise.Completed += validation =>
         {
             var future = validation.target;
-            action(future);
             if (validation.hasException)
+            {
+                FLog.LogWarning("Promise failed so Then operation will not start");
                 promise.Reject(future.ex);
+            }
             else
+            {
+                action(future);
                 promise.Resolve(future.result);
+            }
         };
         return promise.future;
     }
