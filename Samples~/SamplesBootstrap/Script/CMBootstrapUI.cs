@@ -10,13 +10,14 @@ namespace CM.Core
     {
         public override Promise<List<GameObject>> LoadAll()
         {
-            var uiRoot = UIRoot.Singleton;
-            
-            List<Promise<GameObject>> promises = new List<Promise<GameObject>>();
-
-            promises.Add(uiRoot.Bind<LoginUI>(LoadUIAssetAsync("LoginUI")));
-
-            return promises.Sequence();
+            // var uiRoot = UIRoot.Singleton;
+            //
+            // List<Future<GameObject>> promises = new List<Promise<GameObject>>();
+            //
+            // promises.Add(uiRoot.Bind<LoginUI>(LoadUIAssetAsync("LoginUI")));
+            //
+            // return promises.Sequence();
+            return null;
         }
     }
 }
