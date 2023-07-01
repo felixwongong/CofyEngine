@@ -16,10 +16,10 @@ namespace CofyEngine
 
         public abstract Future<List<GameObject>> LoadAll();
 
-        public Promise<GameObject> LoadUIAssetAsync(string path)
+        public Future<GameObject> LoadUIAssetAsync(string path)
         {
             var handle = Addressables.LoadAssetAsync<GameObject>($"{uiRootPath}/{path}.prefab");
-            return handle.ToPromise();
+            return handle.ToPromise().future;
         }
 
         void IPromiseState.StartContext(IPromiseSM sm)
