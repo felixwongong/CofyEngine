@@ -14,10 +14,23 @@ namespace CofyUI
 
         public Future<GameObject> Bind<T>(Future<GameObject> uiInstantiation) where T: UIInstance<T>
         {
-            return uiInstantiation.Then(future =>
+            Promise<GameObject> bindingPromise = new Promise<GameObject>();
+            
+            uiInstantiation.Then(future =>
             {
-                uiMap[typeof(T)] = future.result;
+                if (future.result.TryGetComponent<T>(out var _))
+                {
+                    uiMap[typeof(T)] = future.result;
+                    bindingPromise.Resolve(future.result);
+                }
+                else
+                {
+                    bindingPromise.Reject(
+                        new Exception($"{future.result.name} does not have component type ({typeof(T)})"));
+                }
             });
+
+            return bindingPromise.future;
         }
 
         public T GetInstance<T>()
