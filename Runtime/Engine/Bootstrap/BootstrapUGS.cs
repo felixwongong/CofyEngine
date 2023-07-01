@@ -1,7 +1,8 @@
 ﻿using CofyEngine.Engine;
 using Engine.Util;
+using Unity.Services.Core;
 
-namespace CofyEngine 
+namespace CofyEngine
 {
     public class BootstrapUGS : MonoInstance<BootstrapUGS>, IPromiseState
     {
@@ -11,6 +12,10 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
+            UnityServices.InitializeAsync().ToPromise().future
+                .Then(_ => { sm.GoToNextState<TerminateState>(); });
+            
+            
         }
     }
 }
