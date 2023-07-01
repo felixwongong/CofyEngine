@@ -11,7 +11,12 @@
     {
       "displayName": "Sample bootstrap usage",
       "description": "Contain sample usages of bootstrap framework",
-      "path": "Samples~/SamplesBootstrap"
+      "path": "Samples~/SampleBootstrap"
+    },
+    {
+      "displayName": "Sample UI usage",
+      "description": "Contain sample usages of ui prefab using script in framework",
+      "path": "Samples~/SampleUI"
     }
   ],
   "dependencies": {
