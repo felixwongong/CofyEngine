@@ -33,7 +33,7 @@ public class Future<T>
             var future = validation.target;
             if (validation.hasException)
             {
-                FLog.LogWarning("Promise failed so Then operation will not start");
+                FLog.LogException(future.ex);
                 promise.Reject(future.ex);
             }
             else
