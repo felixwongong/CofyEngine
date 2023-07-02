@@ -9,13 +9,17 @@ namespace CofyEngine.Editor
         [MenuItem("Assets/Move To/UI")]
         static void MoveToUI()
         {
-            if (Selection.objects is not { Length: > 0 }) return;
-            for (var i = 0; i < Selection.objects.Length; i++)
-            {
-                MoveToDirectory("Assets/Prefab/UI", Selection.objects[i]);
-            }
+            MoveAllSelectToDir("Assets/Prefab/UI");
         }
 
+        private static void MoveAllSelectToDir(string targetDirPath)
+        {
+            for (var i = 0; i < Selection.objects.Length; i++)
+            {
+                MoveToDirectory(targetDirPath, Selection.objects[i]);
+            }
+        }
+        
         private static void MoveToDirectory(string targetDirPath, Object obj)
         {
             string sourcePath = AssetDatabase.GetAssetPath(obj);
