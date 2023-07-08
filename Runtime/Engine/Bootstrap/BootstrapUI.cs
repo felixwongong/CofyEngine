@@ -25,7 +25,7 @@ namespace CofyEngine
         void IPromiseState.StartContext(IPromiseSM sm)
         {
             Future<List<GameObject>> uiPromise;
-            UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("loading_panel"))
+            UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("Loading/loading_panel"))
                 .Then(future =>
                 {
                     var loadingScreen = LoadingScreen.instance;

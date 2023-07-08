@@ -11,6 +11,7 @@ using UnityEngine;
                 for (var i = 0; i < listOfPromise.Count; i++)
                 {
                     var promise = listOfPromise[i].promise;
+                    if(promise.isFailure) continue;
                     sum += promise.progressFunc();
                 }
 

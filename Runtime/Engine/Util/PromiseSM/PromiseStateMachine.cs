@@ -24,7 +24,6 @@ namespace CofyEngine.Engine
 
         public void GoToNextState<StateType>()
         {
-            IPromiseState curState;
             if (!_stateDictionary.TryGetValue(typeof(StateType), out curState))
             {
                 curState = _stateDictionary.Values.First(state => state is StateType);

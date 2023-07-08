@@ -4,12 +4,31 @@ using UnityEngine;
 
 namespace CofyEngine.Editor
 {
-    public class MoveToAddrDirectory
+    public class AddressableDirectoryTools
     {
-        [MenuItem("Assets/Move To/UI")]
+        [MenuItem("Assets/Move To/UI", false, 0)]
         static void MoveToUI()
         {
             MoveAllSelectToDir("Assets/Prefab/UI");
+        }
+
+        [MenuItem("Assets/Open To/UI", false, 1)]
+        static void OpenToUI()
+        {
+            FocusDirectory("Assets/Prefab/UI");
+        }
+
+        private static void FocusDirectory(string path)
+        {
+            Object folderMeta = AssetDatabase.LoadAssetAtPath<Object>(path);
+            if (folderMeta != null)
+            {
+                Selection.activeObject = folderMeta;
+            }
+            else
+            {
+                FLog.Log($"folder ({path}) does not exist");
+            }
         }
 
         private static void MoveAllSelectToDir(string targetDirPath)
@@ -19,7 +38,7 @@ namespace CofyEngine.Editor
                 MoveToDirectory(targetDirPath, Selection.objects[i]);
             }
         }
-        
+
         private static void MoveToDirectory(string targetDirPath, Object obj)
         {
             string sourcePath = AssetDatabase.GetAssetPath(obj);

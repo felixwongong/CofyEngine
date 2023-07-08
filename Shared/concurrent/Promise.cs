@@ -35,16 +35,17 @@ public class Promise<T>: IPromise
     public Promise()
     {
         isCompleted = isSucceed = isFailure = false;
-        progressFunc = null;
+        progressFunc = () => 0;
     }
 
-    public Promise(Func<float> progressFunc)
+    public Promise(Func<float> progressFunc): this()
     {
         this.progressFunc = progressFunc;
     }
 
     public void Resolve(T result)
     {
+        if (Mathf.Approximately(progressFunc(), 0)) progressFunc = () => 1;
         isCompleted = true;
         isSucceed = true;
         future.result = result;

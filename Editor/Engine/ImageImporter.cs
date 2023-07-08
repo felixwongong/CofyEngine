@@ -21,13 +21,13 @@ namespace CofyEngine.Editor
 
         private void OnGUI()
         {
-            GUILayout.Label("Import JFIF Image", EditorStyles.boldLabel);
+            GUILayout.Label("Import Image", EditorStyles.boldLabel);
 
             GUILayout.Space(10);
 
-            if (GUILayout.Button("Select JFIF Image"))
+            if (GUILayout.Button("Select Image"))
             {
-                var jfifPath = EditorUtility.OpenFilePanel("Select JFIF Image", "", "jfif");
+                var jfifPath = EditorUtility.OpenFilePanel("Select Image", "", "jfif,png,jpg");
                 if (!string.IsNullOrEmpty(jfifPath))
                 {
                     LoadPreviewTexture(jfifPath);

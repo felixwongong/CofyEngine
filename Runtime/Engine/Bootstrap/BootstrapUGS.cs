@@ -14,8 +14,6 @@ namespace CofyEngine
         {
             UnityServices.InitializeAsync().ToPromise().future
                 .Then(_ => { sm.GoToNextState<TerminateState>(); });
-            
-            
         }
     }
 }
