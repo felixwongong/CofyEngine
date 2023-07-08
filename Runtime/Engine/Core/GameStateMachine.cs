@@ -23,7 +23,7 @@ namespace CofyEngine.Engine.Core
 
         public void Init()
         {
-
+            
         }
     }
 }

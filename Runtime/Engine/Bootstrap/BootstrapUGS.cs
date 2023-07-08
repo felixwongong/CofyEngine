@@ -12,11 +12,9 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            UnityServices.InitializeAsync().ToPromise().future
+            var promise = UnityServices.InitializeAsync().ToPromise().future
                 .Then(_ =>
                 {
-                    FLog.Log("UGS Initialized");
-                    sm.GoToNextState<TerminateState>();
                 });
         }
     }
