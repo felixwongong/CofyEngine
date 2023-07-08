@@ -1,15 +1,14 @@
 ﻿using System;
 using CM.Util.Singleton;
+using CofyEngine.Engine.Util;
 using CofyUI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CofyEngine.Engine.Game
 {
-    public class LevelManager : SingleBehaviour<LevelManager>
+    public class LevelManager : Instance<LevelManager>
     {
-        public override bool destroyWithScene => false;
-
         public void LoadLevelFull(string sceneName, Action<Scene> before = null, Action<Scene, Scene> after = null)
         {
             FLog.Log($"{sceneName} load start");
@@ -26,12 +25,19 @@ namespace CofyEngine.Engine.Game
 
             LoadingScreen.instance.MonitorProgress(sceneLoadPromise);
 
-            sceneLoadPromise.Succeed += _ =>
+            sceneLoadPromise.Completed += opValidate =>
             {
-                after?.Invoke(disposingScene, SceneManager.GetSceneByName(sceneName));
-                SceneManager.UnloadSceneAsync(disposingScene);
-                LoadingScreen.instance.EndMonitoring();
-                FLog.Log($"{sceneName} load end");
+                if (opValidate.hasException)
+                {
+                    FLog.LogException(opValidate.target.ex);    
+                }
+                else
+                {
+                    after?.Invoke(disposingScene, SceneManager.GetSceneByName(sceneName));
+                    SceneManager.UnloadSceneAsync(disposingScene);
+                    LoadingScreen.instance.EndMonitoring();
+                    FLog.Log($"{sceneName} load end");
+                }
             };
         }
     }

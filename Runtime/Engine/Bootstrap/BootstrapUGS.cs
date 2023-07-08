@@ -1,4 +1,5 @@
-﻿using CofyEngine.Engine;
+﻿using System;
+using CofyEngine.Engine;
 using Engine.Util;
 using Unity.Services.Core;
 
@@ -13,7 +14,11 @@ namespace CofyEngine
         void IPromiseState.StartContext(IPromiseSM sm)
         {
             UnityServices.InitializeAsync().ToPromise().future
-                .Then(_ => { sm.GoToNextState<TerminateState>(); });
+                .Then(_ =>
+                {
+                    FLog.Log("UGS Initialized");
+                    sm.GoToNextState<TerminateState>();
+                });
         }
     }
 }

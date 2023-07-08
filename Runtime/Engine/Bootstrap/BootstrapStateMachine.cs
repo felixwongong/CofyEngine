@@ -1,3 +1,4 @@
+using System;
 using CofyEngine;
 using CofyEngine.Engine;
 using CofyEngine.Engine.Game;
@@ -18,7 +19,15 @@ class TerminateState : IPromiseState
 {
     void IPromiseState.StartContext(IPromiseSM sm)
     {
-        LevelManager.Singleton.LoadLevelFull(ClientMain.instance.firstScene,
-            after: (old, newScene) => { GameStateMachine.instance.Init(); });
+        try
+        {
+            var scene = ClientMain.instance.firstScene;
+            LevelManager.instance.LoadLevelFull(scene,
+                after: (old, newScene) => { GameStateMachine.instance.Init(); });
+        }
+        catch (Exception e)
+        {
+            FLog.LogException(e);
+        }
     }
 }
