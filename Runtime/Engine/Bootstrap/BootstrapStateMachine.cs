@@ -1,7 +1,7 @@
 using System;
 using CofyEngine;
 using CofyEngine.Engine;
-using CofyEngine.Engine.Game;
+using CofyEngine.Engine.Core;
 
 public class BootstrapStateMachine : PromiseStateMachine
 {

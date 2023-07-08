@@ -5,7 +5,7 @@ using CofyUI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CofyEngine.Engine.Game
+namespace CofyEngine.Engine.Core
 {
     public class LevelManager : Instance<LevelManager>
     {
