@@ -1,4 +1,5 @@
 ﻿using CofyEngine.Engine;
+using CofyUI;
 using Engine.Util;
 using Unity.Services.Core;
 
@@ -12,10 +13,14 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            var promise = UnityServices.InitializeAsync().ToPromise().future
+            var future = UnityServices.InitializeAsync().ToPromise().future
                 .Then(_ =>
                 {
+                    sm.GoToNextState<TerminateState>();
+
                 });
+            
+            LoadingScreen.instance.MonitorProgress(future.promise);
         }
     }
 }

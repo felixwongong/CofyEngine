@@ -6,10 +6,13 @@ namespace CofyEngine.Engine.Core
 {
     public class MainThreadExecutor : MonoInstance<MainThreadExecutor>
     {
+        public override bool persistent => true;
+
         private Queue<Action> _actionQueue;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _actionQueue = new Queue<Action>();
         }
 

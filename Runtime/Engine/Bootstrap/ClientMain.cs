@@ -5,6 +5,5 @@ namespace CofyEngine
 {
     public class ClientMain : MonoInstance<ClientMain>
     {
-        [Scene] public string firstScene;
     }
 }

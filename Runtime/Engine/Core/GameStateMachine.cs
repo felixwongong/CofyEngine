@@ -15,6 +15,7 @@ namespace CofyEngine.Engine.Core
                 if (_instance == null)
                 {
                     _instance = new GameObject($"_GameStateMachine").AddComponent<GameStateMachine>();
+                    DontDestroyOnLoad(_instance);
                 }
                 
                 return _instance;
