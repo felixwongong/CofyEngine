@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CofyEngine.Editor
 {
@@ -55,6 +57,17 @@ namespace CofyEngine.Editor
             {
                 AssetDatabase.MoveAsset(sourcePath, targetPath);
             }
+        }
+
+        [MenuItem("Assets/Create/Scene To Addressable Folder")]
+        public static void CreateSceneAddressable()
+        {
+            string path = "Assets/Prefab/Scene/New Scene.unity";
+
+            Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            EditorSceneManager.SaveScene(newScene, path);
+            
+            FocusDirectory(path);
         }
     }
 }

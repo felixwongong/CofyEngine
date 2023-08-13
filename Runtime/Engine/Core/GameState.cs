@@ -1,7 +1,14 @@
-﻿namespace CofyEngine.Engine.Core
+﻿using UnityEngine;
+
+namespace CofyEngine.Engine.Core
 {
-    public class GameState
+    public abstract class GameState: MonoBehaviour, IPromiseState
     {
+        protected abstract string scene { get;  }
         
+        void IPromiseState.StartContext(IPromiseSM sm)
+        {
+            if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevelFull(scene);
+        }
     }
 }

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using CofyEngine.Engine.Core;
-using CofyEngine.Engine.Util.StateMachine;
 using UnityEngine;
 
-namespace CofyEngine.Engine
+namespace CofyEngine
 {
     public abstract class PromiseStateMachine : MonoBehaviour, IPromiseSM
     {
@@ -13,15 +12,18 @@ namespace CofyEngine.Engine
 
         private Dictionary<Type, IPromiseState> _stateDictionary;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _stateDictionary = new Dictionary<Type, IPromiseState>();
+            RegisterAllState();
         }
 
         protected void RegisterState(IPromiseState state)
         {
             _stateDictionary[state.GetType()] = state;
         }
+
+        protected abstract void RegisterAllState();
 
         public void GoToNextState<StateType>()
         {

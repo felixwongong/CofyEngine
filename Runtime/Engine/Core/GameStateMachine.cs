@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using CofyEngine.Engine.Util.StateMachine;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace CofyEngine.Engine.Core
+namespace CofyEngine
 {
-    public class GameStateMachine: PromiseStateMachine
+    public abstract class GameStateMachine: PromiseStateMachine
     {
         private static GameStateMachine _instance;
 
@@ -22,9 +20,6 @@ namespace CofyEngine.Engine.Core
             }
         }
 
-        public void Init()
-        {
-            
-        }
+        public abstract void Init();
     }
 }

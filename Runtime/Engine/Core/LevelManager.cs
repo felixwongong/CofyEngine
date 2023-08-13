@@ -3,6 +3,7 @@ using CM.Util.Singleton;
 using CofyEngine.Engine.Util;
 using CofyUI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace CofyEngine.Engine.Core
@@ -18,27 +19,29 @@ namespace CofyEngine.Engine.Core
 
             UIRoot.Singleton.DisableAllInstances();
 
-            var aop = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            aop.allowSceneActivation = true;
+            // var aop = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            // aop.allowSceneActivation = true;
+            //
+            // Promise<AsyncOperation> sceneLoadPromise = aop.ToPromise();
 
-            Promise<AsyncOperation> sceneLoadPromise = aop.ToPromise();
-
-            LoadingScreen.instance.MonitorProgress(sceneLoadPromise);
-
-            sceneLoadPromise.Completed += opValidate =>
+            var sceneLoadFuture = CofyAddressable.LoadScene(sceneName, LoadSceneMode.Additive);
+            
+            LoadingScreen.instance.MonitorProgress(sceneLoadFuture);
+            
+            sceneLoadFuture.OnCompleted(sceneValidate =>
             {
-                if (opValidate.hasException)
+                if (sceneValidate.hasException)
                 {
-                    FLog.LogException(opValidate.target.ex);    
+                    FLog.LogException(sceneValidate.target.ex);    
                 }
                 else
                 {
-                    after?.Invoke(disposingScene, SceneManager.GetSceneByName(sceneName));
+                    after?.Invoke(disposingScene, sceneValidate.target.result);
                     SceneManager.UnloadSceneAsync(disposingScene);
                     LoadingScreen.instance.EndMonitoring();
                     FLog.Log($"{sceneName} load end");
                 }
-            };
+            });
         }
     }
 }

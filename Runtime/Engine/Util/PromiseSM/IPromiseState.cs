@@ -1,7 +1,7 @@
-﻿namespace CofyEngine.Engine
+﻿namespace CofyEngine
 {
     public interface IPromiseState
     {
-        protected internal void StartContext(IPromiseSM sm);
+        protected internal abstract void StartContext(IPromiseSM sm);
     }
 }

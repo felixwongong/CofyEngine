@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CofyEngine.Engine;
 using CofyEngine.Engine.Util;
 using CofyUI;
@@ -15,8 +15,7 @@ namespace CofyEngine
 
         public Future<GameObject> LoadUIAssetAsync(string path)
         {
-            var handle = Addressables.LoadAssetAsync<GameObject>($"{uiRootPath}/{path}.prefab");
-            return handle.ToPromise().future;
+            return CofyAddressable.LoadAsset<GameObject>(AssetPath.UI, path);
         }
 
         void IPromiseState.StartContext(IPromiseSM sm)

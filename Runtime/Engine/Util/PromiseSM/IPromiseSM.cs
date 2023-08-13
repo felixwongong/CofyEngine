@@ -1,4 +1,4 @@
-﻿namespace CofyEngine.Engine
+﻿namespace CofyEngine
 {
     public interface IPromiseSM
     {

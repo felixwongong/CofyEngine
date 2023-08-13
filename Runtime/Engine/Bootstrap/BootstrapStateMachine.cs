@@ -4,7 +4,7 @@ using CofyEngine.Engine.Core;
 
 public class BootstrapStateMachine : PromiseStateMachine
 {
-    private void Start()
+    protected override void RegisterAllState()
     {
         RegisterState(GetComponent<BootstrapUI>());
         RegisterState(GetComponent<BootstrapUGS>());
