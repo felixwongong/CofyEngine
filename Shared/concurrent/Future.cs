@@ -1,21 +1,48 @@
 ﻿using System;
 
-public class Future<T>
+public interface IFuture
+{
+    public Exception ex { get; set; }
+    
+    public float progress { get; }
+    
+    public bool hasException => ex != null;
+    
+    public bool isCompleted { get; }
+    public bool isSucceed { get; }
+    public bool isFailure { get; }
+}
+
+public partial class Future<T>: IFuture
 {
     public T result { get; set; }
     public Exception ex { get; set; }
-
-    public readonly Promise<T> promise;
-
-    public bool hasException => ex != null;
     
+    public float progress => _promise.progressFunc();
+    
+    public bool hasException => ex != null;
+    public bool isCompleted => _promise.isCompleted;
+    public bool isSucceed => _promise.isSucceed;
+    public bool isFailure => _promise.isFailure;
+
+    private readonly Promise<T> _promise;
+
     public Future() { }
 
     public Future(Promise<T> promise): this()
     {
-        this.promise = promise;
+        this._promise = promise;
     }
+    
+    public void OnCompleted(Action<Validation<T>> action) { _promise.OnCompleted(action); }
 
+    public void OnSucceed(Action<T> action) { _promise.OnSucceed(action); }
+
+    public void OnFailed(Action<Future<T>> action) { _promise.OnFailed(action); }
+}
+
+public partial class Future<T>
+{
     public static Future<T> failure(Exception ex)
     {
         var failure = new Future<T>
@@ -27,8 +54,9 @@ public class Future<T>
 
     public Future<T> Then(Action<Future<T>> action)
     {
-        Promise<T> promise = new Promise<T>(this.promise.progressFunc);
-        this.promise.Completed += validation =>
+        Promise<T> promise = new Promise<T>(this._promise.progressFunc);
+        
+        this._promise.OnCompleted(validation =>
         {
             var future = validation.target;
             if (validation.hasException)
@@ -41,14 +69,16 @@ public class Future<T>
                 action(future);
                 promise.Resolve(future.result);
             }
-        };
+        });
+        
         return promise.future;
     }
 
     public Future<A> TryMap<A>(Func<T, A> mapFunc)
     {
-        Promise<A> promise = new Promise<A>(this.promise.progressFunc);
-        this.promise.Completed += validation =>
+        Promise<A> promise = new Promise<A>(this._promise.progressFunc);
+
+        this._promise.OnCompleted(validation =>
         {
             if (validation.hasException)
             {
@@ -61,7 +91,8 @@ public class Future<T>
                 A mappedValue = mapFunc(success.result);
                 promise.Resolve(mappedValue);
             }
-        };
+        });
+        
         return promise.future;
     }
 }

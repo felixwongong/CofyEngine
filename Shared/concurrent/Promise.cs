@@ -20,6 +20,7 @@ public class Promise<T>: IPromise
     public bool isSucceed { get; set; }
     public bool isFailure { get; set; }
     public Func<float> progressFunc { get; set; }
+    private Validation<T> result { get; set; }
 
     private Future<T> _future = null;
 
@@ -28,9 +29,9 @@ public class Promise<T>: IPromise
         get => _future ??= new Future<T>(this);
     }
 
-    public event Action<Validation<T>> Completed;
-    public event Action<T> Succeed;
-    public event Action<Future<T>> Failed;
+    private event Action<Validation<T>> Completed;
+    private event Action<T> Succeed;
+    private event Action<Future<T>> Failed;
 
     public Promise()
     {
@@ -49,7 +50,8 @@ public class Promise<T>: IPromise
         isCompleted = true;
         isSucceed = true;
         future.result = result;
-        Completed?.Invoke(new Validation<T>(_future));
+        this.result = new Validation<T>(_future);
+        Completed?.Invoke(this.result);
         Succeed?.Invoke(result);
         clear();
     }
@@ -65,7 +67,8 @@ public class Promise<T>: IPromise
         isCompleted = true;
         isFailure = true;
         future.ex = ex;
-        Completed?.Invoke(new Validation<T>(_future));
+        this.result = new Validation<T>(_future);
+        Completed?.Invoke(this.result);
         Failed?.Invoke(_future);
         clear();
     }
@@ -77,4 +80,33 @@ public class Promise<T>: IPromise
         Failed = null;
     }
 
+    public void OnCompleted(Action<Validation<T>> action)
+    {
+        if (isCompleted) action(this.result);
+        else Completed += action;
+    }
+
+    public void OnSucceed(Action<T> action)
+    {
+        if (isCompleted)
+        {
+            if (isSucceed)
+                action(this.result.target.result);
+            else
+                FLog.LogWarning("Registered OnSucceed after promise failed.");
+        }
+        else Succeed += action;
+    }
+
+    public void OnFailed(Action<Future<T>> action)
+    {
+        if (isCompleted)
+        {
+            if (isFailure)
+                action(this.result.target);
+            else
+                FLog.LogWarning("Registered OnFailed after promise succeed.");
+        }
+        else Failed += action;
+    }
 }

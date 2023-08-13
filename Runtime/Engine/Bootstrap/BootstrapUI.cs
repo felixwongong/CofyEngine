@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CofyEngine.Engine;
 using CofyEngine.Engine.Util;
 using CofyUI;
@@ -21,17 +21,17 @@ namespace CofyEngine
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            Future<List<GameObject>> uiPromise;
+            Future<List<GameObject>> loadFuture;
             UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("Loading/loading_panel"))
                 .Then(future =>
                 {
                     var loadingScreen = LoadingScreen.instance;
                     loadingScreen.SetGoActive(true);
-                    uiPromise = LoadAll();
+                    loadFuture = LoadAll();
 
-                    loadingScreen.MonitorProgress(uiPromise.promise);
+                    loadingScreen.MonitorProgress(loadFuture);
 
-                    uiPromise.Then(_ =>
+                    loadFuture.Then(_ =>
                     {
                         FLog.Log("UI load finished.");
                         sm.GoToNextState<BootstrapUGS>();

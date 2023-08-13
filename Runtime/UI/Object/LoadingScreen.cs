@@ -7,7 +7,7 @@ namespace CofyUI
     {
         [SerializeField] private ProgressBar bar;
         
-        private IPromise target;
+        private IFuture target;
 
         private void Awake()
         {
@@ -18,7 +18,7 @@ namespace CofyUI
         {
             if (target != null && bar != null)
             {
-                bar.SetPercentage(target.progressFunc());
+                bar.SetPercentage(target.progress);
                 if (target.isCompleted)
                 {
                     target = null;
@@ -26,10 +26,10 @@ namespace CofyUI
             }
         }
 
-        public void MonitorProgress(IPromise promise)
+        public void MonitorProgress(IFuture future)
         {
             this.SetGoActive(true);
-            target = promise;
+            target = future;
         }
 
         public void EndMonitoring()

@@ -20,7 +20,7 @@ namespace CofyEngine
 
                 });
             
-            LoadingScreen.instance.MonitorProgress(future.promise);
+            LoadingScreen.instance.MonitorProgress(future);
         }
     }
 }
