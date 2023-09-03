@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CofyEngine
 {
-    public abstract class PromiseStateMachine : MonoBehaviour, IPromiseSM
+    public abstract class MonoStateMachine : MonoBehaviour, IPromiseSM
     {
         private IPromiseState curState;
 

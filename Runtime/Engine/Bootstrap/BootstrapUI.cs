@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using CofyEngine.Engine;
 using CofyEngine.Engine.Util;
 using CofyUI;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace CofyEngine
 {
@@ -11,17 +9,23 @@ namespace CofyEngine
     {
         [SerializeField] private string uiRootPath = "Assets/Prefab/UI";
 
-        public abstract Future<List<GameObject>> LoadAll();
+        protected abstract Future<List<GameObject>> LoadAll();
 
-        public Future<GameObject> LoadUIAssetAsync(string path)
+        protected Future<GameObject> LoadUIAssetAsync(string path)
         {
             return CofyAddressable.LoadAsset<GameObject>(AssetPath.UI, path);
+        }
+
+        private Future<GameObject> LoadLocalUI(string path)
+        {
+            var req = Resources.LoadAsync<GameObject>($"LocalUI/{path}");
+            return req.ToPromise().future.TryMap(_ => (GameObject)req.asset);
         }
 
         void IPromiseState.StartContext(IPromiseSM sm)
         {
             Future<List<GameObject>> loadFuture;
-            UIRoot.Singleton.Bind<LoadingScreen>(LoadUIAssetAsync("Loading/loading_panel"))
+            UIRoot.Singleton.Bind<LoadingScreen>(LoadLocalUI("Loading/loading_panel"))
                 .Then(future =>
                 {
                     var loadingScreen = LoadingScreen.instance;

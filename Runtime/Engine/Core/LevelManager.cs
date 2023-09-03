@@ -1,12 +1,9 @@
 ﻿using System;
-using CM.Util.Singleton;
 using CofyEngine.Engine.Util;
 using CofyUI;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
-namespace CofyEngine.Engine.Core
+namespace CofyEngine.Engine
 {
     public class LevelManager : Instance<LevelManager>
     {

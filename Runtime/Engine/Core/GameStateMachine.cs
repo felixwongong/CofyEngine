@@ -2,7 +2,7 @@
 
 namespace CofyEngine
 {
-    public abstract class GameStateMachine: PromiseStateMachine
+    public abstract class GameStateMachine: MonoStateMachine
     {
         private static GameStateMachine _instance;
 

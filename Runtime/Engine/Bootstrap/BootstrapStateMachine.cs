@@ -2,7 +2,7 @@ using CofyEngine;
 using CofyEngine.Engine;
 using CofyEngine.Engine.Core;
 
-public class BootstrapStateMachine : PromiseStateMachine
+public class BootstrapStateMachine : MonoStateMachine
 {
     protected override void RegisterAllState()
     {
