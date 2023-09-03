@@ -14,4 +14,9 @@ namespace CofyUI
             }
         }
     }
+
+    public interface IUIPanel
+    {
+        public void ShowPanel(bool enable);
+    }
 }

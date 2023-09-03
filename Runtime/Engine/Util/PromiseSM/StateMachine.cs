@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using CofyEngine.Engine.Core;
-using UnityEngine;
 
 namespace CofyEngine
 {
-    public class MonoStateMachine : MonoBehaviour, IPromiseSM
+    public class StateMachine: IPromiseSM
     {
         private IPromiseState curState;
 
         private Dictionary<Type, IPromiseState> _stateDictionary;
 
-        protected virtual void Awake()
+        public StateMachine()
         {
             _stateDictionary = new Dictionary<Type, IPromiseState>();
         }
-
+        
         public void RegisterState(IPromiseState state)
         {
             _stateDictionary[state.GetType()] = state;

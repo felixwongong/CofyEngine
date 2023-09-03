@@ -1,13 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using CofyEngine.Engine.Util;
 using CofyUI;
 using UnityEngine.SceneManagement;
 
-namespace CofyEngine.Engine
+namespace CofyEngine
 {
     public class LevelManager : Instance<LevelManager>
     {
-        public void LoadLevelFull(string sceneName, Action<Scene> before = null, Action<Scene, Scene> after = null)
+        private HashSet<string> persistentScene;
+
+        public LevelManager()
+        {
+            persistentScene = new ()
+            {
+                "ClientLoad",
+            };
+        }
+        
+        public void LoadLevel(string sceneName, bool additive = false, Action<Scene> before = null, Action<Scene, Scene> after = null)
         {
             FLog.Log($"{sceneName} load start");
 
@@ -15,11 +26,6 @@ namespace CofyEngine.Engine
             before?.Invoke(disposingScene);
 
             UIRoot.Singleton.DisableAllInstances();
-
-            // var aop = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            // aop.allowSceneActivation = true;
-            //
-            // Promise<AsyncOperation> sceneLoadPromise = aop.ToPromise();
 
             var sceneLoadFuture = CofyAddressable.LoadScene(sceneName, LoadSceneMode.Additive);
             
@@ -34,7 +40,8 @@ namespace CofyEngine.Engine
                 else
                 {
                     after?.Invoke(disposingScene, sceneValidate.target.result);
-                    SceneManager.UnloadSceneAsync(disposingScene);
+                    if(!additive && !persistentScene.Contains(disposingScene.name)) 
+                        SceneManager.UnloadSceneAsync(disposingScene);
                     LoadingScreen.instance.EndMonitoring();
                     FLog.Log($"{sceneName} load end");
                 }

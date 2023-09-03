@@ -7,8 +7,6 @@ namespace CofyEngine
 {
     public abstract class BootstrapUI : MonoBehaviour, IPromiseState
     {
-        [SerializeField] private string uiRootPath = "Assets/Prefab/UI";
-
         protected abstract Future<List<GameObject>> LoadAll();
 
         protected Future<GameObject> LoadUIAssetAsync(string path)

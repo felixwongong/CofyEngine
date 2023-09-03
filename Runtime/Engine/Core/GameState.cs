@@ -1,14 +1,17 @@
-﻿using UnityEngine;
+﻿using CofyUI;
 
-namespace CofyEngine.Engine.Core
+namespace CofyEngine
 {
-    public abstract class GameState: MonoBehaviour, IPromiseState
+    public abstract class GameState: IPromiseState
     {
         protected abstract string scene { get;  }
+        protected abstract IUIPanel uiPanel { get; }
         
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevelFull(scene);
+            if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevel(scene);
+
+            uiPanel?.ShowPanel(true);
         }
     }
 }

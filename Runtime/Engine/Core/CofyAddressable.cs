@@ -25,6 +25,6 @@ namespace CofyEngine
         
         public static readonly string root = "Assets/Prefab";
         public static readonly string UI = $"{root}/UI/{target}.prefab";
-        public static readonly string SCENE = $"{root}/Scene/{target}.scene";
+        public static readonly string SCENE = $"{root}/Scene/{target}.unity";
     }
 }
