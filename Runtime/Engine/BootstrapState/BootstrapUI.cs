@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CofyEngine.Engine.Util;
 using CofyUI;
 using UnityEngine;
@@ -24,7 +23,7 @@ namespace CofyEngine
         void IPromiseState.StartContext(IPromiseSM sm)
         {
             Future<List<GameObject>> loadFuture;
-            UIRoot.Singleton.Bind<LoadingScreen>(LoadLocalUI("Loading/loading_panel"))
+            UIRoot.instance.Bind<LoadingScreen>(LoadLocalUI("Loading/loading_panel"))
                 .Then(future =>
                 {
                     var loadingScreen = LoadingScreen.instance;

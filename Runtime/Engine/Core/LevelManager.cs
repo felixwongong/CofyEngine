@@ -25,7 +25,7 @@ namespace CofyEngine
             Scene disposingScene = SceneManager.GetActiveScene();
             before?.Invoke(disposingScene);
 
-            UIRoot.Singleton.DisableAllInstances();
+            UIRoot.instance.DisableAllUI();
 
             var sceneLoadFuture = CofyAddressable.LoadScene(sceneName, LoadSceneMode.Additive);
             

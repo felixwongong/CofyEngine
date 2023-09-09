@@ -9,7 +9,7 @@ namespace CofyUI
         {
             get
             {
-                _instance ??= UIRoot.Singleton.GetInstance<T>();
+                _instance ??= UIRoot.instance.GetUI<T>();
                 return _instance;
             }
         }

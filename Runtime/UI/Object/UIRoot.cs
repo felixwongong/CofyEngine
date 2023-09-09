@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using CM.Util.Singleton;
 using CofyEngine.Engine.Util;
+using Engine.Util;
 using UnityEngine;
 
 namespace CofyUI 
 {
-    public class UIRoot : SingleBehaviour<UIRoot>
+    public class UIRoot : MonoInstance<UIRoot>
     {
-        public override bool destroyWithScene => false;
-
+        public override bool persistent => true;
         private Dictionary<Type, GameObject> uiMap = new Dictionary<Type, GameObject>();
 
         public Future<GameObject> Bind<T>(Future<GameObject> uiInstantiation) where T: UIInstance<T>
@@ -33,7 +33,7 @@ namespace CofyUI
             return bindingPromise.future;
         }
 
-        public T GetInstance<T>()
+        public T GetUI<T>()
         {
             bool hasBind = uiMap.TryGetValue(typeof(T), out var reference);
             if (!hasBind)
@@ -48,7 +48,7 @@ namespace CofyUI
             return go.GetComponent<T>();
         }
 
-        public void DisableAllInstances()
+        public void DisableAllUI()
         {
             for (var i = 0; i < transform.childCount; i++)
             {
