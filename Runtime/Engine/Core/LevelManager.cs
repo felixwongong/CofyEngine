@@ -8,14 +8,11 @@ namespace CofyEngine
 {
     public class LevelManager : Instance<LevelManager>
     {
-        private HashSet<string> persistentScene;
+        private List<string> persistentScenes;
 
-        public LevelManager()
+        public void SetPersistent(List<string> scene)
         {
-            persistentScene = new ()
-            {
-                "ClientLoad",
-            };
+            this.persistentScenes = scene;
         }
         
         public void LoadLevel(string sceneName, bool additive = false, Action<Scene> before = null, Action<Scene, Scene> after = null)
@@ -40,7 +37,7 @@ namespace CofyEngine
                 else
                 {
                     after?.Invoke(disposingScene, sceneValidate.target.result);
-                    if(!additive && !persistentScene.Contains(disposingScene.name)) 
+                    if(!additive && !persistentScenes.Contains(disposingScene.name)) 
                         SceneManager.UnloadSceneAsync(disposingScene);
                     LoadingScreen.instance.EndMonitoring();
                     FLog.Log($"{sceneName} load end");

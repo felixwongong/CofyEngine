@@ -18,16 +18,16 @@
                 }
                 else if (scene.name != property.stringValue)
                 {
+                  
                     var sceneObj = GetSceneObject(scene.name);
                     if (sceneObj == null)
                     {
-                        Debug.LogWarning("The scene " + scene.name +
-                                         " cannot be used. To use this scene add it to the build settings for the project");
+                        FLog.LogWarning("The scene " + scene.name +
+                                         " cannot be used. To use this scene add it to the build settings for the project, or add to addressable folder");
+                        return;
                     }
-                    else
-                    {
-                        property.stringValue = scene.name;
-                    }
+                    
+                    property.stringValue = scene.name;
                 }
             }
             else
@@ -48,10 +48,10 @@
                     return AssetDatabase.LoadAssetAtPath(editorScene.path, typeof(SceneAsset)) as SceneAsset;
                 }
             }
-
-            FLog.LogWarning("Scene [" + sceneObjectName +
-                             "] cannot be used. Add this scene to the 'Scenes in the Build' in build settings.");
-            return null;
+            
+            var path = string.Format("{0}/{1}.unity", AssetPath.SCENE_ROOT, sceneObjectName);
+            var asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+            return asset;
         }
     }
     

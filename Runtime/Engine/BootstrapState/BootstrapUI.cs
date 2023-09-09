@@ -23,21 +23,25 @@ namespace CofyEngine
         void IPromiseState.StartContext(IPromiseSM sm)
         {
             Future<List<GameObject>> loadFuture;
-            UIRoot.instance.Bind<LoadingScreen>(LoadLocalUI("Loading/loading_panel"))
-                .Then(future =>
-                {
-                    var loadingScreen = LoadingScreen.instance;
-                    loadingScreen.SetGoActive(true);
-                    loadFuture = LoadAll();
 
-                    loadingScreen.MonitorProgress(loadFuture);
-
-                    loadFuture.Then(_ =>
+            LoadLocalUI("UIRoot").OnCompleted(_ =>
+            {
+                UIRoot.instance.Bind<LoadingScreen>(LoadLocalUI("Loading/loading_panel"))
+                    .Then(future =>
                     {
-                        FLog.Log("UI load finished.");
-                        sm.GoToNextState<BootstrapUGS>();
+                        var loadingScreen = LoadingScreen.instance;
+                        loadingScreen.SetGoActive(true);
+                        loadFuture = LoadAll();
+
+                        loadingScreen.MonitorProgress(loadFuture);
+
+                        loadFuture.Then(_ =>
+                        {
+                            FLog.Log("UI load finished.");
+                            sm.GoToNextState<BootstrapUGS>();
+                        });
                     });
-                });
+            });
         }
     }
 }
