@@ -5,10 +5,10 @@ namespace Engine.UGS
 {
     public class CofyUGSAuth: Instance<CofyUGSAuth> 
     {
-        public Promise<bool> AnonymousSignIn()
+        public Future<bool> AnonymousSignIn()
         {
             return AuthenticationService.Instance.SignInAnonymouslyAsync()
-                .ToPromise();
+                .Future();
         }
     }
 }

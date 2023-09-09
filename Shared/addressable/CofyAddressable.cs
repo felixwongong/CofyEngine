@@ -10,25 +10,25 @@ namespace CofyEngine
         public static Future<T> LoadAsset<T>(string assetPath, string target)
         {
             var handle = Addressables.LoadAssetAsync<T>(assetPath.Replace(AssetPath.target, target));
-            return handle.ToPromise().future;
+            return handle.Future();
         }
 
         public static Future<Scene> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
         {
             var handle = Addressables.LoadSceneAsync(
                 AssetPath.SCENE.Replace(AssetPath.target, sceneName), sceneMode, true);
-            return handle.ToPromise().future.TryMap(instance => instance.Scene);
+            return handle.Future().TryMap(instance => instance.Scene);
         }
         
         public static Future<IList<object>> LoadAssets(string path)
         {
             var handle = Addressables.LoadAssetsAsync<object>(path, null);
-            return handle.ToPromise().future;
+            return handle.Future();
         }
 
         public static Future<IList<IResourceLocation>> LoadLocations(string path)
         {
-            return Addressables.LoadResourceLocationsAsync(path).ToPromise().future;
+            return Addressables.LoadResourceLocationsAsync(path).Future();
         }
     }
 

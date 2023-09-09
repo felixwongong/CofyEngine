@@ -18,7 +18,7 @@ namespace CofyEngine
         private Future<GameObject> LoadLocalUI(string path)
         {
             var req = Resources.LoadAsync<GameObject>($"LocalUI/{path}");
-            return req.ToPromise().future.TryMap(_ => (GameObject)req.asset);
+            return req.Future().TryMap(_ => (GameObject)req.asset);
         }
 
         void IPromiseState.StartContext(IPromiseSM sm)

@@ -8,7 +8,7 @@ namespace CofyEngine
     {
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            var future = UnityServices.InitializeAsync().ToPromise().future
+            var future = UnityServices.InitializeAsync().Future()
                 .Then(_ =>
                 {
                     sm.GoToNextState<TerminateState>();

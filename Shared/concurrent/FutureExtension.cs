@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public static class PromiseExtension
+public static class FutureExtension
 {
     public static Future<List<T>> Group<T>(this List<Future<T>> futures)
     {

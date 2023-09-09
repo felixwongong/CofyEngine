@@ -3,7 +3,6 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace CofyEngine.Editor
 {

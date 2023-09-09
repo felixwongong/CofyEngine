@@ -91,7 +91,7 @@ namespace CofyEngine.Editor
 
             Promise<Texture2D> texturePromise = new Promise<Texture2D>(() => webRequest.downloadProgress);
 
-            webRequest.SendWebRequest().ToPromise().future
+            webRequest.SendWebRequest().Future()
                 .Then(op =>
                 {
                     if (webRequest.result == UnityWebRequest.Result.Success)

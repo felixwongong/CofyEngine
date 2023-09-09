@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public static class ToPromiseHandler
+public static class ToFutureHandler
 {
-    public static Promise<T> ToPromise<T>(this AsyncOperationHandle<T> op)
+    public static Future<T> Future<T>(this AsyncOperationHandle<T> op)
     {
         Promise<T> promise = new Promise<T>(() => op.PercentComplete);
         op.Completed += handle =>
@@ -20,10 +20,10 @@ public static class ToPromiseHandler
             }
         };
         
-        return promise;
+        return promise.future;
     }
     
-    public static Promise<AsyncOperation> ToPromise(this AsyncOperation op)
+    public static Future<AsyncOperation> Future(this AsyncOperation op)
     {
         Promise<AsyncOperation> promise = new Promise<AsyncOperation>(() => op.progress);
         op.completed += aop =>
@@ -38,10 +38,10 @@ public static class ToPromiseHandler
             }
         };
         
-        return promise;
+        return promise.future;
     }
 
-    public static Promise<bool> ToPromise(this Task task)
+    public static Future<bool> Future(this Task task)
     {
         Promise<bool> promise = new Promise<bool>(() =>
         {
@@ -73,6 +73,6 @@ public static class ToPromiseHandler
                 promise.Reject(t.Exception);
             }
         }, TaskContinuationOptions.RunContinuationsAsynchronously);
-        return promise;
+        return promise.future;
     }
 }
