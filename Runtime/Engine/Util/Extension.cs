@@ -130,6 +130,11 @@ namespace CofyEngine.Engine.Util
         {
             return degrees * (Math.PI / 180);
         }
+
+        public static string GetTName(this object obj)
+        {
+            return obj?.GetType().Name;
+        }
     }
 
     public static class JsonUtil
@@ -139,7 +144,7 @@ namespace CofyEngine.Engine.Util
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public static string Serialize<T>(this T obj)
+        public static string Serialize(this object obj)
         {
             return JsonConvert.SerializeObject(obj);
         }

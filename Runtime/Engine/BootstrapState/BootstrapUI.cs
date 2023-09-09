@@ -24,8 +24,9 @@ namespace CofyEngine
         {
             Future<List<GameObject>> loadFuture;
 
-            LoadLocalUI("UIRoot").OnCompleted(_ =>
+            LoadLocalUI("UIRoot").OnSucceed(uiRoot =>
             {
+                Object.Instantiate(uiRoot);
                 UIRoot.instance.Bind<LoadingScreen>(LoadLocalUI("Loading/loading_panel"))
                     .Then(future =>
                     {

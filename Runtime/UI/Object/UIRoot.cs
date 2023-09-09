@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CM.Util.Singleton;
-using CofyEngine.Engine.Util;
 using Engine.Util;
 using UnityEngine;
 
@@ -50,7 +48,7 @@ namespace CofyUI
 
         public void DisableAllUI()
         {
-            for (var i = 0; i < transform.childCount; i++)
+            for (var i = 1; i < transform.childCount; i++)
             {
                 transform.GetChild(i).gameObject.SetActive(false);
             }

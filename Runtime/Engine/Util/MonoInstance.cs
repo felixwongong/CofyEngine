@@ -14,7 +14,7 @@ namespace Engine.Util
             {
                 if (_instance != null) return _instance;
                 
-                _instance ??= FindObjectOfType<T>();
+                _instance = FindObjectOfType<T>();
 
                 if (_instance != null) return _instance;
                 
