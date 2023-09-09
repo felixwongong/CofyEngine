@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-namespace CofyEngine.Engine.Util
+namespace CofyEngine
 {
-    public class MonoUtils : MonoBehaviour
+    public class MonoUtils 
     {
         public static void RemoveAllChildren(GameObject parent)
         {
@@ -19,7 +16,7 @@ namespace CofyEngine.Engine.Util
                 var child = parent.transform.GetChild(i);
                 GameObject childGO;
                 (childGO = child.gameObject).SetActive(false);
-                Destroy(childGO);
+                Object.Destroy(childGO);
             }
 
             parent.transform.DetachChildren();
@@ -57,9 +54,14 @@ namespace CofyEngine.Engine.Util
 
         public static bool IsNullOrDefault<T>(T value)
         {
-            return value == null || value.Equals(default(T));
+            return value == null || value.Equals(default);
         }
         
-        
+        public static T createDDOL<T>() where T: MonoBehaviour
+        {
+            var t = new GameObject(typeof(T).Name).AddComponent<T>();
+            Object.DontDestroyOnLoad(t);
+            return t;
+        }
     }
 }

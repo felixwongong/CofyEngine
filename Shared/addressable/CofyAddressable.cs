@@ -1,4 +1,6 @@
-﻿using UnityEngine.AddressableAssets;
+﻿using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
 
 namespace CofyEngine
@@ -17,14 +19,28 @@ namespace CofyEngine
                 AssetPath.SCENE.Replace(AssetPath.target, sceneName), sceneMode, true);
             return handle.ToPromise().future.TryMap(instance => instance.Scene);
         }
+        
+        public static Future<IList<object>> LoadAssets(string path)
+        {
+            var handle = Addressables.LoadAssetsAsync<object>(path, null);
+            return handle.ToPromise().future;
+        }
+
+        public static Future<IList<IResourceLocation>> LoadLocations(string path)
+        {
+            return Addressables.LoadResourceLocationsAsync(path).ToPromise().future;
+        }
     }
 
     public class AssetPath
     {
         internal const string target = "(target)";
-        
+
         public static readonly string root = "Assets/Prefab";
-        public static readonly string UI = $"{root}/UI/{target}.prefab";
-        public static readonly string SCENE = $"{root}/Scene/{target}.unity";
+
+        public static readonly string SCENE_ROOT = string.Format("{0}/Scene", root);
+        
+        public static readonly string UI = string.Format("{0}/UI/{1}.prefab", root, target);
+        public static readonly string SCENE = string.Format("{0}/Scene/{1}.unity", root, target);
     }
 }

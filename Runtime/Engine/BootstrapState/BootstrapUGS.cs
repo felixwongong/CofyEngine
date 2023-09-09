@@ -1,16 +1,11 @@
-﻿using CofyEngine.Engine;
+﻿using CofyEngine.Engine.Util;
 using CofyUI;
-using Engine.Util;
 using Unity.Services.Core;
 
 namespace CofyEngine
 {
-    public class BootstrapUGS : MonoInstance<BootstrapUGS>, IPromiseState
+    public class BootstrapUGS : IPromiseState
     {
-#if UNITY_EDITOR
-        public string devCustomId = "Tester";
-#endif
-
         void IPromiseState.StartContext(IPromiseSM sm)
         {
             var future = UnityServices.InitializeAsync().ToPromise().future

@@ -1,13 +1,17 @@
-﻿using UnityEngine;
-
-namespace CofyEngine
+﻿namespace CofyEngine
 {
-    public class TerminateState : MonoBehaviour, IPromiseState
+    public class TerminateState : IPromiseState
     {
-        [SerializeField] private GameStateMachine _gsm;
+        private GameStateMachine gsm;
+        
+        public TerminateState(GameStateMachine gsm)
+        {
+            this.gsm = gsm;
+        }
+        
         void IPromiseState.StartContext(IPromiseSM sm)
         {
-            _gsm.Init();
+            gsm.Init();
         }
     }
 }

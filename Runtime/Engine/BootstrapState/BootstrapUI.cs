@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CofyEngine.Engine.Util;
 using CofyUI;
 using UnityEngine;
 
 namespace CofyEngine
 {
-    public abstract class BootstrapUI : MonoBehaviour, IPromiseState
+    public abstract class BootstrapUI : IPromiseState
     {
         protected abstract Future<List<GameObject>> LoadAll();
 
