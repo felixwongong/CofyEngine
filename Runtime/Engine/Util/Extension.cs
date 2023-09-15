@@ -135,6 +135,11 @@ namespace CofyEngine.Engine.Util
         {
             return obj?.GetType().Name;
         }
+
+        public static bool isRefNull(this object obj)
+        {
+            return ReferenceEquals(obj, null);
+        }
     }
 
     public static class JsonUtil

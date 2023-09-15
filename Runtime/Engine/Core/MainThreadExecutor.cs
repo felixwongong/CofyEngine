@@ -32,7 +32,7 @@ namespace CofyEngine.Engine.Core
             }
         }
 
-        public void QueueAction(Action action)
+        public void QueueAction(in Action action)
         {
             _actionQueue.Enqueue(action);
         }
