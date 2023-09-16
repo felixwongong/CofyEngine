@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -12,21 +13,14 @@ namespace CofyEngine.Engine.Util
     {
         public static void AddRange<T, S>(this Dictionary<T, S> source, Dictionary<T, S> collection)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("Collection is null");
-            }
+            if (collection == null) throw new ArgumentNullException("collection");
 
             foreach (var item in collection)
             {
                 if (!source.ContainsKey(item.Key))
-                {
                     source.Add(item.Key, item.Value);
-                }
                 else
-                {
-                    // handle duplicate key issue here
-                }
+                    FLog.LogWarning(string.Format("Key duplicated ({0}), won't add to dictionary", item.Key));
             }
         }
 
@@ -66,11 +60,13 @@ namespace CofyEngine.Engine.Util
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool NotKeyedOrNull<A, B>(this Dictionary<A, B> dictionary, A key)
         {
             return !dictionary.ContainsKey(key) || dictionary[key] == null;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ForEach<T>(this IList<T> loopable, Action<T> action)
         {
             for (var i = 0; i < loopable.Count; i++)
@@ -78,12 +74,14 @@ namespace CofyEngine.Engine.Util
                 action(loopable[i]);
             }
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T FindInParent<T>(this Transform transform)
         {
-            return transform.parent != null ? transform.parent.GetComponentInParent<T>(true) : default;
+            return !transform.parent ? transform.parent.GetComponentInParent<T>(true) : default;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetGoActive(this MonoBehaviour mono, bool active)
         {
             mono.gameObject.SetActive(active);
@@ -126,16 +124,19 @@ namespace CofyEngine.Engine.Util
             return R * c;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double ToRadians(double degrees)
         {
             return degrees * (Math.PI / 180);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetTName(this object obj)
         {
             return obj?.GetType().Name;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool isRefNull(this object obj)
         {
             return ReferenceEquals(obj, null);
@@ -144,11 +145,13 @@ namespace CofyEngine.Engine.Util
 
     public static class JsonUtil
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Deserialize<T>(this string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Serialize(this object obj)
         {
             return JsonConvert.SerializeObject(obj);
