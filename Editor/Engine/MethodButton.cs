@@ -2,9 +2,8 @@ using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using Vector2 = System.Numerics.Vector2;
 
-namespace CofyEngine.Engine.Util.Editor
+namespace CofyEngine.Editor
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class MethodButtonAttribute : Attribute

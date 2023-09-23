@@ -1,4 +1,4 @@
-﻿namespace CofyEngine.Engine.Util.Editor
+﻿namespace CofyEngine.Editor
 {
     using UnityEditor;
     using UnityEngine;

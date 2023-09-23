@@ -1,8 +1,7 @@
-﻿using CofyEngine.Editor;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util.Editor
+namespace CofyEngine.Editor
 {
     [InitializeOnLoad]
     public class SceneSelectorButton

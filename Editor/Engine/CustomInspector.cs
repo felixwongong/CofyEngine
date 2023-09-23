@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace CofyEngine.Engine.Util.Editor
+namespace CofyEngine.Editor
 {
     public class CustomInspector : UnityEditor.Editor
     {
