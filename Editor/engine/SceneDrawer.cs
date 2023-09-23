@@ -1,4 +1,6 @@
-﻿namespace CofyEngine.Editor
+﻿using System;
+
+namespace CofyEngine.Editor
 {
     using UnityEditor;
     using UnityEngine;
@@ -43,7 +45,7 @@
 
             foreach (var editorScene in EditorBuildSettings.scenes)
             {
-                if (editorScene.path.IndexOf(sceneObjectName) != -1)
+                if (editorScene.path.IndexOf(sceneObjectName, StringComparison.Ordinal) != -1)
                 {
                     return AssetDatabase.LoadAssetAtPath(editorScene.path, typeof(SceneAsset)) as SceneAsset;
                 }
