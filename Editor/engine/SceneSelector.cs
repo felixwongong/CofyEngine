@@ -55,27 +55,15 @@ namespace CofyEngine.Editor
         {
             scenePaths = new List<string>();
 
-#if !COFY_ADDRESSABLE
-            
-            var scenes = CofyAddressable.LoadLocations(AssetPath.SCENE_ROOT);
-
-            scenes.OnCompleted(validation =>
-            {
-                for (var i = 0; i < validation.target.result.Count; i++)
-                {
-                    FLog.Log(validation.target.result[i]);
-                }
-            });
-#else
-
-            foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
-            {
-                if (scene.enabled)
-                {
-                    scenePaths.Add(scene.path);
-                }
-            }
+#if COFY_ADDRESSABLE
+            var paths = AssetDatabase.FindAssets("t:Scene").map(AssetDatabase.GUIDToAssetPath);
+            scenePaths.AddRange(paths);            
 #endif
+            for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)
+            {
+                if(EditorBuildSettings.scenes[i].path.isNullOrEmpty()) 
+                    scenePaths.Add(EditorBuildSettings.scenes[i].path);
+            }
         }
     }
 }

@@ -120,7 +120,7 @@ namespace CofyEngine.Engine.Util.UI
                 values = dict.Values.ToList()
             };
 
-            serializedDictionary.AddRange(dict);
+            serializedDictionary.addRange(dict);
             return serializedDictionary;
         }
     }

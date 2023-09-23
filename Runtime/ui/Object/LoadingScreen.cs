@@ -1,4 +1,4 @@
-using CofyEngine.Engine.Util;
+using CofyEngine;
 using UnityEngine;
 
 namespace CofyUI
