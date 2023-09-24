@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace CofyEngine 
 {
@@ -30,6 +31,23 @@ namespace CofyEngine
             }
             
             return result;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ForEach<T>(this IEnumerable<T> loopable, Action<T> action)
+        {
+            if (loopable == null) throw new ArgumentNullException(nameof(loopable));
+            
+            foreach (var el in loopable)
+            {
+                action(el);
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool NotKeyedOrNull<A, B>(this Dictionary<A, B> dictionary, A key)
+        {
+            return !dictionary.ContainsKey(key) || dictionary[key] == null;
         }
     }
 }
