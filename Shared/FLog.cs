@@ -11,65 +11,71 @@ using Debug = UnityEngine.Debug;
 
     public static class FLog
     {
-        public static void Log(object inMsg, object inObj = null)
+        private static Dictionary<string, string> _propertyMap = new ();
+        private static StringBuilder _sb = new ();
+        
+        public static void Log(string inMsg, object inObj = null)
         {
-            Debug.Log(MakeLogString(inMsg.ToString(), inObj));
+            Debug.Log(MakeLogString(inMsg, inObj));
         }
 
-        public static void LogWarning(object inMsg, object inObj = null)
+        public static void LogWarning(string inMsg, object inObj = null)
         {
-            Debug.LogWarning(MakeLogString(inMsg.ToString(), inObj));
+            Debug.LogWarning(MakeLogString(inMsg, inObj));
         }
 
-        public static void LogError(object inMsg, object inObj = null)
+        public static void LogError(string inMsg, object inObj = null)
         {
-            Debug.LogError(MakeLogString(inMsg.ToString(), inObj));
+            Debug.LogError(MakeLogString(inMsg, inObj));
+        }
+
+        public static void LogObject(object inObj)
+        {
+            Debug.Log(MakeLogString("", inObj));
         }
         
         private static string MakeLogString(string inMsg = "", object inObj = null)
         {
             
-            var method = new StackTrace().GetFrame(2).GetMethod();
-            Type type = method.DeclaringType;
+            Type type = new StackTrace().GetFrame(2).GetMethod().DeclaringType;
             
             try
             {
-                var message = string.IsNullOrEmpty(inMsg) ? "" : $"{inMsg}\n";
+                var message = string.IsNullOrEmpty(inMsg) ? "" : string.Format("{0}\n", inMsg);
                 var obj = inObj == null ? "" : MakeFieldString(inObj);
                 while (type?.DeclaringType != null)
                 {
                     type = type?.DeclaringType;
                 }
 
-                return $"[{type?.Name}]: {message}{obj}";
+                return string.Format("[{0}]: {1}{2}", type?.Name, message, obj);
 
             }
             catch (Exception e)
             {
-                return $"[{type?.Name}]: {e.ToString()}";
+                return string.Format("[{0}]: {1}", type?.Name, e);
             }
         }
-         
-        public static string FormatString(string title, Dictionary<string, string> keyValue)
+
+        private static string FormatString(string title, Dictionary<string, string> keyValue)
         {
             int maxKeyLength = keyValue.Keys.Select(k => k.Length).Max();
 
-            StringBuilder sb = new StringBuilder();
+            _sb.Clear();
+
+            _sb.AppendLine(string.Format("{0}\n{1}", title, new string('-', title.Length)));
             
             foreach (var (k, v) in keyValue)
             {
-                sb.AppendLine($"{k.PadRight(maxKeyLength)}: {v}");
+                _sb.AppendLine(string.Format("{0}: {1}", k.PadRight(maxKeyLength), v));
             }
 
-            sb.Insert(0, $"\n{StrRepeat("-", title.Length)}\n");
-            sb.Insert(0, title);
-
-            return sb.ToString();
+            return _sb.ToString();
         }
 
-        public static string MakeFieldString(object obj)
+        private static string MakeFieldString(object obj)
         {
-            var propertyMap = new Dictionary<string, string>();
+            _propertyMap.Clear();
             
             //Handling struct/class object
             var fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
@@ -77,15 +83,10 @@ using Debug = UnityEngine.Debug;
             {
                 var val = fieldInfo.GetValue(obj);
                 if(val == null) continue;
-                propertyMap[fieldInfo.Name] = fieldInfo.GetValue(obj).ToString();
+                _propertyMap[fieldInfo.Name] = fieldInfo.GetValue(obj).ToString();
             }
 
-            return FormatString(obj.GetType().ToString(), propertyMap);
-        }
-
-        public static String StrRepeat(string s, int time)
-        {
-            return String.Concat(Enumerable.Repeat(s, time));
+            return FormatString(obj.GetType().ToString(), _propertyMap);
         }
 
         public static void LogException(Exception e)
