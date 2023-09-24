@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -8,7 +9,10 @@ namespace CofyEngine.Editor
 {
     public class SceneSelectorWindow : EditorWindow
     {
-        private static List<string> scenePaths;
+        private static readonly string[] searchScope = new[] { "Assets" };
+        private static Dictionary<string, List<string>> scenePathToName = new ();
+        private string _activeTab;
+        
         private Vector2 scrollPosition;
         private static SceneSelectorWindow _window;
 
@@ -19,27 +23,46 @@ namespace CofyEngine.Editor
             else
             {
                 _window = GetWindow<SceneSelectorWindow>(true, "Scene Selector", true);
-                _window.minSize = new Vector2(200, 300);
-                _window.maxSize = new Vector2(200, 300);
+                _window.minSize = new Vector2(600, 600);
                 RefreshSceneList();
             }
         }
 
         private void OnGUI()
         {
-            if (scenePaths == null || scenePaths.Count == 0) return;
+            if (scenePathToName == null || scenePathToName.Count == 0)
+            {
+                EditorGUI.HelpBox(new Rect(0, 0, position.width, position.height), "No scenes found in the project", MessageType.Warning);
+                return;
+            }
 
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+            _activeTab ??= scenePathToName.Keys.ToArray()[0];
 
-            foreach (string scenePath in scenePaths)
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandHeight(true));
+
+            EditorGUILayout.BeginVertical(GUILayout.Width(200), GUILayout.ExpandHeight(true));
+            
+            scenePathToName.Keys.ForEach(path =>
+            {
+                if(GUILayout.Button(Path.GetFileName(path), EditorStyles.toolbarButton))
+                    _activeTab = path;
+            });
+            
+            EditorGUILayout.EndVertical();
+            
+            EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            
+            scenePathToName[_activeTab].ForEach(scenePath =>
             {
                 if (GUILayout.Button(Path.GetFileNameWithoutExtension(scenePath), EditorStyles.miniButton))
                 {
                     OnSceneButtonClick(scenePath);
                 }
-            }
-
-            EditorGUILayout.EndScrollView();
+            });
+            
+            EditorGUILayout.EndVertical();
+            
+            EditorGUILayout.EndHorizontal();
         }
 
         private static void OnSceneButtonClick(string scenePath)
@@ -53,17 +76,18 @@ namespace CofyEngine.Editor
 
         private static void RefreshSceneList()
         {
-            scenePaths = new List<string>();
+            scenePathToName.Clear();
 
-#if COFY_ADDRESSABLE
-            var paths = AssetDatabase.FindAssets("t:Scene").map(AssetDatabase.GUIDToAssetPath);
-            scenePaths.AddRange(paths);            
-#endif
-            for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)
-            {
-                if(EditorBuildSettings.scenes[i].path.isNullOrEmpty()) 
-                    scenePaths.Add(EditorBuildSettings.scenes[i].path);
-            }
+            AssetDatabase.FindAssets("t:Scene", searchScope).Concat(EditorBuildSettings.scenes.map(scene => scene.path))
+                .ForEach(guid =>
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    string directory = !path.isNullOrEmpty() ? Path.GetDirectoryName(path): "Assets";
+
+                    if (!scenePathToName.ContainsKey(directory!))
+                        scenePathToName.Add(directory, new List<string> { path });
+                    else scenePathToName[directory].Add(path);
+                });
         }
     }
 }
