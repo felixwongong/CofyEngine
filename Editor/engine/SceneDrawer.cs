@@ -5,7 +5,7 @@ namespace CofyEngine.Editor
     using UnityEditor;
     using UnityEngine;
 
-    [CustomPropertyDrawer(typeof(SceneAttribute))]
+    [CustomPropertyDrawer(typeof(CofySceneAttribute))]
     public class SceneDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -57,7 +57,7 @@ namespace CofyEngine.Editor
         }
     }
     
-    public class SceneAttribute : PropertyAttribute
+    public class CofySceneAttribute : PropertyAttribute
     {
     }
 }
