@@ -15,6 +15,7 @@ namespace CofyEngine.Editor
         
         private Vector2 scrollPosition;
         private static SceneSelectorWindow _window;
+        private const string EDITOR_SCENE_ACTIVE_TAB = "EDITOR_SCENE_ACTIVE_TAB";
 
         [MenuItem("Window/Scene Selector #s")]
         internal static void ShowWindow()
@@ -36,7 +37,8 @@ namespace CofyEngine.Editor
                 return;
             }
 
-            _activeTab ??= scenePathToName.Keys.ToArray()[0];
+            _activeTab = EditorPrefs.GetString(EDITOR_SCENE_ACTIVE_TAB, string.Empty);
+            if (_activeTab.isNullOrEmpty()) _activeTab = scenePathToName.Keys.ToArray()[0];
 
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandHeight(true));
 
@@ -44,8 +46,11 @@ namespace CofyEngine.Editor
             
             scenePathToName.Keys.ForEach(path =>
             {
-                if(GUILayout.Button(Path.GetFileName(path), EditorStyles.toolbarButton))
+                if (GUILayout.Button(Path.GetFileName(path), EditorStyles.toolbarButton))
+                {
                     _activeTab = path;
+                    EditorPrefs.SetString(EDITOR_SCENE_ACTIVE_TAB, _activeTab);
+                }
             });
             
             EditorGUILayout.EndVertical();
