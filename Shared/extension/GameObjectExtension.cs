@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace CofyEngine
@@ -23,6 +24,18 @@ namespace CofyEngine
         public static void SetGoActive(this MonoBehaviour mono, bool active)
         {
             mono.gameObject.SetActive(active);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool notNullOrDefault(this ValueType val)
+        { 
+            return val != default;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool notNullOrDefualt(this object obj)
+        {
+            return obj != null;
         }
     }
 }

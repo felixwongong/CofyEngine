@@ -45,7 +45,7 @@ public class Promise<T>: IPromise
 
     public void Resolve(T result)
     {
-        if (Mathf.Approximately(progressFunc(), 0)) progressFunc = () => 1;
+        if (progressFunc == null || Mathf.Approximately(progressFunc(), 0)) progressFunc = () => 1;
         isCompleted = true;
         isSucceed = true;
         future.result = result;
