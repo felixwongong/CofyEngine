@@ -8,15 +8,19 @@ namespace CofyEngine
 {
     public class StateMachine: IPromiseSM
     {
-        private IPromiseState prevState;
-        private IPromiseState curState;
+        private IPromiseState _prevState;
+        private IPromiseState _curState;
+        public IPromiseState currentState => _curState;
 
         private Dictionary<Type, IPromiseState> _stateDictionary = new();
 
         private Action<IPromiseState, IPromiseState> _logAction;
 
+        private bool logging;
+
         public StateMachine(bool logging = false)
         {
+            this.logging = logging;
             if (logging)
             {
                 _logAction = (oldState, newState) =>
@@ -32,24 +36,49 @@ namespace CofyEngine
         {
             this._logAction = logAction;
         }
-        
+
         public void RegisterState(IPromiseState state)
         {
+            if (state == null) throw new ArgumentNullException(nameof(state));
+            if (_stateDictionary.ContainsKey(state.GetType()))
+            {
+                throw new Exception($"State {state.GetType()} already registered");
+            }
             _stateDictionary[state.GetType()] = state;
         }
 
-        public void GoToNextState<T>()
+        public void GoToState<T>()
         {
-            prevState = curState;
-            if (!_stateDictionary.TryGetValue(typeof(T), out curState))
+            if(!_prevState.isRefNull()) 
+                _prevState.OnEndContext();
+                
+            _prevState = _curState;
+            if (!_stateDictionary.TryGetValue(typeof(T), out _curState))
             {
-                curState = _stateDictionary.Values.First(state => state is T);
+                _curState = _stateDictionary.Values.First(state => state is T);
             }
             MainThreadExecutor.instance.QueueAction(() =>
             {
-                curState.StartContext(this);
-                _logAction?.Invoke(prevState, curState);
+                _curState.StartContext(this);
+                _logAction?.Invoke(_prevState, _curState);
             });
+        }
+
+        public void GoToStateNoRepeat<StateType>()
+        {
+            if(currentState is not StateType)
+                GoToState<StateType>();
+            else if (logging)
+                FLog.LogWarning(string.Format("Trying to go to the same state, {0}", typeof(StateType)));
+        }
+
+        public T GetState<T>() where T : IPromiseState
+        {
+            if (!_stateDictionary.ContainsKey(typeof(T)))
+            {
+                throw new Exception($"State {typeof(T)} not registered");
+            }
+            return (T) _stateDictionary[typeof(T)];
         }
     }
 }

@@ -39,10 +39,12 @@ namespace CofyEngine
                         loadFuture.Then(_ =>
                         {
                             FLog.Log("UI load finished.");
-                            sm.GoToNextState<BootstrapUGS>();
+                            sm.GoToState<BootstrapUGS>();
                         });
                     });
             });
         }
+
+        void IPromiseState.OnEndContext() { }
     }
 }

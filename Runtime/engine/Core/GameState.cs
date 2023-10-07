@@ -13,5 +13,7 @@ namespace CofyEngine
 
             uiPanel?.ShowPanel(true);
         }
+
+        void IPromiseState.OnEndContext() { }
     }
 }

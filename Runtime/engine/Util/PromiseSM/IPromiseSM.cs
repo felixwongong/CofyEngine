@@ -2,6 +2,11 @@
 {
     public interface IPromiseSM
     {
-        public void GoToNextState<StateType>();
+        public IPromiseState currentState { get; }
+        
+        public void RegisterState(IPromiseState state);
+        public void GoToState<StateType>();
+        public void GoToStateNoRepeat<StateType>();
+        public StateType GetState<StateType>() where StateType : IPromiseState;
     }
 }

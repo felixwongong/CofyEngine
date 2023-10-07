@@ -13,5 +13,7 @@
         {
             gsm.Init();
         }
+
+        void IPromiseState.OnEndContext() { }
     }
 }

@@ -1,34 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CofyEngine.Engine.Core;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CofyEngine
 {
     public class MonoStateMachine : MonoBehaviour, IPromiseSM
     {
-        private IPromiseState curState;
-
-        private Dictionary<Type, IPromiseState> _stateDictionary;
+        [SerializeField] private bool logging;
+        
+        private StateMachine _sm;
 
         protected virtual void Awake()
         {
-            _stateDictionary = new Dictionary<Type, IPromiseState>();
+            _sm = new StateMachine(logging);
         }
+
+        public IPromiseState currentState => _sm.currentState;
 
         public void RegisterState(IPromiseState state)
         {
-            _stateDictionary[state.GetType()] = state;
+            _sm.RegisterState(state);
         }
 
-        public void GoToNextState<StateType>()
+        public void GoToState<StateType>()
         {
-            if (!_stateDictionary.TryGetValue(typeof(StateType), out curState))
-            {
-                curState = _stateDictionary.Values.First(state => state is StateType);
-            }
-            MainThreadExecutor.instance.QueueAction(() => curState.StartContext(this));
+            _sm.GoToState<StateType>();
+        }
+
+        public void GoToStateNoRepeat<StateType>()
+        {
+            _sm.GoToStateNoRepeat<StateType>();
+        }
+
+        public StateType GetState<StateType>() where StateType : IPromiseState
+        {
+            return _sm.GetState<StateType>();
         }
     }
 }

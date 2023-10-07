@@ -35,8 +35,7 @@ public class Promise<T>: IPromise
 
     public Promise()
     {
-        isCompleted = isSucceed = isFailure = false;
-        progressFunc = () => 0;
+        Clear();
     }
 
     public Promise(Func<float> progressFunc): this()
@@ -53,7 +52,7 @@ public class Promise<T>: IPromise
         this.result = new Validation<T>(_future);
         Completed?.Invoke(this.result);
         Succeed?.Invoke(result);
-        clear();
+        Clear();
     }
 
     public void Reject(string msg)
@@ -70,10 +69,10 @@ public class Promise<T>: IPromise
         this.result = new Validation<T>(_future);
         Completed?.Invoke(this.result);
         Failed?.Invoke(_future);
-        clear();
+        Clear();
     }
 
-    private void clear()
+    private void Clear()
     {
         Completed = null;
         Succeed = null;

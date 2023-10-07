@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CofyEngine.Engine
 {
-    public class UnityScheduler: MonoInstance<UnityScheduler>
+    public class UnityFrameScheduler: MonoInstance<UnityFrameScheduler>
     {
         private SortedSeq<ScheduledTask> _tasks;
 
