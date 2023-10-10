@@ -79,6 +79,16 @@ public class Promise<T>: IPromise
         Failed = null;
     }
 
+    public Promise<T> Reset(Func<float> progressFn = null)
+    {
+        isCompleted = isSucceed = isFailure = false;
+        Clear();
+        progressFunc = progressFn;
+        result = null;
+        _future = null;
+        return this;
+    }
+    
     public void OnCompleted(Action<Validation<T>> action)
     {
         if (isCompleted) action(this.result);

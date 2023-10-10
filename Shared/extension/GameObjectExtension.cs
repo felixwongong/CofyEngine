@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -25,17 +26,11 @@ namespace CofyEngine
         {
             mono.gameObject.SetActive(active);
         }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool notNullOrDefault(this ValueType val)
-        { 
-            return val != default;
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool notNullOrDefualt(this object obj)
+        public static bool notNullOrDefault<T>(this T valueType) where T : struct
         {
-            return obj != null;
+            return !EqualityComparer<T>.Default.Equals(valueType, default);
         }
     }
 }

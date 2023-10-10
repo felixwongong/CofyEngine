@@ -18,7 +18,7 @@ public partial class Future<T>: IFuture
     public T result { get; set; }
     public Exception ex { get; set; }
     
-    public float progress => _promise.progressFunc();
+    public float progress => _promise.progressFunc?.Invoke() ?? 0;
     
     public bool hasException => ex != null;
     public bool isCompleted => _promise.isCompleted;
