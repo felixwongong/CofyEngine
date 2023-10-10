@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IComparable = System.IComparable;
 
-namespace CofyEngine.Engine
+namespace CofyEngine
 {
     public class SortedSeq<T>: IReadOnlyList<T> 
     {

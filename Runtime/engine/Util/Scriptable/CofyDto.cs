@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CofyEngine.Engine.Util.Scriptable
+namespace CofyEngine.Util.Scriptable
 {
     [Serializable]
     public class CofyDto

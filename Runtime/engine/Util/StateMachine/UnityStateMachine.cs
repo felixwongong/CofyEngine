@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util.StateMachine
+namespace CofyEngine.Util.StateMachine
 {
     public abstract class UnityStateMachine : MonoBehaviour, IStateMachine
     {

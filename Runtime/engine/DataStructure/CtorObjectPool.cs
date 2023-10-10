@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CofyEngine.Engine
+namespace CofyEngine
 {
     public class CtorObjectPool<T> where T: class, new()
     {

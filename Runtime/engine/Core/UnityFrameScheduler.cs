@@ -2,7 +2,7 @@
 using Engine.Util;
 using UnityEngine;
 
-namespace CofyEngine.Engine
+namespace CofyEngine
 {
     public class UnityFrameScheduler: MonoInstance<UnityFrameScheduler>
     {

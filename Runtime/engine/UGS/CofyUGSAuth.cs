@@ -1,4 +1,4 @@
-﻿using CofyEngine.Engine.Util;
+﻿using CofyEngine.Util;
 using Unity.Services.Authentication;
 
 namespace Engine.UGS

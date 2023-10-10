@@ -1,4 +1,4 @@
-﻿namespace CofyEngine.Engine.Util
+﻿namespace CofyEngine.Util
 {
     public class Instance<T> where T: new ()
     {

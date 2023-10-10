@@ -6,7 +6,7 @@ using UnityEngine;
 #endif
 using TMPro;
 
-namespace CofyEngine.Engine.Util.UI
+namespace CofyEngine.Util.UI
 {
     public class UIScope : MonoBehaviour
     {

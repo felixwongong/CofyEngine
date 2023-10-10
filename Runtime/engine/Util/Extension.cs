@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace CofyEngine.Engine.Util
+namespace CofyEngine.Util
 {
     public static class Extension
     {

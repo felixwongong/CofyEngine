@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util
+namespace CofyEngine.Util
 {
     [ExecuteInEditMode]
     public class IconMaker : MonoBehaviour

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util.UI
+namespace CofyEngine.Util.UI
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class TextBinder : UIBinder<TextMeshProUGUI>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CofyEngine.Engine.Core;
-using CofyEngine.Engine.Util;
+using CofyEngine.Core;
+using CofyEngine.Util;
 
 namespace CofyEngine
 {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util
+namespace CofyEngine.Util
 {
     public static class TargetPlatform
     {

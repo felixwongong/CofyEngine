@@ -1,5 +1,5 @@
 ﻿using System;
-using CofyEngine.Engine.Util;
+using CofyEngine.Util;
 using UnityEngine;
 
 namespace CofyUI

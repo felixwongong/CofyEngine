@@ -1,4 +1,4 @@
-﻿namespace CofyEngine.Engine.Core
+﻿namespace CofyEngine.Core
 {
     public class CofyUGS
     {

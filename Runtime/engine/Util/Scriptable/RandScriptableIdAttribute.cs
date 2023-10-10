@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util.Scriptable
+namespace CofyEngine.Util.Scriptable
 {
     public class RandScriptableIdAttribute : PropertyAttribute
     {

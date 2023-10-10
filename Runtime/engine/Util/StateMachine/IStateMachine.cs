@@ -1,4 +1,4 @@
-namespace CofyEngine.Engine.Util.StateMachine
+namespace CofyEngine.Util.StateMachine
 {
     public interface IStateMachine
     {

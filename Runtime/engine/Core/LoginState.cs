@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using CofyEngine.Engine.Util.StateMachine;
+using CofyEngine.Util.StateMachine;
 
-namespace CofyEngine.Engine.Core
+namespace CofyEngine.Core
 {
     public class LoginState: IStateContext
     {

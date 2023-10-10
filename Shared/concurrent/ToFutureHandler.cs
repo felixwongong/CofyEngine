@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -19,7 +20,7 @@ public static class ToFutureHandler
                     break;
             }
         };
-        
+
         return promise.future;
     }
     
@@ -37,8 +38,13 @@ public static class ToFutureHandler
                 promise.Reject("Async operation failed");
             }
         };
-        
+
         return promise.future;
+    }
+
+    private static IEnumerator ToCoroutine(this AsyncOperation op)
+    {
+        yield return op;
     }
 
     public static Future<bool> Future(this Task task)

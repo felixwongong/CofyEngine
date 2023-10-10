@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CofyEngine.Engine.Util.UI
+namespace CofyEngine.Util.UI
 {
     public abstract class UIBinderBase : MonoBehaviour
     {

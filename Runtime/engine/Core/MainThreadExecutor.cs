@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Engine.Util;
 
-namespace CofyEngine.Engine.Core
+namespace CofyEngine.Core
 {
     public class MainThreadExecutor : MonoInstance<MainThreadExecutor>
     {
