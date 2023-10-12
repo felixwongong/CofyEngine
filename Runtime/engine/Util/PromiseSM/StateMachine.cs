@@ -49,10 +49,12 @@ namespace CofyEngine
 
         public void GoToState<T>()
         {
-            if(!_prevState.isRefNull()) 
-                _prevState.OnEndContext();
+            if (!_curState.isRefNull())
+            {
+                _curState.OnEndContext();
+                _prevState = _curState;
+            }
                 
-            _prevState = _curState;
             if (!_stateDictionary.TryGetValue(typeof(T), out _curState))
             {
                 _curState = _stateDictionary.Values.First(state => state is T);
