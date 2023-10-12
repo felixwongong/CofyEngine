@@ -15,9 +15,9 @@ namespace CofyEngine
 
         public IPromiseState currentState => _sm.currentState;
 
-        public void RegisterState(IPromiseState state)
+        public StateType RegisterState<StateType>(StateType state) where StateType: IPromiseState
         {
-            _sm.RegisterState(state);
+            return _sm.RegisterState(state);
         }
 
         public void GoToState<StateType>()

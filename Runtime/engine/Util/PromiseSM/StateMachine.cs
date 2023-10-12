@@ -37,7 +37,7 @@ namespace CofyEngine
             this._logAction = logAction;
         }
 
-        public void RegisterState(IPromiseState state)
+        public StateType RegisterState<StateType>(StateType state) where StateType: IPromiseState
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (_stateDictionary.ContainsKey(state.GetType()))
@@ -45,6 +45,7 @@ namespace CofyEngine
                 throw new Exception($"State {state.GetType()} already registered");
             }
             _stateDictionary[state.GetType()] = state;
+            return state;
         }
 
         public void GoToState<T>()
