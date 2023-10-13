@@ -31,7 +31,7 @@ public static class FLog
             Debug.LogError(MakeLogString(inMsg, inObj));
         }
 
-        public static void Log<T>(T inObj)
+        public static void Log(object inObj) 
         {
             Debug.Log(MakeLogString("", inObj));
         }
