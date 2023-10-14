@@ -50,7 +50,7 @@ public static class FLog
             
             _sb.AppendFormat("[{0}]: ", type?.Name);
             if (!inMsg.IsNullOrEmpty()) _sb.AppendFormat("{0}\n", inMsg);
-            MakeFieldString(inObj, _sb);
+            if (inObj != null) MakeFieldString(inObj, _sb);
 
             return _sb.ToString();
         }
