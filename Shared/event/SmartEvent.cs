@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CofyEngine
 {
     public interface Event<out T>
     {
         public IRegistration AddListener(Action<T> listener);
-        public void RemoveListener(Action<T> listener);
+        public IRegistration AddListenerOnce(Action<T> listener);
+        public void RemoveListener(in IRegistration inReg);
     }
 
     public class SmartEvent<T> : Event<T>
@@ -25,18 +27,28 @@ namespace CofyEngine
             }
         }
 
-        public void RemoveListener(Action<T> listener)
+        public IRegistration AddListenerOnce(Action<T> listener)
+        {
+            IRegistration reg = null;
+            reg = AddListener(param =>
+            {
+                listener?.Invoke(param);
+                RemoveListener(reg);
+            });
+            return reg;
+        }
+        
+        public void RemoveListener(in IRegistration inReg)
         {
             if (_weakRegistration == null) return;
             IRegistration registration = null;
             for (int i = _weakRegistration.Count - 1; i >= 0; i--)
             {
-                if (_weakRegistration[i].TryGetTarget(out registration))
+                if (_weakRegistration[i].TryGetTarget(out registration) && registration == inReg)
                 {
-                    if (registration is not Registration<T> bindingImpl || !bindingImpl.Equals(listener)) continue;
+                    _weakRegistration.RemoveAt(i);
+                    return;
                 }
-
-                _weakRegistration.RemoveAt(i);
             }
         }
 

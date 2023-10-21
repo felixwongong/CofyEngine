@@ -14,6 +14,11 @@ namespace CofyEngine
         {
             _listener = listener;
         }
+        
+        public bool isListener(Action<T> listener)
+        {
+            return _listener == listener;
+        }
 
         public void Invoke(T value)
         {
