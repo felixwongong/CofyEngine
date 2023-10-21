@@ -6,39 +6,39 @@ namespace CofyEngine
 {
     public interface Event<out T>
     {
-        public IRegistration AddListener(Action<T> listener);
-        public IRegistration AddListenerOnce(Action<T> listener);
-        public void RemoveListener(in IRegistration inReg);
+        public IRegistration Register(Action<T> listener);
+        public IRegistration RegisterOnce(Action<T> listener);
+        public void Unregister(in IRegistration inReg);
     }
 
     public class SmartEvent<T> : Event<T>
     {
         private List<WeakReference<IRegistration>> _weakRegistration;
 
-        public IRegistration AddListener(Action<T> listener)
+        public IRegistration Register(Action<T> listener)
         {
             _weakRegistration ??= new List<WeakReference<IRegistration>>();
 
             lock (_weakRegistration)
             {
-                var binding = new Registration<T>(listener);
+                var binding = new Registration<T>(listener, this);
                 _weakRegistration.Add(new WeakReference<IRegistration>(binding));
                 return binding;
             }
         }
 
-        public IRegistration AddListenerOnce(Action<T> listener)
+        public IRegistration RegisterOnce(Action<T> listener)
         {
             IRegistration reg = null;
-            reg = AddListener(param =>
+            reg = Register(param =>
             {
                 listener?.Invoke(param);
-                RemoveListener(reg);
+                Unregister(reg);
             });
             return reg;
         }
         
-        public void RemoveListener(in IRegistration inReg)
+        public void Unregister(in IRegistration inReg)
         {
             if (_weakRegistration == null) return;
             IRegistration registration = null;

@@ -8,8 +8,9 @@ namespace CofyEngine
 {
     public class StateMachine: IPromiseSM
     {
-        private IPromiseState _prevState;
+        private IPromiseState _prevoutState;
         private IPromiseState _curState;
+        public IPromiseState previousState => _prevoutState;
         public IPromiseState currentState => _curState;
 
         private Dictionary<Type, IPromiseState> _stateDictionary = new();
@@ -48,23 +49,23 @@ namespace CofyEngine
             return state;
         }
 
-        public void GoToState<T>()
+        public void GoToState<T>(in object param = null)
         {
             if (!_curState.isRefNull())
             {
                 _curState.OnEndContext();
-                _prevState = _curState;
+                _prevoutState = _curState;
             }
                 
             if (!_stateDictionary.TryGetValue(typeof(T), out _curState))
             {
                 _curState = _stateDictionary.Values.First(state => state is T);
             }
-            MainThreadExecutor.instance.QueueAction(() =>
-            {
-                _curState.StartContext(this);
-                _logAction?.Invoke(_prevState, _curState);
-            });
+
+            if (_curState == null) throw new Exception($"State {typeof(T)} not registered");
+            
+            _curState.StartContext(this, param);
+            _logAction?.Invoke(_prevoutState, _curState);
         }
 
         public void GoToStateNoRepeat<StateType>()

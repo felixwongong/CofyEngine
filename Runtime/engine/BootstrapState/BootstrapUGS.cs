@@ -5,7 +5,7 @@ namespace CofyEngine
 {
     public class BootstrapUGS : IPromiseState
     {
-        void IPromiseState.StartContext(IPromiseSM sm)
+        void IPromiseState.StartContext(IPromiseSM sm, object param)
         {
             var future = UnityServices.InitializeAsync().Future()
                 .Then(_ =>

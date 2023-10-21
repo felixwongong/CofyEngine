@@ -9,7 +9,7 @@
             this.gsm = gsm;
         }
         
-        void IPromiseState.StartContext(IPromiseSM sm)
+        void IPromiseState.StartContext(IPromiseSM sm, object param)
         {
             gsm.Init();
         }

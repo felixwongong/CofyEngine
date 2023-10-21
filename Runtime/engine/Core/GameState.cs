@@ -7,7 +7,7 @@ namespace CofyEngine
         protected abstract string scene { get;  }
         protected abstract IUIPanel uiPanel { get; }
         
-        void IPromiseState.StartContext(IPromiseSM sm)
+        void IPromiseState.StartContext(IPromiseSM sm, object param)
         {
             if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevel(scene);
 

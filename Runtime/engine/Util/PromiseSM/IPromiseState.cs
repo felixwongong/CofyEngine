@@ -2,7 +2,7 @@
 {
     public interface IPromiseState
     {
-        void StartContext(IPromiseSM sm);
+        void StartContext(IPromiseSM sm, object param);
         void OnEndContext();
    }
 }

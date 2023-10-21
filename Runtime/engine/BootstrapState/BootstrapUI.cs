@@ -20,7 +20,7 @@ namespace CofyEngine
             return req.Future().TryMap(_ => (GameObject)req.asset);
         }
 
-        void IPromiseState.StartContext(IPromiseSM sm)
+        void IPromiseState.StartContext(IPromiseSM sm, object param)
         {
             Future<List<GameObject>> loadFuture;
 

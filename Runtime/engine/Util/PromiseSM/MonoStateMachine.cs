@@ -13,6 +13,7 @@ namespace CofyEngine
             _sm = new StateMachine(logging);
         }
 
+        public IPromiseState previousState => _sm.previousState;
         public IPromiseState currentState => _sm.currentState;
 
         public StateType RegisterState<StateType>(StateType state) where StateType: IPromiseState
@@ -20,7 +21,7 @@ namespace CofyEngine
             return _sm.RegisterState(state);
         }
 
-        public void GoToState<StateType>()
+        public void GoToState<StateType>(in object param = null)
         {
             _sm.GoToState<StateType>();
         }
