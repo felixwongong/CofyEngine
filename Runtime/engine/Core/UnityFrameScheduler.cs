@@ -8,13 +8,13 @@ namespace CofyEngine
     {
         private SortedSeq<ScheduledTask> _tasks;
 
-        private CtorObjectPool<ScheduledTask> _pool;
+        private CtorPool<ScheduledTask> _pool;
 
         protected override void Awake()
         {
             base.Awake();
             _tasks = new SortedSeq<ScheduledTask>(task => task.endTime);
-            _pool = new CtorObjectPool<ScheduledTask>();
+            _pool = CtorPoolManager.GetPool<ScheduledTask>();
         }
 
         private void Update()
@@ -39,7 +39,7 @@ namespace CofyEngine
         }
     }
 
-    public class ScheduledTask
+    public class ScheduledTask: IRecyclable
     {
         public double endTime;
         public Action taskAction;
@@ -51,6 +51,12 @@ namespace CofyEngine
             this.endTime = endTime;
             this.taskAction = taskAction;
             return this;
+        }
+
+        void IRecyclable.Recycle()
+        {
+            endTime = double.MinValue;
+            taskAction = null;
         }
     }
 }
