@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CofyEngine.Core;
 using CofyEngine.Util;
 using CofyUI;
 using UnityEngine.SceneManagement;
@@ -14,8 +15,14 @@ namespace CofyEngine
         {
             this.persistentScenes = scene;
         }
+
+        public void LoadLevel(string sceneName, bool additive = false, Action<Scene> before = null,
+            Action<Scene, Scene> after = null)
+        {
+            MainThreadExecutor.instance.QueueAction(() => LoadLevelImpl(sceneName, additive, before, after));
+        }
         
-        public void LoadLevel(string sceneName, bool additive = false, Action<Scene> before = null, Action<Scene, Scene> after = null)
+        private void LoadLevelImpl(string sceneName, bool additive = false, Action<Scene> before = null, Action<Scene, Scene> after = null)
         {
             FLog.Log($"{sceneName} load start");
 

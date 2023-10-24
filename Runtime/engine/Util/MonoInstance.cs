@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Engine.Util
+namespace CofyEngine
 {
     public class MonoInstance<T> : MonoBehaviour where T : Component
     {
@@ -22,6 +22,8 @@ namespace Engine.Util
                 return _instance;
             }
         }
+
+        public void ForceInit() { }
 
         protected virtual void Awake()
         {
