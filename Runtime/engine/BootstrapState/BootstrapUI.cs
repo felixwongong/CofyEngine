@@ -11,7 +11,7 @@ namespace CofyEngine
 
         protected Future<GameObject> LoadUIAssetAsync(string path)
         {
-            return CofyAddressable.LoadAsset<GameObject>(AssetPath.UI, path);
+            return CofyAddressable.LoadAsset<GameObject>(PathResolver.GetAsset(AssetPath.UI, path));
         }
 
         private Future<GameObject> LoadLocalUI(string path)

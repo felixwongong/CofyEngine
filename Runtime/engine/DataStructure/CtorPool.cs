@@ -9,12 +9,7 @@ namespace CofyEngine
     
     public class CtorPool<T>: IPool where T: class, IRecyclable, new()
     {
-        private Queue<T> pool;
-
-        public CtorPool()
-        {
-            pool = new Queue<T>();
-        }
+        private Queue<T> pool = new();
 
         public T Get()
         {
@@ -37,36 +32,16 @@ namespace CofyEngine
 
     public static class CtorPoolManager
     {
-        private static Dictionary<Type, Queue<IPool>> _registry = new (); 
+        private static Dictionary<Type, IPool> _registry = new (); 
         
         public static CtorPool<T> GetPool<T>() where T: class, IRecyclable, new()
         {
-            if (_registry.TryGetValue(typeof(T), out var poolQueue))
-            {
-                if (poolQueue.TryDequeue(out var poolObj) && poolObj is CtorPool<T> ctorPool)
-                {
-                    return ctorPool;
-                }
-            }
-            else
-            {
-                _registry.Add(typeof(T), new Queue<IPool>());
-            }
+            if (_registry.TryGetValue(typeof(T), out var pool) && pool is CtorPool<T> ctorPool) return ctorPool;
+            
+            ctorPool = new CtorPool<T>();
+            _registry.Add(typeof(T), ctorPool);
 
-            return new CtorPool<T>();
-        }
-
-        public static void RecyclePool<T>(CtorPool<T> ctorPool) where T : class, IRecyclable, new()
-        {
-            if (_registry.TryGetValue(typeof(T), out var poolQueue))
-            {
-                poolQueue.Enqueue(ctorPool);
-            }
-            else
-            {
-                _registry.Add(typeof(T), new Queue<IPool>());
-                _registry[typeof(T)].Enqueue(ctorPool);
-            }
+            return ctorPool;
         }
     }
 
