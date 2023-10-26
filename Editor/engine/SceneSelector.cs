@@ -9,10 +9,10 @@ namespace CofyEngine.Editor
 {
     public class SceneSelectorWindow : EditorWindow
     {
-        private static readonly string[] searchScope = new[] { "Assets" };
-        private static Dictionary<string, List<string>> scenePathToName = new ();
+        private static readonly string[] searchFolder = new[] { "Assets/Scene_Local", "Assets/Prefab/Scene" };
+        private static Dictionary<string, List<string>> scenePathToName = new();
         private string _activeTab;
-        
+
         private Vector2 scrollPosition;
         private static SceneSelectorWindow _window;
         private const string EDITOR_SCENE_ACTIVE_TAB = "EDITOR_SCENE_ACTIVE_TAB";
@@ -33,7 +33,8 @@ namespace CofyEngine.Editor
         {
             if (scenePathToName == null || scenePathToName.Count == 0)
             {
-                EditorGUI.HelpBox(new Rect(0, 0, position.width, position.height), "No scenes found in the project", MessageType.Warning);
+                EditorGUI.HelpBox(new Rect(0, 0, position.width, position.height), "No scenes found in the project",
+                    MessageType.Warning);
                 return;
             }
 
@@ -43,7 +44,7 @@ namespace CofyEngine.Editor
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandHeight(true));
 
             EditorGUILayout.BeginVertical(GUILayout.Width(200), GUILayout.ExpandHeight(true));
-            
+
             scenePathToName.Keys.ForEach(path =>
             {
                 if (GUILayout.Button(Path.GetFileName(path), EditorStyles.toolbarButton))
@@ -52,11 +53,11 @@ namespace CofyEngine.Editor
                     EditorPrefs.SetString(EDITOR_SCENE_ACTIVE_TAB, _activeTab);
                 }
             });
-            
+
             EditorGUILayout.EndVertical();
-            
+
             EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            
+
             scenePathToName[_activeTab].ForEach(scenePath =>
             {
                 if (GUILayout.Button(Path.GetFileNameWithoutExtension(scenePath), EditorStyles.miniButton))
@@ -64,9 +65,9 @@ namespace CofyEngine.Editor
                     OnSceneButtonClick(scenePath);
                 }
             });
-            
+
             EditorGUILayout.EndVertical();
-            
+
             EditorGUILayout.EndHorizontal();
         }
 
@@ -83,16 +84,17 @@ namespace CofyEngine.Editor
         {
             scenePathToName.Clear();
 
-            AssetDatabase.FindAssets("t:Scene", searchScope).Concat(EditorBuildSettings.scenes.map(scene => scene.path))
-                .ForEach(guid =>
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
-                    string directory = !path.isNullOrEmpty() ? Path.GetDirectoryName(path): "Assets";
-
-                    if (!scenePathToName.ContainsKey(directory!))
-                        scenePathToName.Add(directory, new List<string> { path });
-                    else scenePathToName[directory].Add(path);
-                });
+            searchFolder.ForEach(folder =>
+            {
+                scenePathToName.Add(folder, new List<string>());
+                AssetDatabase.FindAssets("t:Scene", new []{ folder })
+                    .Concat(EditorBuildSettings.scenes.map(scene => scene.path))
+                    .ForEach(guid =>
+                    {
+                        string path = AssetDatabase.GUIDToAssetPath(guid);
+                        if(path.notNullOrEmpty()) scenePathToName[folder].Add(path);
+                    });
+            });
         }
     }
 }
