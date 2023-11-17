@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using UnityEditor;
 using UnityEngine;
 
-namespace CofyEngine.Util.UI
+namespace CofyEngine
 {
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(SerializableDictionary<,>))]

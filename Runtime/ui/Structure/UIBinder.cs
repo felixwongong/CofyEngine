@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CofyEngine.Util.UI
+namespace CofyEngine
 {
     public class UIBinder<T> : UIBinderBase where T : Component
     {

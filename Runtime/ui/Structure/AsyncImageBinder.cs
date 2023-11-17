@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using CofyEngine.Util;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace CofyEngine.Util.UI
+namespace CofyEngine
 {
     //TODO: Add image loading
     public class AsyncImageBinder : UIBinder<Image>
