@@ -18,7 +18,7 @@ namespace CofyEngine.Editor
         {
             var rootContainer = new VisualElement();
             var propertyContainer = new VisualElement();
-            var field = new TextField();
+            var field = new TextField() { value = property.stringValue };
             var nameField = new Label(property.displayName);
             var searchButton = new Button();
 
@@ -49,6 +49,7 @@ namespace CofyEngine.Editor
 
                 path = path.AsSpan(path.IndexOf("Assets", StringComparison.Ordinal)).ToString();
                 property.stringValue = path;
+                property.serializedObject.ApplyModifiedProperties();
                 field.value = path;
             };
 
