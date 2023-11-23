@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CofyDev.RpgLegend
 {
-    public abstract class AnimatedState : MonoBehaviour, IPromiseState
+    public abstract class AnimatedState : MonoBehaviour, IPromiseState<AnimatedStateId>
     {
         protected CofyAnimator animator;
 
@@ -22,7 +22,8 @@ namespace CofyDev.RpgLegend
             _endReg = null;
         }
 
-        public abstract void StartContext(IPromiseSM sm, object param);
+        public AnimatedStateId id { get; }
+        public abstract void StartContext(IPromiseSM<AnimatedStateId> sm, object param);
 
         public virtual void OnEndContext(){}
         

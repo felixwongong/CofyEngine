@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using CofyEngine.Core;
 using CofyEngine.Util;
 
 namespace CofyEngine
 {
-    public class StateMachine: IPromiseSM
+    public class StateMachine<TStateId>: IPromiseSM<TStateId> where TStateId : Enum
     {
-        private IPromiseState _prevoutState;
-        private IPromiseState _curState;
-        public IPromiseState previousState => _prevoutState;
-        public IPromiseState currentState => _curState;
+        private IPromiseState<TStateId> _prevoutState;
+        private IPromiseState<TStateId> _curState;
+        public IPromiseState<TStateId> previousState => _prevoutState;
+        public IPromiseState<TStateId> currentState => _curState;
 
-        private Dictionary<Type, IPromiseState> _stateDictionary = new();
+        private Dictionary<TStateId, IPromiseState<TStateId>> _stateDictionary = new();
 
-        private Action<IPromiseState, IPromiseState> _logAction;
+        private Action<IPromiseState<TStateId>, IPromiseState<TStateId>> _logAction;
 
         private bool logging;
-
+        
         public StateMachine(bool logging = false)
         {
             this.logging = logging;
@@ -33,56 +31,50 @@ namespace CofyEngine
             }
         }
         
-        public void SetLogging(Action<IPromiseState, IPromiseState> logAction)
+        public void SetLogging(Action<IPromiseState<TStateId>, IPromiseState<TStateId>> logAction)
         {
             this._logAction = logAction;
         }
 
-        public StateType RegisterState<StateType>(StateType state) where StateType: IPromiseState
+        public void RegisterState(IPromiseState<TStateId> state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
-            if (_stateDictionary.ContainsKey(state.GetType()))
+            if (_stateDictionary.ContainsKey(state.id))
             {
                 throw new Exception($"State {state.GetType()} already registered");
             }
-            _stateDictionary[state.GetType()] = state;
-            return state;
+            _stateDictionary[state.id] = state;
         }
 
-        public void GoToState<T>(in object param = null)
+        public void GoToState(TStateId id, in object param = null)
         {
             if (!_curState.isRefNull())
             {
                 _curState.OnEndContext();
                 _prevoutState = _curState;
             }
-                
-            if (!_stateDictionary.TryGetValue(typeof(T), out _curState))
-            {
-                _curState = _stateDictionary.Values.First(state => state is T);
-            }
-
-            if (_curState == null) throw new Exception($"State {typeof(T)} not registered");
+            
+            if (_curState == null) throw new Exception(string.Format("State {0} not registered", id));
             
             _curState.StartContext(this, param);
             _logAction?.Invoke(_prevoutState, _curState);
         }
 
-        public void GoToStateNoRepeat<StateType>()
+        public void GoToStateNoRepeat(TStateId id, in object param = null)
         {
-            if(currentState is not StateType)
-                GoToState<StateType>();
+            if(currentState.id.Equals(id))
+                GoToState(id, param);
             else if (logging)
-                FLog.LogWarning(string.Format("Trying to go to the same state, {0}", typeof(StateType)));
+                FLog.LogWarning(string.Format("Trying to go to the same state, {0}", id));
         }
 
-        public T GetState<T>() where T : IPromiseState
+        public T GetState<T>(TStateId id) where T : IPromiseState<TStateId>
         {
-            if (!_stateDictionary.ContainsKey(typeof(T)))
+            if (!_stateDictionary.ContainsKey(id))
             {
                 throw new Exception($"State {typeof(T)} not registered");
             }
-            return (T) _stateDictionary[typeof(T)];
+            return (T) _stateDictionary[id];
         }
     }
 }

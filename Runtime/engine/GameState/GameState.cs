@@ -2,18 +2,22 @@
 
 namespace CofyEngine
 {
-    public abstract class GameState: IPromiseState
+    public abstract class GameState: IPromiseState<GameStateId>
     {
         protected abstract string scene { get;  }
         protected abstract IUIPanel uiPanel { get; }
+        public abstract GameStateId id { get; }
         
-        void IPromiseState.StartContext(IPromiseSM sm, object param)
+        public void StartContext(IPromiseSM<GameStateId> sm, object param)
         {
             if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevel(scene);
 
             uiPanel?.ShowPanel(true);
+
         }
 
-        void IPromiseState.OnEndContext() { }
+        public void OnEndContext()
+        {
+        }
     }
 }

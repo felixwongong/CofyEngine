@@ -3,20 +3,22 @@ using Unity.Services.Core;
 
 namespace CofyEngine
 {
-    public class BootstrapUGS : IPromiseState
+    public class BootstrapUGS : IPromiseState<BootStateId>
     {
-        void IPromiseState.StartContext(IPromiseSM sm, object param)
+        public BootStateId id => BootStateId.UGS;
+        
+        public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
             var future = UnityServices.InitializeAsync().Future()
                 .Then(_ =>
                 {
-                    sm.GoToState<TerminateState>();
+                    sm.GoToState(BootStateId.Terminate);
 
                 });
             
             LoadingScreen.instance.MonitorProgress(future);
         }
 
-        void IPromiseState.OnEndContext() { }
+        public void OnEndContext() { }
     }
 }

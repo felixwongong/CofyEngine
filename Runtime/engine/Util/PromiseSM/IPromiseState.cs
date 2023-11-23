@@ -1,8 +1,9 @@
 ﻿namespace CofyEngine
 {
-    public interface IPromiseState
+    public interface IPromiseState<TStateId>
     {
-        void StartContext(IPromiseSM sm, object param);
+        TStateId id { get; }
+        void StartContext(IPromiseSM<TStateId> sm, object param);
         void OnEndContext();
    }
 }

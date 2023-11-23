@@ -1,39 +1,37 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CofyEngine
 {
-    public class MonoStateMachine : MonoBehaviour, IPromiseSM
+    public abstract class MonoStateMachine<TStateId> : MonoBehaviour, IPromiseSM<TStateId> where TStateId: Enum
     {
         [SerializeField] private bool logging;
         
-        private StateMachine _sm;
+        private StateMachine<TStateId> _sm;
 
         protected virtual void Awake()
         {
-            _sm = new StateMachine(logging);
+            _sm = new StateMachine<TStateId>(logging);
         }
 
-        public IPromiseState previousState => _sm.previousState;
-        public IPromiseState currentState => _sm.currentState;
-
-        public StateType RegisterState<StateType>(StateType state) where StateType: IPromiseState
+        public void RegisterState(IPromiseState<TStateId> state)
         {
-            return _sm.RegisterState(state);
+            _sm.RegisterState(state);
         }
 
-        public void GoToState<StateType>(in object param = null)
+        public void GoToState(TStateId id, in object param = null)
         {
-            _sm.GoToState<StateType>();
+            _sm.GoToState(id, param);
         }
 
-        public void GoToStateNoRepeat<StateType>()
+        public void GoToStateNoRepeat(TStateId id, in object param = null)
         {
-            _sm.GoToStateNoRepeat<StateType>();
+            _sm.GoToStateNoRepeat(id, param);
         }
 
-        public StateType GetState<StateType>() where StateType : IPromiseState
+        public T GetState<T>(TStateId id) where T : IPromiseState<TStateId>
         {
-            return _sm.GetState<StateType>();
+            return _sm.GetState<T>(id);
         }
     }
 }

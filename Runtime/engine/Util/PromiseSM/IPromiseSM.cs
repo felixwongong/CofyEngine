@@ -1,13 +1,10 @@
 ﻿namespace CofyEngine
 {
-    public interface IPromiseSM
+    public interface IPromiseSM<TStateId>
     {
-        public IPromiseState previousState { get; }
-        public IPromiseState currentState { get; }
-        
-        public StateType RegisterState<StateType>(StateType state) where StateType: IPromiseState;
-        public void GoToState<StateType>(in object param = null);
-        public void GoToStateNoRepeat<StateType>();
-        public StateType GetState<StateType>() where StateType : IPromiseState;
+        public void RegisterState(IPromiseState<TStateId> state);
+        public void GoToState(TStateId id, in object param = null);
+        public void GoToStateNoRepeat(TStateId id, in object param = null);
+        public T GetState<T>(TStateId id) where T : IPromiseState<TStateId>;
     }
 }

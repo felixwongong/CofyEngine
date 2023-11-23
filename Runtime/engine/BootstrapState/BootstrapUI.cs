@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CofyEngine
 {
-    public abstract class BootstrapUI : IPromiseState
+    public abstract class BootstrapUI : IPromiseState<BootStateId>
     {
         protected abstract Future<List<GameObject>> LoadAll();
 
@@ -20,7 +20,8 @@ namespace CofyEngine
             return req.Future().TryMap(_ => (GameObject)req.asset);
         }
 
-        void IPromiseState.StartContext(IPromiseSM sm, object param)
+        public BootStateId id { get; }
+        public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
             Future<List<GameObject>> loadFuture;
 
@@ -39,12 +40,12 @@ namespace CofyEngine
                         loadFuture.Then(_ =>
                         {
                             FLog.Log("UI load finished.");
-                            sm.GoToState<BootstrapUGS>();
+                            sm.GoToState(BootStateId.UGS);
                         });
                     });
             });
         }
 
-        void IPromiseState.OnEndContext() { }
+        public void OnEndContext() { }
     }
 }
