@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -49,11 +51,19 @@ namespace CofyEngine
         }
     }
 
-    public class PathResolver
+    public static class PathResolver
     {
         public static string GetAsset(string assetPath, string target)
         {
             return assetPath.Replace(AssetPath.target, target);
+        }
+
+        //TODO: need refactor on string manipulation performance
+        public static string GetResourcePath(this string path)
+        {
+            var index = path.LastIndexOf(AssetPath.resourcePath, StringComparison.Ordinal) + AssetPath.resourcePath.Length;
+            if (index == -1) throw new InvalidPathException("Invalid resource path");
+            return path.AsSpan(index, path.Length - index).ToString();
         }
     }
     
@@ -68,5 +78,7 @@ namespace CofyEngine
         public static readonly string UI = string.Format("{0}/UI/{1}.prefab", root, target);
         public static readonly string SCENE = string.Format("{0}/Scene/{1}.unity", root, target);
         public static readonly string VFX = string.Format("{0}/VFX/{1}.prefab", root, target);
+        
+        public static readonly string resourcePath = string.Format("Resources/");
     }
 }

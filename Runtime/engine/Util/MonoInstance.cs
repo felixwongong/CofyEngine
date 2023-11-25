@@ -23,8 +23,6 @@ namespace CofyEngine
             }
         }
 
-        public void ForceInit() { }
-
         protected virtual void Awake()
         {
             if(persistent) DontDestroyOnLoad(this);
