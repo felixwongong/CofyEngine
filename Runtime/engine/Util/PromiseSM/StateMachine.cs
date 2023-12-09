@@ -43,6 +43,7 @@ namespace CofyEngine
             {
                 throw new Exception($"State {state.GetType()} already registered");
             }
+            FLog.Log($"Register state {state.id}");
             _stateDictionary[state.id] = state;
         }
 
@@ -54,7 +55,8 @@ namespace CofyEngine
                 _prevoutState = _curState;
             }
             
-            if (_curState == null) throw new Exception(string.Format("State {0} not registered", id));
+            if (!_stateDictionary.TryGetValue(id, out _curState))
+                throw new Exception(string.Format("State {0} not registered", id));
             
             _curState.StartContext(this, param);
             _logAction?.Invoke(_prevoutState, _curState);
