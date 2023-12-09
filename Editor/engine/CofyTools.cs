@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
+using UnityEngine;
 
 namespace CofyEngine.Editor
 {
@@ -45,6 +46,14 @@ namespace CofyEngine.Editor
             entry.address = folderPath;
                 
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, null, false, true);
+        }
+        
+        
+        [MenuItem("Cofy Tools/Collect GC & Resources")]
+        public static void gcCollect()
+        {
+            GC.Collect();
+            Resources.UnloadUnusedAssets();
         }
     }
 }

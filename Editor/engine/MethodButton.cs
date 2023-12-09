@@ -1,11 +1,13 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace CofyEngine.Editor
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [Conditional("UNITY_EDITOR"), AttributeUsage(AttributeTargets.Method)]
     public class MethodButtonAttribute : Attribute
     {
         public string buttonName { get; set; }
@@ -77,4 +79,5 @@ namespace CofyEngine.Editor
             }
         }
     }
+    
 }
