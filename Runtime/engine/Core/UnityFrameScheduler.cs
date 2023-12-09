@@ -1,20 +1,20 @@
 ﻿using System;
 using CofyEngine;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace CofyEngine
 {
     public class UnityFrameScheduler: MonoInstance<UnityFrameScheduler>
     {
         private SortedSeq<ScheduledTask> _tasks;
-
-        private CtorPool<ScheduledTask> _pool;
+        private ObjectPool<ScheduledTask> _pool;
 
         protected override void Awake()
         {
             base.Awake();
             _tasks = new SortedSeq<ScheduledTask>(task => task.endTime);
-            _pool = CtorPoolManager.GetPool<ScheduledTask>();
+            _pool = new ObjectPool<ScheduledTask>(() => new ScheduledTask());
         }
 
         private void Update()
@@ -26,7 +26,7 @@ namespace CofyEngine
                 if (Time.timeAsDouble * 1000 > task.endTime)
                 {
                     task.taskAction();
-                    _pool.Recycle(task);
+                    _pool.Release(task);
                     _tasks.RemoveAt(i);
                 }
             }
@@ -39,7 +39,7 @@ namespace CofyEngine
         }
     }
 
-    public class ScheduledTask: IRecyclable
+    public class ScheduledTask
     {
         public double endTime;
         public Action taskAction;
@@ -53,7 +53,7 @@ namespace CofyEngine
             return this;
         }
 
-        void IRecyclable.Recycle()
+        public void Clear()
         {
             endTime = double.MinValue;
             taskAction = null;

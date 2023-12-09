@@ -5,43 +5,44 @@ using Object = UnityEngine.Object;
 
 namespace CofyEngine
 {
-    public class PrefabPool<T>: IPool where T: Component, IRecyclable
+    public class PrefabPool<T>: IPool  where T: Component
     {
         private readonly string path;
 
         private GameObject poolRoot;
         private Queue<T> pool = new();
 
-        public Future<T> initLoadFuture;
+        private Future<T> initLoadFuture;
 
         public PrefabPool(string path, int preloadCount)
         {
-            this.path = path;
-
-            poolRoot = new GameObject($"{Regex.Split(this.path, "[/.]")[^2]}_Pool");
+            poolRoot = new GameObject(string.Format("{0}_Pool", Regex.Split(this.path, "[/.]")[^2]));
             Object.DontDestroyOnLoad(poolRoot);
+            
+            this.path = path;
 
             if (preloadCount > 0)
             {
-                initLoadFuture = CofyAddressable.LoadAssetComponent<T>(path);
+                initLoadFuture = AssetManager.instance.LoadAsset<T>(path);
                 initLoadFuture.OnSucceed(prefab =>
                 {
                     for (int i = 0; i < preloadCount; i++)
                     {
                         var inst = Object.Instantiate(prefab, poolRoot.transform);
-                        inst.Recycle();
                         pool.Enqueue(inst);
                     }
                 });
             }
         }
     }
+    
+    public interface IPool{}
 
     public class PrefabPoolManager
     {
         private static Dictionary<string, IPool> _registry = new();
 
-        public static PrefabPool<T> GetPool<T>(string path, int preloadCount = 0) where T : Component, IRecyclable
+        public static PrefabPool<T> GetPool<T>(string path, int preloadCount = 0) where T : Component
         {
             if (_registry.TryGetValue(path, out var poolObj) && poolObj is PrefabPool<T> pool) return pool;
 
