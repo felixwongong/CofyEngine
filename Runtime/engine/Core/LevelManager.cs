@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CofyEngine.Core;
 using CofyEngine.Util;
 using CofyUI;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 namespace CofyEngine
@@ -10,7 +11,8 @@ namespace CofyEngine
     public class LevelManager : Instance<LevelManager>
     {
         private List<string> persistentScenes;
-
+        private Dictionary<string, SceneInstance> _sceneInstances = new();
+        
         public void SetPersistent(List<string> scene)
         {
             this.persistentScenes = scene;
@@ -43,9 +45,13 @@ namespace CofyEngine
                 }
                 else
                 {
-                    after?.Invoke(disposingScene, sceneValidate.target.result);
-                    if(!additive && !persistentScenes.Contains(disposingScene.name)) 
-                        SceneManager.UnloadSceneAsync(disposingScene);
+                    var loadedInst = sceneValidate.target.result;
+                    _sceneInstances.TryAdd(sceneName, loadedInst);
+                    after?.Invoke(disposingScene, loadedInst.Scene);
+                    if (!additive && !persistentScenes.Contains(disposingScene.name))
+                    {
+                        CofyAddressable.UnloadScene(_sceneInstances[disposingScene.name]);
+                    }
                     LoadingScreen.instance.EndMonitoring();
                     FLog.Log($"{sceneName} load end");
                 }
