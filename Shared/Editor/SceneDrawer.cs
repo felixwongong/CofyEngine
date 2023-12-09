@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Debug = UnityEngine.Debug;
 
 namespace CofyEngine.Editor
 {
@@ -15,6 +15,12 @@ namespace CofyEngine.Editor
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
+                if(!property.stringValue.isNullOrEmpty())
+                {
+                    var path = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(property.stringValue).First());
+                    sceneAsset = (SceneAsset)AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset));
+                }
+                
                 sceneAsset = (SceneAsset)EditorGUI.ObjectField(position, label, sceneAsset, typeof(SceneAsset), true);
                 property.stringValue = sceneAsset == null ? string.Empty : sceneAsset.name;
             }
