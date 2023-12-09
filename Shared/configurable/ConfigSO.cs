@@ -4,10 +4,12 @@ using UnityEngine;
 namespace CofyEngine
 {
     [CreateAssetMenu(fileName = "DefaultConfig", menuName = "Info/ConfigInfoSO", order = 0)]
-    public class ConfigInfoSO : ScriptableObject
+    public class ConfigSO : ScriptableObject
     {
-        [CofyDirectoryName] public string localUIPath;
+        [CofyDirectoryName] public string localPath;
         [CofyDirectoryName] public string uiDirectory;
         [CofyDirectoryName] public string sceneDirectory;
+
+        public static ConfigSO inst;
     }
 }
