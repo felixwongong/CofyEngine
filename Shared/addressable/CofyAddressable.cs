@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using Unity.Properties;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
@@ -19,11 +15,16 @@ namespace CofyEngine
             return handle.Future();
         }
         
-        public static Future<AsyncOperationHandle<SceneInstance>> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
+        public static Future<SceneInstance> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
         {
             var handle = Addressables.LoadSceneAsync(
                 PathResolver.GetAsset(AssetPath.SCENE, sceneName), sceneMode, true);
-            return handle.Future().TryMap(instance => instance);
+            return handle.Future().TryMap(aop => aop.Result);
+        }
+
+        public static Future<SceneInstance> UnloadScene(SceneInstance scene, UnloadSceneOptions options = UnloadSceneOptions.None)
+        {
+            return Addressables.UnloadSceneAsync(scene, options).Future().TryMap(aop => aop.Result);
         }
     }
 
