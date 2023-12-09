@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CofyUI;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace CofyEngine
@@ -10,11 +9,6 @@ namespace CofyEngine
         public BootStateId id => BootStateId.UI;
         
         protected abstract Future<List<GameObject>> LoadAll();
-
-        protected Future<GameObject> LoadUIAssetAsync(string path)
-        {
-            return AssetManager.instance.LoadAsset<GameObject>(PathResolver.GetAsset(AssetPath.UI, path));
-        }
 
         private Future<GameObject> LoadLocalUI(string path)
         {

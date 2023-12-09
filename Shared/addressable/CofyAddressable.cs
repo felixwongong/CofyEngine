@@ -18,7 +18,7 @@ namespace CofyEngine
         public static Future<SceneInstance> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
         {
             var handle = Addressables.LoadSceneAsync(
-                PathResolver.GetAsset(AssetPath.SCENE, sceneName), sceneMode, true);
+                string.Format("{0}/{1}", ConfigSO.inst.sceneDirectory, sceneMode), sceneMode, true);
             return handle.Future().TryMap(aop => aop.Result);
         }
 
@@ -30,11 +30,6 @@ namespace CofyEngine
 
     public static class PathResolver
     {
-        public static string GetAsset(string assetPath, string target)
-        {
-            return assetPath.Replace(AssetPath.target, target);
-        }
-
         //TODO: need refactor on string manipulation performance
         public static string GetResourcePath(this string path)
         {
@@ -46,16 +41,6 @@ namespace CofyEngine
     
     public class AssetPath
     {
-        internal const string target = "(target)";
-
-        public static readonly string root = "Assets/Prefab";
-
-        public static readonly string SCENE_ROOT = string.Format("{0}/Scene", root);
-        
-        public static readonly string UI = string.Format("{0}/UI/{1}.prefab", root, target);
-        public static readonly string SCENE = string.Format("{0}/Scene/{1}.unity", root, target);
-        public static readonly string VFX = string.Format("{0}/VFX/{1}.prefab", root, target);
-        
         public static readonly string resourcePath = string.Format("Resources/");
     }
 }
