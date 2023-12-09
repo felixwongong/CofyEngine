@@ -4,50 +4,26 @@ using System.IO;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 namespace CofyEngine
 {
     public class CofyAddressable
     {
-        public static Future<T> LoadAsset<T>(string path)
+        public static Future<AsyncOperationHandle<T>> LoadAsset<T>(string path)
         {
             var handle = Addressables.LoadAssetAsync<T>(path);
             return handle.Future();
         }
         
-        public static Future<T> LoadAssetComponent<T>(string path) where T : Component
-        {
-            var handle = Addressables.LoadAssetAsync<GameObject>(path);
-            return handle.Future().TryMap(instance =>
-            {
-                if (!instance.TryGetComponent<T>(out var component))
-                {
-                    throw new NullReferenceException(
-                        string.Format("No Component with type ({0}) found in {1}", typeof(T), path));
-                }
-
-                return component;
-            });
-        }
-
-        public static Future<Scene> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
+        public static Future<AsyncOperationHandle<SceneInstance>> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
         {
             var handle = Addressables.LoadSceneAsync(
                 PathResolver.GetAsset(AssetPath.SCENE, sceneName), sceneMode, true);
-            return handle.Future().TryMap(instance => instance.Scene);
-        }
-        
-        public static Future<IList<object>> LoadAssets(string path)
-        {
-            var handle = Addressables.LoadAssetsAsync<object>(path, null);
-            return handle.Future();
-        }
-
-        public static Future<IList<IResourceLocation>> LoadLocations(string path)
-        {
-            return Addressables.LoadResourceLocationsAsync(path).Future();
+            return handle.Future().TryMap(instance => instance);
         }
     }
 

@@ -5,15 +5,15 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class ToFutureHandler
 {
-    public static Future<T> Future<T>(this AsyncOperationHandle<T> op)
+    public static Future<AsyncOperationHandle<T>> Future<T>(this AsyncOperationHandle<T> op)
     {
-        Promise<T> promise = new Promise<T>(() => op.PercentComplete);
+        Promise<AsyncOperationHandle<T>> promise = new Promise<AsyncOperationHandle<T>>(() => op.PercentComplete);
         op.Completed += handle =>
         {
             switch (handle.Status)
             {
                 case AsyncOperationStatus.Succeeded:
-                    promise.Resolve(handle.Result);
+                    promise.Resolve(handle);
                     break;
                 case AsyncOperationStatus.Failed:
                     promise.Reject(op.OperationException);
@@ -39,6 +39,23 @@ public static class ToFutureHandler
             }
         };
 
+        return promise.future;
+    }
+
+    public static Future<ResourceRequest> Future(this ResourceRequest req)
+    {
+        Promise<ResourceRequest> promise = new();
+        req.completed += aop =>
+        {
+            if (Mathf.Approximately(req.progress, 1))
+            {
+                promise.Resolve(req);
+            }
+            else
+            {
+                promise.Reject("Async operation failed");
+            }
+        };
         return promise.future;
     }
 
