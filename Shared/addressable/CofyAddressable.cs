@@ -55,7 +55,7 @@ namespace CofyEngine
                 return ".png";
 
             if (typeof(T).IsAssignableFrom(typeof(SpriteAtlas)))
-                return ".spriteatlas";
+                return ".spriteatlasv2";
 
             throw new NotImplementedException($"subfix of {typeof(T)} not implemented.");
         }

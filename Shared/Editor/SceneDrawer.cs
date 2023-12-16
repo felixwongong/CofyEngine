@@ -7,6 +7,7 @@ using UnityEngine;
 namespace CofyEngine.Editor
 {
     [CustomPropertyDrawer(typeof(CofySceneAttribute))]
+    [Obsolete]
     public class SceneDrawer : PropertyDrawer
     {
         private SceneAsset sceneAsset;
