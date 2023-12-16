@@ -16,6 +16,12 @@ namespace CofyEngine
         [CofyDirectoryName] public string atlasDirectory;
         [CofyAssetObject(typeof(SpriteAtlas))] public List<string> preloadAtlas;
 
-        public static ConfigSO inst;
+        private static ConfigSO _inst;
+
+        public static ConfigSO inst
+        {
+            get => _inst;
+            set => _inst = value;
+        }
     }
 }
