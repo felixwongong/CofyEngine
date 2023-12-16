@@ -52,6 +52,13 @@ public partial class Future<T>
         return failure;
     }
 
+    public static Future<T> success(T value)
+    {
+        Promise<T> promise = new Promise<T>(() => 1);
+        promise.Resolve(value);
+        return promise.future;
+    }
+
     public Future<T> Then(Action<Future<T>> action)
     {
         Promise<T> promise = new Promise<T>(this._promise.progressFunc);
