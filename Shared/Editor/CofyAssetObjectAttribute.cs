@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using UnityEditor;
@@ -6,31 +6,38 @@ using UnityEngine;
 
 namespace CofyEngine.Editor
 {
-    [CustomPropertyDrawer(typeof(CofySceneAttribute))]
-    public class SceneDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(CofyAssetObjectAttribute))]
+    public class CofyAssetObject : PropertyDrawer
     {
-        private SceneAsset sceneAsset;
+        private UnityEngine.Object asset;
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
+                var objAttr = (CofyAssetObjectAttribute)attribute;
+                
                 if(!property.stringValue.isNullOrEmpty())
                 {
                     var path = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(property.stringValue).First());
-                    sceneAsset = (SceneAsset)AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset));
+                    asset = AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset));
                 }
                 
-                sceneAsset = (SceneAsset)EditorGUI.ObjectField(position, label, sceneAsset, typeof(SceneAsset), true);
-                property.stringValue = sceneAsset == null ? string.Empty : sceneAsset.name;
+                asset = EditorGUI.ObjectField(position, label, asset, objAttr.type, false);
+                property.stringValue = asset == null ? string.Empty : asset.name;
             }
             else
                 EditorGUI.LabelField(position, label.text, "Use [Scene] with strings.");
         }
     }
     
-    [Obsolete("Use CofyAssetObject instead for more generic usage")]
     [Conditional("UNITY_EDITOR"), AttributeUsage(AttributeTargets.Field)]
-    public class CofySceneAttribute : PropertyAttribute
+    public class CofyAssetObjectAttribute: PropertyAttribute
     {
+        internal Type type;
+        public CofyAssetObjectAttribute(Type type)
+        {
+            this.type = type;
+        }
     }
 }
