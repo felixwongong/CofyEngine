@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace CofyEngine.Editor
 {
-    public class AddressableDirectoryTools
+    public class DirectoryTools
     {
         [MenuItem("Assets/Move To/UI", false, 0)]
         static void MoveToUI()
@@ -20,7 +20,7 @@ namespace CofyEngine.Editor
             FocusDirectory("Assets/Prefab/UI");
         }
 
-        private static void FocusDirectory(string path)
+        public static void FocusDirectory(string path)
         {
             Object folderMeta = AssetDatabase.LoadAssetAtPath<Object>(path);
             if (folderMeta != null)

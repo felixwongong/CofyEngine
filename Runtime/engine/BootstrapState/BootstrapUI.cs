@@ -10,10 +10,16 @@ namespace CofyEngine
         
         protected abstract Future<List<GameObject>> LoadAll();
 
-        private Future<GameObject> LoadLocalUI(string path)
+        protected Future<GameObject> LoadLocalUI(string path)
         {
             return AssetManager.instance
                 .LoadAsset<GameObject>(string.Format("{0}/{1}", ConfigSO.inst.localPath, path), AssetLoadOption.ForceLoadLocal);
+        }
+
+        protected Future<GameObject> LoadUI(string path)
+        {
+            return AssetManager.instance
+                .LoadAsset<GameObject>(string.Format("{0}/{1}", ConfigSO.inst.uiDirectory, path), AssetLoadOption.None);
         }
 
         public void StartContext(IPromiseSM<BootStateId> sm, object param)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Unity.Properties;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -39,8 +41,21 @@ namespace CofyEngine
         }
     }
     
-    public class AssetPath
+    public static class AssetPath
     {
         public static readonly string resourcePath = string.Format("Resources/");
+        public static string subfix<T>()
+        {
+            if (typeof(T).IsAssignableFrom(typeof(GameObject)))
+                return ".prefab";
+            
+            if (typeof(T).IsAssignableFrom(typeof(MonoBehaviour)))
+                return ".prefab";
+            
+            if (typeof(T).IsAssignableFrom(typeof(Texture)))
+                return ".png";
+
+            throw new NotImplementedException($"subfix of {typeof(T)} not implemented.");
+        }
     }
 }

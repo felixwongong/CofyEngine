@@ -31,7 +31,7 @@ namespace CofyEngine
         private static Future<WeakReference> LoadAddressable<T>(string path, AssetLoadOption option) where T : UnityEngine.Object
         {
             Future<WeakReference> handle;
-            var aopHandle = CofyAddressable.LoadAsset<T>(path);
+            var aopHandle = CofyAddressable.LoadAsset<T>(string.Format("{0}{1}", path, AssetPath.subfix<T>()));
             handle = aopHandle.TryMap(handle => new WeakReference(handle.Result));
             return handle;
         }
