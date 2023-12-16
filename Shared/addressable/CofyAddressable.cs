@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -18,10 +17,9 @@ namespace CofyEngine
             return handle.Future();
         }
         
-        public static Future<SceneInstance> LoadScene(string sceneName, LoadSceneMode sceneMode = LoadSceneMode.Additive)
+        public static Future<SceneInstance> LoadScene(string path, LoadSceneMode sceneMode = LoadSceneMode.Additive)
         {
-            var handle = Addressables.LoadSceneAsync(
-                string.Format("{0}/{1}", ConfigSO.inst.sceneDirectory, sceneMode), sceneMode, true);
+            var handle = Addressables.LoadSceneAsync(path, sceneMode, true);
             return handle.Future().TryMap(aop => aop.Result);
         }
 

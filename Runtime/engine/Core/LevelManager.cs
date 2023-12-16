@@ -32,8 +32,8 @@ namespace CofyEngine
             before?.Invoke(disposingScene);
 
             UIRoot.instance.DisableAllUI();
-
-            var sceneLoadFuture = CofyAddressable.LoadScene(sceneName, LoadSceneMode.Additive);
+            
+            var sceneLoadFuture = CofyAddressable.LoadScene(ConfigSO.inst.sceneDirectory.concatPath(sceneName), LoadSceneMode.Additive);
             
             LoadingScreen.instance.MonitorProgress(sceneLoadFuture);
             
