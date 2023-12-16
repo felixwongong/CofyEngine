@@ -6,6 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 namespace CofyEngine
 {
@@ -54,6 +55,9 @@ namespace CofyEngine
             
             if (typeof(T).IsAssignableFrom(typeof(Texture)))
                 return ".png";
+
+            if (typeof(T).IsAssignableFrom(typeof(SpriteAtlas)))
+                return ".spriteatlas";
 
             throw new NotImplementedException($"subfix of {typeof(T)} not implemented.");
         }
