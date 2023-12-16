@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CofyEngine
 {
-    public abstract class BootstrapUI : IPromiseState<BootStateId>
+    public abstract class UILoadState : IPromiseState<BootStateId>
     {
         public BootStateId id => BootStateId.UI;
         
@@ -35,7 +35,7 @@ namespace CofyEngine
                             loadingScreen.SetGoActive(true);
                             loadFuture = LoadAll();
 
-                            loadingScreen.MonitorProgress(loadFuture);
+                            loadingScreen.MonitorProgress(loadFuture, "loading UI");
 
                             loadFuture.Then(_ =>
                             {

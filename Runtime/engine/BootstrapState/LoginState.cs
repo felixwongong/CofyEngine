@@ -1,11 +1,9 @@
 ﻿using CofyEngine.UGS;
 using CofyUI;
-using UnityEngine;
-using Application = UnityEngine.Device.Application;
 
 namespace CofyEngine
 {
-    public class BootstrapUGS : IPromiseState<BootStateId>
+    public class LoginState : IPromiseState<BootStateId>
     {
         public BootStateId id => BootStateId.UGS;
         
@@ -18,7 +16,7 @@ namespace CofyEngine
                 sm.GoToState(BootStateId.Terminate);
             });
             
-            LoadingScreen.instance.MonitorProgress(initFuture);
+            LoadingScreen.instance.MonitorProgress(initFuture, "connecting to service");
         }
 
         public void OnEndContext() { }
