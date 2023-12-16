@@ -58,8 +58,8 @@ namespace CofyEngine
             if (!_stateDictionary.TryGetValue(id, out _curState))
                 throw new Exception(string.Format("State {0} not registered", id));
             
-            _curState.StartContext(this, param);
             _logAction?.Invoke(_prevoutState, _curState);
+            _curState.StartContext(this, param);
         }
 
         public void GoToStateNoRepeat(TStateId id, in object param = null)
