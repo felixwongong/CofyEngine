@@ -57,5 +57,10 @@ namespace CofyEngine
 
             throw new NotImplementedException($"subfix of {typeof(T)} not implemented.");
         }
+
+        public static string concatPath(this string dir, string path)
+        {
+            return string.Format("{0}/{1}", dir, path);
+        }
     }
 }

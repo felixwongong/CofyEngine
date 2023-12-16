@@ -1,4 +1,5 @@
 using CofyEngine;
+using TMPro;
 using UnityEngine;
 
 namespace CofyUI
@@ -6,6 +7,7 @@ namespace CofyUI
     public class LoadingScreen : UIInstance<LoadingScreen>
     {
         [SerializeField] private ProgressBar bar;
+        [SerializeField] private TextMeshProUGUI text;
         
         private IFuture target;
 
@@ -26,10 +28,12 @@ namespace CofyUI
             }
         }
 
-        public void MonitorProgress(IFuture future)
+        public void MonitorProgress(IFuture future, string message = "")
         {
             this.SetGoActive(true);
             target = future;
+            if (message != null && message.notNullOrEmpty()) 
+                text.text = message;
         }
 
         public void EndMonitoring()
