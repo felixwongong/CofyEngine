@@ -8,6 +8,7 @@ namespace CofyEngine
     {
         [CofyDirectoryName] public string localPath;
         [CofyDirectoryName] public string uiDirectory;
+        [CofyDirectoryName] public string atlasDirectory;
         [CofyDirectoryName] public string sceneDirectory;
 
         public static ConfigSO inst;
