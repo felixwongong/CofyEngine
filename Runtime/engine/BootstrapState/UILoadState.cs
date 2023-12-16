@@ -10,11 +10,6 @@ namespace CofyEngine
         
         protected abstract Future<List<GameObject>> LoadAll();
 
-        protected Future<GameObject> LoadLocalUI(string path)
-        {
-            return AssetManager.instance
-                .LoadAsset<GameObject>(string.Format("{0}/{1}", ConfigSO.inst.localPath, path), AssetLoadOption.ForceLoadLocal);
-        }
 
         protected Future<GameObject> LoadUI(string path)
         {
@@ -24,26 +19,17 @@ namespace CofyEngine
 
         public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
-            Future<List<GameObject>> loadFuture;
+            var loadingScreen = LoadingScreen.instance;
+            loadingScreen.SetGoActive(true);
+            
+            var loadFuture = LoadAll();
 
-            LoadLocalUI("UIRoot").OnSucceed(uiRoot =>
-                {
-                    UIRoot.instance.Bind<LoadingScreen>(LoadLocalUI("loading_panel"))
-                        .Then(future =>
-                        {
-                            var loadingScreen = LoadingScreen.instance;
-                            loadingScreen.SetGoActive(true);
-                            loadFuture = LoadAll();
+            loadingScreen.MonitorProgress(loadFuture, "loading UI");
 
-                            loadingScreen.MonitorProgress(loadFuture, "loading UI");
-
-                            loadFuture.Then(_ =>
-                            {
-                                FLog.Log("UI load finished.");
-                                sm.GoToState(BootStateId.UGS);
-                            });
-                        });
-                });
+            loadFuture.Then(_ =>
+            {
+                sm.GoToState(BootStateId.UGS);
+            });
         }
 
         public void OnEndContext() { }
