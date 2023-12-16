@@ -1,5 +1,7 @@
-﻿using CofyEngine.Editor;
+﻿using System.Collections.Generic;
+using CofyEngine.Editor;
 using UnityEngine;
+using UnityEngine.U2D;
 
 namespace CofyEngine
 {
@@ -8,8 +10,11 @@ namespace CofyEngine
     {
         [CofyDirectoryName] public string localPath;
         [CofyDirectoryName] public string uiDirectory;
-        [CofyDirectoryName] public string atlasDirectory;
         [CofyDirectoryName] public string sceneDirectory;
+        
+        [Header("Sprite Atlas")]
+        [CofyDirectoryName] public string atlasDirectory;
+        [CofyAssetObject(typeof(SpriteAtlas))] public List<string> preloadAtlas;
 
         public static ConfigSO inst;
     }

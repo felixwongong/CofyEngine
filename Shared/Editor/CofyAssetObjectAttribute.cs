@@ -20,7 +20,7 @@ namespace CofyEngine.Editor
                 if(!property.stringValue.isNullOrEmpty())
                 {
                     var path = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(property.stringValue).First());
-                    asset = AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset));
+                    asset = AssetDatabase.LoadAssetAtPath(path, objAttr.type);
                 }
                 
                 asset = EditorGUI.ObjectField(position, label, asset, objAttr.type, false);
