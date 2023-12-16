@@ -6,7 +6,7 @@ namespace CofyEngine
     {
         public virtual void Init()
         {
-            throw new System.NotImplementedException();
+            FLog.LogWarning("GameStateMachine not implemented yet");
         }
     }
 }

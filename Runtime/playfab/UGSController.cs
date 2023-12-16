@@ -1,24 +1,39 @@
 using System;
-using CofyEngine.Util;
+using Unity.Services.Core;
 using UnityEngine;
 
 namespace CofyEngine.UGS
 {
-    public class UGSController: Instance<UGSController>
+    public class UGSController
     {
-        public Future<bool> InitLogin()
+        public static Future<bool> InitService()
+        {
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                //TODO: Add confirmation panel for offline checking
+                return Future<bool>.success(false);
+            }
+            else
+            {
+                return UnityServices.InitializeAsync().Future();
+            }
+        }
+
+        public static Future<bool> InitLogin()
         {
             //TODO: add recovery
             return _InitLogin();
         }
 
-        private Future<bool> _InitLogin()
+        private static Future<bool> _InitLogin()
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
-                //TODO: add localized exception
                 return Future<bool>.failure(new Exception("Network not reachable."));
-
-            return null;
+            else
+            {
+                //Add Unity auth
+                return UnityServices.InitializeAsync().Future();
+            }
         }
     }
 }

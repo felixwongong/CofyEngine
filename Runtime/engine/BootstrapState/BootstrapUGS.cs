@@ -1,5 +1,7 @@
-﻿using CofyUI;
-using Unity.Services.Core;
+﻿using CofyEngine.UGS;
+using CofyUI;
+using UnityEngine;
+using Application = UnityEngine.Device.Application;
 
 namespace CofyEngine
 {
@@ -9,14 +11,14 @@ namespace CofyEngine
         
         public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
-            var future = UnityServices.InitializeAsync().Future()
-                .Then(_ =>
-                {
-                    sm.GoToState(BootStateId.Terminate);
-
-                });
+            var initFuture = UGSController.InitService();
             
-            LoadingScreen.instance.MonitorProgress(future);
+            initFuture.OnSucceed(_ =>
+            {
+                sm.GoToState(BootStateId.Terminate);
+            });
+            
+            LoadingScreen.instance.MonitorProgress(initFuture);
         }
 
         public void OnEndContext() { }
