@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CofyUI;
 using UnityEngine.U2D;
 
 namespace CofyEngine
@@ -20,6 +21,8 @@ namespace CofyEngine
             }
 
             var group = loadFutures.Group();
+            LoadingScreen.instance.MonitorProgress(group, "Loading cute monster");
+            
             group.OnSucceed(_ =>
             {
                 sm.GoToState(BootStateId.UI);
