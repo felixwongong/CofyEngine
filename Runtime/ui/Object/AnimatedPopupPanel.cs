@@ -19,7 +19,8 @@ namespace CofyUI
 
         #endregion
 
-        #pragma warning disable 0414
+        #pragma warning disable 0414 
+        //Use reg cuz im lazy, can use enable disable for event handling instead
         private IRegistration animEndReg;
         #pragma warning restore 0414
         
