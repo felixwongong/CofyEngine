@@ -45,11 +45,9 @@ public partial class Future<T>
 {
     public static Future<T> failure(Exception ex)
     {
-        var failure = new Future<T>
-        {
-            ex = ex
-        };
-        return failure;
+        Promise<T> promise = new();
+        promise.Reject(ex);
+        return promise.future;
     }
 
     public static Future<T> success(T value)
