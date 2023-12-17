@@ -1,10 +1,15 @@
 ﻿namespace CofyUI
 {
-    public class UIPanel<TPanel>: UIInstance<TPanel>, IUIPanel
+    public abstract class UIPanel<TPanel>: UIInstance<TPanel>, IUIPanel
     {
-        public virtual void ShowPanel(bool enable)
+        public virtual void Show()
         {
-            gameObject.SetActive(enable);
+            gameObject.SetActive(true);
+        }
+
+        public virtual void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

@@ -1,10 +1,17 @@
+using UnityEngine;
+
 namespace CofyUI
 {
-    public class UIPopupPanel<TPanel>: UIInstance<TPanel>, IUIPanel
+    public abstract class UIPopupPanel<TPanel>: UIInstance<TPanel>, IUIPanel
     {
-        public void ShowPanel(bool enable)
+        [SerializeField] protected Animator panelAnimator;
+        
+        public virtual void Show()
         {
-            
+        }
+
+        public virtual void Hide()
+        {
         }
     }
 }

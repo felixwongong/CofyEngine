@@ -12,7 +12,7 @@ namespace CofyEngine
         {
             if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevel(scene);
 
-            uiPanel?.ShowPanel(true);
+            uiPanel?.Show();
 
         }
 
