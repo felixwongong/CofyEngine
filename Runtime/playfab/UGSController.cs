@@ -1,6 +1,5 @@
 using System;
 using Unity.Services.Core;
-using UnityEngine;
 
 namespace CofyEngine.UGS
 {
@@ -8,9 +7,9 @@ namespace CofyEngine.UGS
     {
         public static Future<bool> InitService()
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (NetworkReachability.reachable)
             {
-                return Future<bool>.success(false);
+                return Future<bool>.failure(new Exception("Network not reachable."));
             }
             else
             {
@@ -26,7 +25,7 @@ namespace CofyEngine.UGS
 
         private static Future<bool> _InitLogin()
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (NetworkReachability.reachable)
                 return Future<bool>.failure(new Exception("Network not reachable."));
             else
             {
