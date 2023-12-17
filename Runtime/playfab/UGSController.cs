@@ -10,7 +10,6 @@ namespace CofyEngine.UGS
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
-                //TODO: Add confirmation panel for offline checking
                 return Future<bool>.success(false);
             }
             else

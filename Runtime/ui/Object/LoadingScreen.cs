@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CofyUI
 {
-    public class LoadingScreen : UIInstance<LoadingScreen>
+    public class LoadingScreen : UIPanel<LoadingScreen>
     {
         [SerializeField] private ProgressBar bar;
         [SerializeField] private TextMeshProUGUI text;
