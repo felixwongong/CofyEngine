@@ -4,7 +4,7 @@ namespace CofyUI
 {
     public abstract class UIPopupPanel<TPanel>: UIInstance<TPanel>, IUIPanel
     {
-        [SerializeField] protected Animator panelAnimator;
+        [SerializeField] protected Animator _animator;
         
         public virtual void Show()
         {
