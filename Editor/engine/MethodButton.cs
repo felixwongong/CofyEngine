@@ -10,11 +10,13 @@ namespace CofyEngine.Editor
     [Conditional("UNITY_EDITOR"), AttributeUsage(AttributeTargets.Method)]
     public class MethodButtonAttribute : Attribute
     {
-        public string buttonName { get; set; }
+        public string buttonName;
+        public bool titled;
 
-        public MethodButtonAttribute(string btnName = "")
+        public MethodButtonAttribute(string buttonName = "", bool titled = true)
         {
-            buttonName = btnName;
+            this.buttonName = buttonName;
+            this.titled = titled;
         }
     }
 
@@ -47,23 +49,24 @@ namespace CofyEngine.Editor
             for (var i = 0; i < methods.Length; i++)
             {
                 var method = methods[i];
-                var methodButton =
-                    Attribute.GetCustomAttribute(methods[i], typeof(MethodButtonAttribute)) as MethodButtonAttribute;
+                
+                var attr = (MethodButtonAttribute) Attribute.GetCustomAttribute(methods[i], typeof(MethodButtonAttribute));
+                if (attr == null) continue;
 
-                if (methodButton == null) continue;
-
-                if (string.IsNullOrEmpty(methodButton.buttonName))
-                {
-                    methodButton.buttonName = method.Name;
-                }
-
-                GUILayout.FlexibleSpace();
-                GUILayout.Label(methodButton.buttonName, _headerStyle);
-
+                if (attr.buttonName.isNullOrEmpty()) attr.buttonName = method.Name;
+                
                 var parameters = method.GetParameters();
                 parameterValues ??= new object[parameters.Length];
 
-                for (int j = 0; j < parameters.Length; j++)
+                #region Layout
+
+                if (attr.titled)
+                {
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label(attr.buttonName, _headerStyle);
+                }
+
+                for (var j = 0; j < parameters.Length; j++)
                 {
                     var parameter = parameters[j];
                     EditorGUILayout.BeginHorizontal();
@@ -72,10 +75,13 @@ namespace CofyEngine.Editor
                     EditorGUILayout.EndHorizontal();
                 }
 
-                if (GUILayout.Button("Invoke " + methodButton.buttonName))
+                if (GUILayout.Button("Invoke " + attr.buttonName))
                 {
                     method.Invoke(mono, parameterValues);
                 }
+
+                #endregion
+
             }
         }
     }
