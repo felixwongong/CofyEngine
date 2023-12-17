@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 using WebSocketSharp;
@@ -16,21 +17,25 @@ public static class FLog
         private static Dictionary<string, string> _propertyMap = new ();
         private static StringBuilder _sb = new ();
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(string inMsg, object inObj = null)
         {
             Debug.Log(MakeLogString(inMsg, inObj));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LogWarning(string inMsg, object inObj = null)
         {
             Debug.LogWarning(MakeLogString(inMsg, inObj));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void LogError(string inMsg, object inObj = null)
         {
             Debug.LogError(MakeLogString(inMsg, inObj));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Log(object inObj) 
         {
             Debug.Log(MakeLogString("", inObj));
