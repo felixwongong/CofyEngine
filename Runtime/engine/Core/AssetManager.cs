@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using CofyEngine.Util;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace CofyEngine
 {
@@ -26,6 +28,11 @@ namespace CofyEngine
             
             assetTracker[path] = handle;
             return handle.TryMap(h => (T) h.Target);
+        }
+
+        public static Future<IResourceLocation> getLocation(string path)
+        {
+            return Addressables.LoadAssetAsync<IResourceLocation>(path).Future().TryMap(handle => handle.Result);
         }
 
         private static Future<WeakReference> LoadAddressable<T>(string path, AssetLoadOption option) where T : UnityEngine.Object
