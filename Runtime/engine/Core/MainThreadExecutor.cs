@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using CofyEngine;
 
 namespace CofyEngine.Core
 {
-    public class MainThreadExecutor : MonoInstance<MainThreadExecutor>
+    public class MainThreadExecutor : MonoInstance<MainThreadExecutor>, IDisposable
     {
         public override bool persistent => true;
 
         private Queue<Action> _actionQueue;
+        private List<Action> _actionPersistent;
         
         protected override void Awake()
         {
             base.Awake();
             _actionQueue = new Queue<Action>();
+            _actionPersistent = new List<Action>();
         }
 
         public void OnUpdate()
         {
+            for (var i = 0; i < _actionPersistent.Count; i++)
+            {
+                _actionPersistent[i]();
+            }
+
             while (_actionQueue.Count > 0)
             {
                 try
@@ -35,6 +41,17 @@ namespace CofyEngine.Core
         public void QueueAction(in Action action)
         {
             _actionQueue.Enqueue(action);
+        }
+        
+        public void QueueFrameAction(in Action action)
+        {
+            _actionPersistent.Add(action);
+        }
+
+        public void Dispose()
+        {
+            _actionQueue = null;
+            _actionPersistent = null;
         }
     }
 

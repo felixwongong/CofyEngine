@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using CofyUI;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,21 +13,18 @@ namespace CofyEngine
         public override bool persistent => true;
         
         [SerializeField] private UIDocument _document;
-        private Dictionary<string, UIScreen> _uiMap = new();
 
         protected override void Awake()
         {
             base.Awake();
-            UIScreen.assetLoader = uxmlPath => AssetManager.instance.LoadAsset<VisualTreeAsset>(uxmlPath, AssetLoadOption.ForceLoadLocal);
+            UIPanel.assetLoader = uxmlPath => AssetManager.instance.LoadAsset<VisualTreeAsset>(uxmlPath);
+            var asset = Resources.Load<VisualTreeAsset>("toolkit_loading_ui_panel");
+            Bind(new LoadingUIPanel(asset), BindingOption.Clone);
         }
 
-        public Future<T> Bind<T>(T screen, BindingOption option = BindingOption.None) where T: UIScreen
+        public Future<T> Bind<T>(T screen, BindingOption option = BindingOption.None) where T: UIPanel
         {
             Promise<T> bindingPromise = new Promise<T>();
-
-            if (_uiMap.ContainsKey(screen.uxmlPath))
-                return Future<T>.failure(new Exception($"screen uxml path {screen.uxmlPath} already binded"));
-            else _uiMap[screen.uxmlPath] = screen;
 
             switch (option)
             {
@@ -52,33 +51,62 @@ namespace CofyEngine
         Clone
     }
 
-    public abstract class UIScreen
+    public abstract class UIPanel
     {
         protected internal string uxmlPath;
-        protected VisualTreeAsset asset;
         protected VisualElement root;
+
+        private Future<VisualTreeAsset> _assetLoadFuture;
 
         public static Func<string, Future<VisualTreeAsset>> assetLoader;
         
-        public UIScreen(string uxmlPath)
+        public UIPanel(string uxmlPath)
         {
             this.uxmlPath = uxmlPath;
         }
+        
+        //use for direct inject asset instead of loading from asset loader
+        public UIPanel(VisualTreeAsset asset)
+        {
+            this._assetLoadFuture = Future<VisualTreeAsset>.success(asset);
+        }
 
+        protected abstract void Construct(VisualElement root);
+
+        //Should have a much cleaner way to early exit using future hooks, but this is just easier to read
         public Future<bool> LoadAsset(bool instantiate)
         {
             if(assetLoader == null) return Future<bool>.failure(new NullReferenceException("assetLoader not set"));
 
-            var assetLoadFuture = assetLoader(uxmlPath);
-
-            if (!instantiate) return assetLoadFuture.TryMap(_ => true);
+            if (instantiate && root != null) return Future<bool>.success(true);
             
-            return assetLoadFuture.TryMap(asset =>
+            if(!instantiate && _assetLoadFuture is { isSucceed: true })
+                return Future<bool>.success(true);;
+
+            return _LoadAsset(instantiate);
+        }
+
+        private Future<bool> _LoadAsset(bool instantiate)
+        {
+            _assetLoadFuture ??= assetLoader(uxmlPath);
+            if (!instantiate) return _assetLoadFuture.TryMap(asset => true);
+            
+            return _assetLoadFuture.TryMap(asset =>
             {
-                this.asset = asset;
                 root = asset.CloneTree();
+                Construct(root);
                 return true;
             });
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        protected void validate(params VisualElement[] elements)
+        {
+            var notNull = elements.All(el => el != null);
+            if (!notNull)
+            {
+                FLog.LogWarning("UIPanel {0} has null element", uxmlPath);
+            }
         }
     }
 }
