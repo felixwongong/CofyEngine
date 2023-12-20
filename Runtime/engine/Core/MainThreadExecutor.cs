@@ -43,7 +43,7 @@ namespace CofyEngine.Core
             _actionQueue.Enqueue(action);
         }
         
-        public void QueueFrameAction(in Action action)
+        public void QueueUpdate(in Action action)
         {
             _actionPersistent.Add(action);
         }

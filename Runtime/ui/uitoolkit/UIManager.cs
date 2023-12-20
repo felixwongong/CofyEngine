@@ -19,7 +19,9 @@ namespace CofyEngine
             base.Awake();
             UIPanel.assetLoader = uxmlPath => AssetManager.instance.LoadAsset<VisualTreeAsset>(uxmlPath);
             var asset = Resources.Load<VisualTreeAsset>("toolkit_loading_ui_panel");
-            Bind(new LoadingUIPanel(asset), BindingOption.Clone);
+            var loading = new LoadingUIPanel(asset);
+            Bind(loading, BindingOption.Clone);
+            _document.rootVisualElement.Add(loading.root);
         }
 
         public Future<T> Bind<T>(T screen, BindingOption option = BindingOption.None) where T: UIPanel
@@ -54,7 +56,7 @@ namespace CofyEngine
     public abstract class UIPanel
     {
         protected internal string uxmlPath;
-        protected VisualElement root;
+        protected internal VisualElement root;
 
         private Future<VisualTreeAsset> _assetLoadFuture;
 
@@ -97,6 +99,11 @@ namespace CofyEngine
                 Construct(root);
                 return true;
             });
+        }
+
+        public void Show()
+        {
+            
         }
 
         [Conditional("UNITY_EDITOR")]

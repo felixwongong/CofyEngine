@@ -13,13 +13,13 @@ namespace CofyEngine
         
         protected override void Construct(VisualElement root)
         {
-            message = root.Q<TextElement>("#message");
-            progress = root.Q<ProgressBar>("#progress");
+            message = root.Q<TextElement>("message");
+            progress = root.Q<ProgressBar>("progress");
             validate(message, progress);
             
             progress.value = 0;
 
-            MainThreadExecutor.instance.QueueFrameAction(OnUpdate);
+            MainThreadExecutor.instance.QueueUpdate(OnUpdate);
         }
         
         public void MonitorProgress(IFuture future, string message = "")
