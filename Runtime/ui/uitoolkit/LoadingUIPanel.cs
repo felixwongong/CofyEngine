@@ -6,7 +6,7 @@ namespace CofyEngine
     public class LoadingUIPanel: UIPanel
     {
         private TextElement message;
-        private ProgressBar progress;
+        private ProgressBarElement progress;
         
         //State
         private IFuture target;
@@ -14,7 +14,7 @@ namespace CofyEngine
         protected override void Construct(VisualElement root)
         {
             message = root.Q<TextElement>("message");
-            progress = root.Q<ProgressBar>("progress");
+            progress = root.Q<ProgressBarElement>("progress_bar");
             validate(message, progress);
             
             progress.value = 0;
