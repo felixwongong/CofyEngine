@@ -6,6 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
+using UnityEngine.UIElements;
 
 namespace CofyEngine
 {
@@ -56,6 +57,8 @@ namespace CofyEngine
 
             if (typeof(T).IsAssignableFrom(typeof(SpriteAtlas)))
                 return ".spriteatlasv2";
+            if (typeof(T).IsAssignableFrom(typeof(VisualTreeAsset)))
+                return ".uxml";
 
             throw new NotImplementedException($"subfix of {typeof(T)} not implemented.");
         }

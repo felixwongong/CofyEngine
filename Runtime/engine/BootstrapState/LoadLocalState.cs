@@ -1,5 +1,5 @@
-using CofyUI;
-using UnityEngine;
+using System.IO;
+using UnityEngine.UIElements;
 
 namespace CofyEngine
 {
@@ -7,18 +7,19 @@ namespace CofyEngine
     {
         public BootStateId id => BootStateId.LoadLocal;
         
-        protected Future<GameObject> LoadLocalUI(string path)
+        protected Future<VisualTreeAsset> LoadLocalUI(string path)
         {
             return AssetManager.instance
-                .LoadAsset<GameObject>(string.Format("{0}/{1}", ConfigSO.inst.localPath, path), AssetLoadOption.ForceLoadLocal);
+                .LoadAsset<VisualTreeAsset>(string.Format("{0}/{1}", ConfigSO.inst.uiDirectory, path));
         }
         
         public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
-            LoadLocalUI("UIRoot").OnSucceed(uiRoot =>
+            LoadLocalUI("UIPanel/LoadingUIPanel/loading_panel").OnSucceed(asset =>
             {
-                UIRoot.instance.Bind<LoadingScreen>(LoadLocalUI("loading_panel"))
-                    .OnSucceed(_ => sm.GoToState(BootStateId.AtlasLoad));
+                LoadingUIPanel loadingUIPanel = new LoadingUIPanel(asset);
+                UIManager.instance.Bind(loadingUIPanel, BindingOption.Clone);
+                loadingUIPanel.Show();
             });
         }
 
