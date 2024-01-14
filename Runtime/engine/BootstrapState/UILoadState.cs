@@ -8,13 +8,11 @@ namespace CofyEngine
     {
         public BootStateId id => BootStateId.UI;
         
-        protected abstract Future<List<GameObject>> LoadAll();
+        protected abstract Future<List<UIPanel>> LoadAll();
 
-
-        protected Future<GameObject> LoadUI(string path)
+        protected Future<T> BindUI<T>(T panel, BindingOption option = BindingOption.None) where T: UIPanel
         {
-            return AssetManager.instance
-                .LoadAsset<GameObject>(string.Format("{0}/{1}", ConfigSO.inst.uiDirectory, path), AssetLoadOption.None);
+            return UIManager.instance.Bind(panel, option);
         }
 
         public void StartContext(IPromiseSM<BootStateId> sm, object param)
