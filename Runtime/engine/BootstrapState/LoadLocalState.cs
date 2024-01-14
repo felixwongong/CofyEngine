@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEngine.UIElements;
 
 namespace CofyEngine
@@ -17,9 +16,9 @@ namespace CofyEngine
         {
             LoadLocalUI("UIPanel/LoadingUIPanel/loading_panel").OnSucceed(asset =>
             {
-                LoadingUIPanel loadingUIPanel = new LoadingUIPanel(asset);
-                UIManager.instance.Bind(loadingUIPanel, BindingOption.Clone);
-                loadingUIPanel.Show();
+                UIManager.instance.Bind(new LoadingUIPanel(asset), BindingOption.Clone);
+                LoadingUIPanel.instance.Show();
+                sm.GoToState(BootStateId.AtlasLoad);
             });
         }
 

@@ -5,6 +5,8 @@ namespace CofyEngine
 {
     public class LoadingUIPanel: UIPanel
     {
+        public static LoadingUIPanel instance => UIManager.instance.GetPanel<LoadingUIPanel>();
+        
         private TextElement message;
         private ProgressBarElement progress;
         
