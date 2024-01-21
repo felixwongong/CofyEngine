@@ -12,14 +12,17 @@ namespace CofyEngine
 
             var preloadAtlas = ConfigSO.inst.preloadAtlas;
             var atlasDirectory = ConfigSO.inst.atlasDirectory;
-            
+
             for (var i = 0; i < preloadAtlas.Count; i++)
             {
                 var path = atlasDirectory.concatPath(preloadAtlas[i]);
                 loadFutures.Add(SpriteAtlasManager.instance.LoadAtlas(path));
             }
 
-            var group = loadFutures.Group();
+            var group = loadFutures.Count > 0 ?
+                loadFutures.Group() :
+                Future<List<SpriteAtlas>>.success(new List<SpriteAtlas>());
+            
             LoadingUIPanel.instance.MonitorProgress(group, "Loading cute monster");
             
             group.OnSucceed(_ => { sm.GoToState(BootStateId.UI); });
