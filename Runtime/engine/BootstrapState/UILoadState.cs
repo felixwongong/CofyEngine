@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using CofyUI;
-using UnityEngine;
 
 namespace CofyEngine
 {
@@ -17,12 +15,11 @@ namespace CofyEngine
 
         public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
-            var loadingScreen = LoadingScreen.instance;
-            loadingScreen.SetGoActive(true);
+            var loading = LoadingUIPanel.instance;
             
             var loadFuture = LoadAll();
 
-            loadingScreen.MonitorProgress(loadFuture, "loading UI");
+            loading.MonitorProgress(loadFuture, "loading UI");
 
             loadFuture.Then(_ =>
             {
