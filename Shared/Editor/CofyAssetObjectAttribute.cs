@@ -19,12 +19,15 @@ namespace CofyEngine.Editor
                 
                 if(!property.stringValue.isNullOrEmpty())
                 {
-                    var path = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(property.stringValue).First());
+                    //TODO: improve this to remove file extension string manipulation
+                    var path = AssetDatabase.GUIDToAssetPath(
+                        AssetDatabase.FindAssets(property.stringValue.Split('.').First())
+                        .First());
                     asset = AssetDatabase.LoadAssetAtPath(path, objAttr.type);
                 }
                 
                 asset = EditorGUI.ObjectField(position, label, asset, objAttr.type, false);
-                property.stringValue = asset == null ? string.Empty : asset.name;
+                property.stringValue = asset == null ? string.Empty : asset.name.concatExtension(objAttr.type);
             }
             else
                 EditorGUI.LabelField(position, label.text, "Use [Scene] with strings.");

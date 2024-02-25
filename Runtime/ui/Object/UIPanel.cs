@@ -1,6 +1,6 @@
 ﻿namespace CofyUI
 {
-    public abstract class UIPanel<TPanel>: UIInstance<TPanel>, IUIPanel
+    public abstract class UIPanel<TPanel>: UIInstance<TPanel>
     {
         public virtual void Show()
         {

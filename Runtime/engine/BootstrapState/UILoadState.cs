@@ -8,9 +8,9 @@ namespace CofyEngine
         
         protected abstract Future<List<UIPanel>> LoadAll();
 
-        protected Future<T> BindUI<T>(T panel, BindingOption option = BindingOption.None) where T: UIPanel
+        protected Future<T> BindUI<T>(T panel, string uxmlPath, BindingOption option = BindingOption.None) where T: UIPanel
         {
-            return UIManager.instance.Bind(panel, option);
+            return UIManager.instance.Bind(panel, uxmlPath, option);
         }
 
         public void StartContext(IPromiseSM<BootStateId> sm, object param)

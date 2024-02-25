@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CofyUI
 {
@@ -13,11 +14,5 @@ namespace CofyUI
                 return _instance;
             }
         }
-    }
-
-    public interface IUIPanel
-    {
-        public void Show();
-        public void Hide();
     }
 }

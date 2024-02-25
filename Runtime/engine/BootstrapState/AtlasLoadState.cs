@@ -8,16 +8,10 @@ namespace CofyEngine
         public BootStateId id => BootStateId.AtlasLoad;
         public void StartContext(IPromiseSM<BootStateId> sm, object param)
         {
-            List<Future<SpriteAtlas>> loadFutures = new();
 
             var preloadAtlas = ConfigSO.inst.preloadAtlas;
-            var atlasDirectory = ConfigSO.inst.atlasDirectory;
 
-            for (var i = 0; i < preloadAtlas.Count; i++)
-            {
-                var path = atlasDirectory.concatPath(preloadAtlas[i]);
-                loadFutures.Add(SpriteAtlasManager.instance.LoadAtlas(path));
-            }
+            List<Future<SpriteAtlas>> loadFutures = SpriteAtlasManager.instance.LoadAtlas(preloadAtlas);
 
             var group = loadFutures.Count > 0 ?
                 loadFutures.Group() :

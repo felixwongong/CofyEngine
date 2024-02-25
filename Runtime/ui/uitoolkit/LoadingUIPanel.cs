@@ -14,7 +14,9 @@ namespace CofyEngine
         //State
         private IFuture target;
         
-        protected override void Construct(VisualElement root)
+        public LoadingUIPanel() {}
+        
+        protected internal override void Construct(VisualElement root)
         {
             message = root.Q<TextElement>("message");
             progress = root.Q<ProgressBarElement>("progress_bar");
@@ -42,8 +44,5 @@ namespace CofyEngine
                 target = null;
             }
         }
-
-        public LoadingUIPanel(string uxmlPath) : base(uxmlPath) { }
-        public LoadingUIPanel(VisualTreeAsset asset) : base(asset) { }
     }
 }

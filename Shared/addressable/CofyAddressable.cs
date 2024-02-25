@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -43,29 +44,45 @@ namespace CofyEngine
     
     public static class AssetPath
     {
-        public static readonly string resourcePath = string.Format("Resources/");
-        public static string subfix<T>()
+        public static readonly string resourcePath = "Resources/";
+        public static string extension<T>()
         {
-            if (typeof(T).IsAssignableFrom(typeof(GameObject)))
-                return ".prefab";
-            
-            if (typeof(T).IsAssignableFrom(typeof(MonoBehaviour)))
-                return ".prefab";
-            
-            if (typeof(T).IsAssignableFrom(typeof(Texture)))
-                return ".png";
-
-            if (typeof(T).IsAssignableFrom(typeof(SpriteAtlas)))
-                return ".spriteatlasv2";
-            if (typeof(T).IsAssignableFrom(typeof(VisualTreeAsset)))
-                return ".uxml";
-
-            throw new NotImplementedException($"subfix of {typeof(T)} not implemented.");
+            return extension(typeof(T));
         }
 
+        public static string extension(Type type)
+        {
+            if (type.IsAssignableFrom(typeof(GameObject)))
+                return ".prefab";
+            
+            if (type.IsAssignableFrom(typeof(MonoBehaviour)))
+                return ".prefab";
+            
+            if (type.IsAssignableFrom(typeof(Texture)))
+                return ".png";
+
+            if (type.IsAssignableFrom(typeof(SpriteAtlas)))
+                return ".spriteatlasv2";
+            if (type.IsAssignableFrom(typeof(VisualTreeAsset)))
+                return ".uxml";
+
+            throw new NotImplementedException($"subfix of {type} not implemented.");
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string concatPath(this string dir, string path)
         {
             return string.Format("{0}/{1}", dir, path);
+        }
+
+        public static string concatExtension<T>(this string dir)
+        {
+            return concatPath(dir, extension<T>());
+        }
+        
+        public static string concatExtension(this string dir, Type type)
+        {
+            return concatPath(dir, extension(type));
         }
     }
 }

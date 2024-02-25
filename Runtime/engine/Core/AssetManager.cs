@@ -22,8 +22,8 @@ namespace CofyEngine
                 assetTracker.Remove(path);
             }
 
-            Future<WeakReference> handle = option.HasFlag(AssetLoadOption.ForceLoadLocal) ?
-                LoadLocalAsset<T>(path, option) :
+            Future<WeakReference> handle = option.HasFlag(AssetLoadOption.ForceLoadResource) ?
+                LoadResource<T>(path, option) :
                 LoadAddressable<T>(path, option);
             
             assetTracker[path] = handle;
@@ -38,12 +38,12 @@ namespace CofyEngine
         private static Future<WeakReference> LoadAddressable<T>(string path, AssetLoadOption option) where T : UnityEngine.Object
         {
             Future<WeakReference> handle;
-            var aopHandle = CofyAddressable.LoadAsset<T>(string.Format("{0}{1}", path, AssetPath.subfix<T>()));
+            var aopHandle = CofyAddressable.LoadAsset<T>(path);
             handle = aopHandle.TryMap(handle => new WeakReference(handle.Result));
             return handle;
         }
 
-        private static Future<WeakReference> LoadLocalAsset<T>(string path, AssetLoadOption option) where T : UnityEngine.Object
+        private static Future<WeakReference> LoadResource<T>(string path, AssetLoadOption option) where T : UnityEngine.Object
         {
             Future<WeakReference> handle;
             handle = Resources.LoadAsync<T>(path.GetResourcePath()).Future()
@@ -56,6 +56,6 @@ namespace CofyEngine
     public enum AssetLoadOption: byte
     {
         None = 0,
-        ForceLoadLocal,
+        ForceLoadResource,
     }
 }

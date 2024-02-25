@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CofyUI
 {
     //TODO: use name hash, add more editor param checking to ensure dun get wrong on designer
-    public abstract class AnimatedPopupPanel<TPanel>: UIInstance<TPanel>, IUIPanel
+    public abstract class AnimatedPopupPanel<TPanel>: UIInstance<TPanel>
     {
         [SerializeField] protected Animator _animator;
         [SerializeField] protected string showAnim = "show_panel";
