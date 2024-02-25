@@ -22,6 +22,7 @@ namespace CofyEngine
 
         private void OnDisable()
         {
+            UnityEngine.U2D.SpriteAtlasManager.atlasRequested -= onAtlasRequested;
             UnityEngine.U2D.SpriteAtlasManager.atlasRegistered -= onAtlasRegistered;
         }
 
