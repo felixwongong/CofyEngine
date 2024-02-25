@@ -55,16 +55,20 @@ namespace CofyEngine
         {
             var panelProperty = _panels[panel.GetType()];
             if (panelProperty.c != null) return panelProperty.c;
-            
-            panelProperty.c = assetLoader(panelProperty.b);
 
-            panelProperty.c.OnSucceed(asset =>
+            var loadPromiseExternal = new Promise<VisualTreeAsset>();
+            panelProperty.c = loadPromiseExternal.future;
+            
+            var loadPromise = assetLoader(panelProperty.b);
+            loadPromise.OnSucceed(asset =>
             {
                 panel.root = asset.CloneTree();
                 panel.Construct(panel.root);
                 
                 doc.rootVisualElement.Add(panel.root);
                 panel.root.AddToClassList("panel");
+                
+                loadPromiseExternal.ResolveFrom(loadPromise);
             });
             
             return panelProperty.c;

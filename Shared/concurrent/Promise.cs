@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CofyEngine;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -32,7 +33,7 @@ public class Promise<T>: IPromise
     private event Action<Validation<T>> Completed;
     private event Action<T> Succeed;
     private event Action<Future<T>> Failed;
-
+    
     public Promise()
     {
         Clear();
@@ -53,6 +54,19 @@ public class Promise<T>: IPromise
         Completed?.Invoke(this.result);
         Succeed?.Invoke(result);
         Clear();
+    }
+
+    public void ResolveFrom(Future<T> future)
+    {
+        if (future.isSucceed)
+        {
+            var progress = future.progress;
+            this.progressFunc = () => progress;
+            Resolve(future.result);
+        } else if (future.isFailure && future.hasException)
+        {
+            Reject(future.ex);
+        }
     }
 
     public void Reject(string msg)
