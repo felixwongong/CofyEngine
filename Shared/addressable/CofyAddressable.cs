@@ -77,12 +77,12 @@ namespace CofyEngine
 
         public static string concatExtension<T>(this string dir)
         {
-            return concatPath(dir, extension<T>());
+            return dir.concatExtension(typeof(T));
         }
         
         public static string concatExtension(this string dir, Type type)
         {
-            return concatPath(dir, extension(type));
+            return string.Format("{0}{1}", dir, extension(type));
         }
     }
 }
