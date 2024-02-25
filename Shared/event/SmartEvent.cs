@@ -42,12 +42,15 @@ namespace CofyEngine
         {
             if (_weakRegistration == null) return;
             IRegistration registration = null;
-            for (int i = _weakRegistration.Count - 1; i >= 0; i--)
+            lock (_weakRegistration)
             {
-                if (_weakRegistration[i].TryGetTarget(out registration) && registration == inReg)
+                for (int i = _weakRegistration.Count - 1; i >= 0; i--)
                 {
-                    _weakRegistration.RemoveAt(i);
-                    return;
+                    if (_weakRegistration[i].TryGetTarget(out registration) && registration == inReg)
+                    {
+                        _weakRegistration.RemoveAt(i);
+                        return;
+                    }
                 }
             }
         }
@@ -56,16 +59,20 @@ namespace CofyEngine
         {
             if (_weakRegistration == null) return;
 
-            for (var i = 0; i < _weakRegistration.Count; i++)
+            lock (_weakRegistration)
             {
-                if (_weakRegistration[i].TryGetTarget(out var registration) && registration is Registration<T> regImpl)
+                for (var i = 0; i < _weakRegistration.Count; i++)
                 {
-                    regImpl.Invoke(value);
-                }
-                else
-                {
-                    _weakRegistration.RemoveAt(i);
-                    i--;
+                    if (_weakRegistration[i].TryGetTarget(out var registration) &&
+                        registration is Registration<T> regImpl)
+                    {
+                        regImpl.Invoke(value);
+                    }
+                    else
+                    {
+                        _weakRegistration.RemoveAt(i);
+                        i--;
+                    }
                 }
             }
         }
