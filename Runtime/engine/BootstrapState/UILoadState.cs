@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CofyEngine
 {
@@ -8,7 +9,7 @@ namespace CofyEngine
         
         protected abstract Future<List<UIPanel>> LoadAll();
 
-        protected Future<T> BindUI<T>(T panel, string uxmlPath, BindingOption option = BindingOption.None) where T: UIPanel
+        protected Future<UIPanel> BindUI(UIPanel panel, string uxmlPath, BindingOption option = BindingOption.None)
         {
             return UIManager.instance.Bind(panel, uxmlPath, option);
         }
@@ -29,4 +30,5 @@ namespace CofyEngine
 
         public void OnEndContext() { }
     }
+
 }
