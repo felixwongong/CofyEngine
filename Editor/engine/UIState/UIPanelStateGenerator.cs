@@ -22,6 +22,8 @@ namespace CofyEngine.Editor
     {
         public void Execute(GeneratorContext context)
         {
+            context.OverrideFolderPath("Assets/_Generated");
+            
             var types = TypeCache.GetTypesWithAttribute<AUIPanelAttribute>();
             
             StringBuilder sb = new StringBuilder();
