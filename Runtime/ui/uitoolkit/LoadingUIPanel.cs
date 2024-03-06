@@ -19,11 +19,10 @@ namespace CofyEngine
         protected internal override void Construct(VisualElement root)
         {
             message = root.Q<TextElement>("message");
-            progress = root.Q<ProgressBarElement>("progress_bar");
+            progress = this.Attach<ProgressBarElement>("progress_bar");
+            
             validate(message, progress);
             
-            progress.value = 0;
-
             MainThreadExecutor.instance.QueueUpdate(OnUpdate);
         }
         

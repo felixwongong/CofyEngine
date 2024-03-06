@@ -1,16 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ProgressBarElement : VisualElement
+public class ProgressBarElement: UIElement
 {
-    public new class UxmlFactory: UxmlFactory<ProgressBarElement>{ }
-
-    private VisualElement _fill;
-    private VisualElement fill => _fill ?? this.Q("fill");
-
+    private VisualElement fill;
+    
     public float value
     {
         set
@@ -20,6 +14,18 @@ public class ProgressBarElement : VisualElement
             fill.transform.scale.Set(value, fill.transform.scale.y, fill.transform.scale.z);
         }
     }
-    
-    public ProgressBarElement() {}
+
+    public ProgressBarElement()
+    {
+    }
+
+    internal override void Construct(VisualElement el)
+    {
+        fill = el.Q("fill");
+    }
+}
+
+public abstract class UIElement
+{
+    internal abstract void Construct(VisualElement el);
 }

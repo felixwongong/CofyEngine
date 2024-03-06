@@ -18,7 +18,7 @@ namespace CofyEngine
         private bool _bShown = false;
 
         protected internal abstract void Construct(VisualElement root);
-
+        
         public void Show()
         {
             UIManager.instance.LoadAsset(this);
@@ -29,8 +29,15 @@ namespace CofyEngine
         {
         }
 
+        protected T Attach<T>(string name) where T : UIElement, new()
+        {
+            var el = new T();
+            el.Construct(root.Q(name));
+            return el;
+        }
+
         [Conditional("UNITY_EDITOR")]
-        protected void validate(params VisualElement[] elements)
+        protected void validate(params object[] elements)
         {
             var notNull = elements.All(el => el != null);
             if (!notNull)
