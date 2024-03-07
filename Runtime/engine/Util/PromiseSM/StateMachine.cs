@@ -87,14 +87,4 @@ namespace CofyEngine
             return (T) _stateDictionary[id];
         }
     }
-    
-    public class SingletonStateMachine<T, TStateId>: Instance<T> where T : new() where TStateId : Enum
-    {
-        protected StateMachine<TStateId> sm;
-
-        protected SingletonStateMachine()
-        {
-            sm = new StateMachine<TStateId>();
-        }
-    }
 }
