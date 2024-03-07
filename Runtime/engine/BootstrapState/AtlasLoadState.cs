@@ -3,10 +3,10 @@ using UnityEngine.U2D;
 
 namespace CofyEngine
 {
-    public class AtlasLoadState: IPromiseState<BootStateId>
+    public class AtlasLoadState: IState<BootStateId>
     {
         public BootStateId id => BootStateId.AtlasLoad;
-        public void StartContext(IPromiseSM<BootStateId> sm, object param)
+        public void StartContext(IStateMachine<BootStateId> sm, object param)
         {
 
             var preloadAtlas = ConfigSO.inst.preloadAtlas;

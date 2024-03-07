@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CofyEngine
 {
-    public abstract class UILoadState : IPromiseState<BootStateId>
+    public abstract class UILoadState : IState<BootStateId>
     {
         public BootStateId id => BootStateId.UI;
         
@@ -14,7 +14,7 @@ namespace CofyEngine
             return UIManager.instance.Bind(panel, uxmlPath, option);
         }
 
-        public void StartContext(IPromiseSM<BootStateId> sm, object param)
+        public void StartContext(IStateMachine<BootStateId> sm, object param)
         {
             var loading = LoadingUIPanel.instance;
             

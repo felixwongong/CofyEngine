@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CofyEngine
 {
-    public abstract class MonoStateMachine<TStateId> : MonoBehaviour, IPromiseSM<TStateId> where TStateId: Enum
+    public abstract class MonoStateMachine<TStateId> : MonoBehaviour, IStateMachine<TStateId> where TStateId: Enum
     {
         [SerializeField] private bool logging;
         
@@ -14,7 +14,7 @@ namespace CofyEngine
             _sm = new StateMachine<TStateId>(logging);
         }
 
-        public void RegisterState(IPromiseState<TStateId> state)
+        public void RegisterState(IState<TStateId> state)
         {
             _sm.RegisterState(state);
         }
@@ -29,7 +29,7 @@ namespace CofyEngine
             _sm.GoToStateNoRepeat(id, param);
         }
 
-        public T GetState<T>(TStateId id) where T : IPromiseState<TStateId>
+        public T GetState<T>(TStateId id) where T : IState<TStateId>
         {
             return _sm.GetState<T>(id);
         }

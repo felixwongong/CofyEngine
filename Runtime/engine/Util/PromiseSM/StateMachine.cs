@@ -4,39 +4,47 @@ using CofyEngine.Util;
 
 namespace CofyEngine
 {
-    public class StateMachine<TStateId>: IPromiseSM<TStateId> where TStateId : Enum
+    public struct StateChangeRecord<TStateId>
     {
-        private IPromiseState<TStateId> _prevoutState;
-        private IPromiseState<TStateId> _curState;
-        public IPromiseState<TStateId> previousState => _prevoutState;
-        public IPromiseState<TStateId> currentState => _curState;
+        public IState<TStateId> oldState;
+        public IState<TStateId> newState;
+    }
+    
+    public class StateMachine<TStateId>: IStateMachine<TStateId> where TStateId : Enum
+    {
+        private IState<TStateId> _prevoutState;
+        private IState<TStateId> _curState;
+        public IState<TStateId> previousState => _prevoutState;
+        public IState<TStateId> currentState => _curState;
 
-        private Dictionary<TStateId, IPromiseState<TStateId>> _stateDictionary = new();
+        private Dictionary<TStateId, IState<TStateId>> _stateDictionary = new();
 
-        private Action<IPromiseState<TStateId>, IPromiseState<TStateId>> _logAction;
+        
+        public SmartEvent<StateChangeRecord<TStateId>> onBeforeStateChange = new();
 
         private bool logging;
+        
+        IRegistration loggingReg;
         
         public StateMachine(bool logging = false)
         {
             this.logging = logging;
             if (logging)
             {
-                _logAction = (oldState, newState) =>
-                {
-                    FLog.Log(oldState != null
-                        ? string.Format("Transit from state [{0}] to [{1}]", oldState.GetTName(), newState.GetTName())
-                        : string.Format("Start initial state [{0}]", newState.GetTName()));
-                };
+                loggingReg = onBeforeStateChange.Register(
+
+                    rec =>
+                    {
+                        FLog.Log(rec.oldState != null
+                            ? string.Format("Transit from state [{0}] to [{1}]", rec.oldState.GetTName(),
+                                rec.newState.GetTName())
+                            : string.Format("Start initial state [{0}]", rec.newState.GetTName()));
+                    }
+                );
             }
         }
         
-        public void SetLogging(Action<IPromiseState<TStateId>, IPromiseState<TStateId>> logAction)
-        {
-            this._logAction = logAction;
-        }
-
-        public void RegisterState(IPromiseState<TStateId> state)
+        public void RegisterState(IState<TStateId> state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (_stateDictionary.ContainsKey(state.id))
@@ -58,7 +66,7 @@ namespace CofyEngine
             if (!_stateDictionary.TryGetValue(id, out _curState))
                 throw new Exception(string.Format("State {0} not registered", id));
             
-            _logAction?.Invoke(_prevoutState, _curState);
+            onBeforeStateChange?.Invoke(new StateChangeRecord<TStateId>() {oldState = _prevoutState, newState = _curState});
             _curState.StartContext(this, param);
         }
 
@@ -70,13 +78,23 @@ namespace CofyEngine
                 FLog.LogWarning(string.Format("Trying to go to the same state, {0}", id));
         }
 
-        public T GetState<T>(TStateId id) where T : IPromiseState<TStateId>
+        public T GetState<T>(TStateId id) where T : IState<TStateId>
         {
             if (!_stateDictionary.ContainsKey(id))
             {
                 throw new Exception($"State {typeof(T)} not registered");
             }
             return (T) _stateDictionary[id];
+        }
+    }
+    
+    public class SingletonStateMachine<T, TStateId>: Instance<T> where T : new() where TStateId : Enum
+    {
+        protected StateMachine<TStateId> sm;
+
+        protected SingletonStateMachine()
+        {
+            sm = new StateMachine<TStateId>();
         }
     }
 }
