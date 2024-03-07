@@ -1,3 +1,4 @@
+using CofyEngine;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,13 +20,8 @@ public class ProgressBarElement: UIElement
     {
     }
 
-    internal override void Construct(VisualElement el)
+    protected internal override void Construct(VisualElement el)
     {
         fill = el.Q("fill");
     }
-}
-
-public abstract class UIElement
-{
-    internal abstract void Construct(VisualElement el);
 }

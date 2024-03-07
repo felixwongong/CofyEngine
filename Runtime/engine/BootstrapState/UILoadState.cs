@@ -24,7 +24,7 @@ namespace CofyEngine
 
             loadFuture.Then(_ =>
             {
-                sm.GoToState(BootStateId.UGS);
+                sm.GoToState(BootStateId.Login);
             });
         }
 

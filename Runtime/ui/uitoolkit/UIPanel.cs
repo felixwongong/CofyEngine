@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace CofyEngine
 {
-    public abstract class UIPanel 
+    public abstract class UIPanel
     {
         private string uxmlPath;
         private VisualElement _root;
@@ -18,7 +18,7 @@ namespace CofyEngine
         private bool _bShown = false;
 
         protected internal abstract void Construct(VisualElement root);
-        
+
         public void Show()
         {
             UIManager.instance.LoadAsset(this);
@@ -45,5 +45,10 @@ namespace CofyEngine
                 FLog.LogWarning("UIPanel {0} has null element", uxmlPath);
             }
         }
+    }
+
+    public abstract class UIElement
+    {
+        protected internal abstract void Construct(VisualElement el);
     }
 }

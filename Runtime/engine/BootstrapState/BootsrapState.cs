@@ -5,7 +5,7 @@
         LoadLocal,
         AtlasLoad,
         UI,
-        UGS,
+        Login,
         Terminate,
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 namespace CofyEngine
 {
-    public class UnityFrameScheduler: MonoInstance<UnityFrameScheduler>
+    public class UnityTimeScheduler: MonoInstance<UnityTimeScheduler>
     {
         private SortedSeq<ScheduledTask> _tasks;
         private ObjectPool<ScheduledTask> _pool;
