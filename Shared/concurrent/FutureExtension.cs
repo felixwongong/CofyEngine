@@ -28,11 +28,11 @@ public static class FutureExtension
             {
                 if (validation.hasException)
                 {
-                    sequence.Reject(validation.target.ex);
+                    sequence.Reject(validation.ex);
                 }
                 else
                 {
-                    result.Add(validation.target.result);
+                    result.Add(validation.result);
                     if (futures.TrueForAll(
                             f => f.isCompleted && Mathf.Approximately(f.progress, 1)))
                     {

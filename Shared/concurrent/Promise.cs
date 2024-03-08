@@ -114,7 +114,7 @@ public class Promise<T>: IPromise
         if (isCompleted)
         {
             if (isSucceed)
-                action(this.result.target.result);
+                action(this.result.result);
             else
                 FLog.LogWarning("Registered OnSucceed after promise failed.");
         }

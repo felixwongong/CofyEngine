@@ -106,6 +106,8 @@ public sealed class Validation<T>
 {
     public bool hasException;
     public Future<T> target;
+    public Exception ex => target.ex;
+    public T result => target.result;
 
     public Validation(Future<T> future)
     {
