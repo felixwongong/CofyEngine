@@ -64,11 +64,11 @@ namespace CofyEngine.Core
             {
                 if (validation.hasException)
                 {
-                    promise.Reject(validation.target.ex);
+                    promise.Reject(validation.ex);
                 }
                 else
                 {
-                    MainThreadExecutor.instance.QueueAction(() => promise.Resolve(validation.target.result));
+                    MainThreadExecutor.instance.QueueAction(() => promise.Resolve(validation.result));
                 }
             });
 
