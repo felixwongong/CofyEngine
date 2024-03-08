@@ -11,7 +11,7 @@ namespace CofyEngine
         public void Unregister(in IRegistration inReg);
     }
 
-    public class SmartEvent<T> : Event<T>
+    public class CofyEvent<T> : Event<T>
     {
         private List<WeakReference<IRegistration>> _weakRegistration;
 

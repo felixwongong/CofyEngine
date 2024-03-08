@@ -10,9 +10,9 @@ namespace CofyEngine
     public class Registration<T> : IRegistration
     {
         private readonly Action<T> _listener;
-        private readonly SmartEvent<T> _smartEvent;
+        private readonly CofyEvent<T> _smartEvent;
 
-        public Registration(Action<T> listener, SmartEvent<T> smartEvent)
+        public Registration(Action<T> listener, CofyEvent<T> smartEvent)
         {
             _listener = listener;
             _smartEvent = smartEvent;

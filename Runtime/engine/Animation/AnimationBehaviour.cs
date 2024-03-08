@@ -20,7 +20,7 @@ public class AnimationBehaviour : StateMachineBehaviour
 
      // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 
-    public SmartEvent<AnimatorStateInfo> onExit = new();
+    public CofyEvent<AnimatorStateInfo> onExit = new();
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);

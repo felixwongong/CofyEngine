@@ -20,8 +20,8 @@ namespace CofyEngine
         private Dictionary<TStateId, BaseState<TStateId>> _stateDictionary = new();
 
         
-        public SmartEvent<StateChangeRecord<TStateId>> onBeforeStateChange = new();
-        public SmartEvent<StateChangeRecord<TStateId>> onAfterStateChange = new();
+        public CofyEvent<StateChangeRecord<TStateId>> onBeforeStateChange = new();
+        public CofyEvent<StateChangeRecord<TStateId>> onAfterStateChange = new();
 
         private bool logging;
         
