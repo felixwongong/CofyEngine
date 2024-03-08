@@ -33,4 +33,31 @@ namespace CofyEngine
             _smartEvent.Unregister(this);
         }
     }
+    
+    public class Registration : IRegistration
+    {
+        private readonly Action _listener;
+        private readonly CofyEvent _smartEvent;
+
+        public Registration(Action listener, CofyEvent smartEvent)
+        {
+            _listener = listener;
+            _smartEvent = smartEvent;
+        }
+        
+        public bool isListener(Action listener)
+        {
+            return _listener == listener;
+        }
+
+        public void Invoke()
+        {
+            _listener?.Invoke();
+        }
+
+        public void Unregister()
+        {
+            _smartEvent.Unregister(this);
+        }
+    }
 }
