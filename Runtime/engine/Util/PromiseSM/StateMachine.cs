@@ -6,21 +6,22 @@ namespace CofyEngine
 {
     public struct StateChangeRecord<TStateId>
     {
-        public IState<TStateId> oldState;
-        public IState<TStateId> newState;
+        public BaseState<TStateId> oldState;
+        public BaseState<TStateId> newState;
     }
     
     public class StateMachine<TStateId>: IStateMachine<TStateId> where TStateId : Enum
     {
-        private IState<TStateId> _prevoutState;
-        private IState<TStateId> _curState;
-        public IState<TStateId> previousState => _prevoutState;
-        public IState<TStateId> currentState => _curState;
+        private BaseState<TStateId> _prevoutState;
+        private BaseState<TStateId> _curState;
+        public BaseState<TStateId> previousState => _prevoutState;
+        public BaseState<TStateId> currentState => _curState;
 
-        private Dictionary<TStateId, IState<TStateId>> _stateDictionary = new();
+        private Dictionary<TStateId, BaseState<TStateId>> _stateDictionary = new();
 
         
         public SmartEvent<StateChangeRecord<TStateId>> onBeforeStateChange = new();
+        public SmartEvent<StateChangeRecord<TStateId>> onAfterStateChange = new();
 
         private bool logging;
         
@@ -44,7 +45,7 @@ namespace CofyEngine
             }
         }
         
-        public void RegisterState(IState<TStateId> state)
+        public void RegisterState(BaseState<TStateId> state)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             if (_stateDictionary.ContainsKey(state.id))
@@ -68,6 +69,7 @@ namespace CofyEngine
             
             onBeforeStateChange?.Invoke(new StateChangeRecord<TStateId>() {oldState = _prevoutState, newState = _curState});
             _curState.StartContext(this, param);
+            onAfterStateChange?.Invoke(new StateChangeRecord<TStateId>() {oldState = _prevoutState, newState = _curState});
         }
 
         public void GoToStateNoRepeat(TStateId id, in object param = null)
@@ -78,7 +80,12 @@ namespace CofyEngine
                 FLog.LogWarning(string.Format("Trying to go to the same state, {0}", id));
         }
 
-        public T GetState<T>(TStateId id) where T : IState<TStateId>
+        T IStateMachine<TStateId>.GetState<T>(TStateId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T GetState<T>(TStateId id) where T : BaseState<TStateId>
         {
             if (!_stateDictionary.ContainsKey(id))
             {

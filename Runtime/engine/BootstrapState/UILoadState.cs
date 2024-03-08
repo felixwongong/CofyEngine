@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CofyEngine
 {
-    public abstract class UILoadState : IState<BootStateId>
+    public abstract class UILoadState : BaseState<BootStateId>
     {
-        public BootStateId id => BootStateId.UI;
+        public override BootStateId id => BootStateId.UI;
         
         protected abstract Future<List<UIPanel>> LoadAll();
 
@@ -14,7 +13,7 @@ namespace CofyEngine
             return UIManager.instance.Bind(panel, uxmlPath, option);
         }
 
-        public void StartContext(IStateMachine<BootStateId> sm, object param)
+        protected internal override void StartContext(IStateMachine<BootStateId> sm, object param)
         {
             var loading = LoadingUIPanel.instance;
             
@@ -27,8 +26,6 @@ namespace CofyEngine
                 sm.GoToState(BootStateId.Login);
             });
         }
-
-        public void OnEndContext() { }
     }
 
 }

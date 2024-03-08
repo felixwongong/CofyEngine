@@ -2,18 +2,14 @@
 
 namespace CofyEngine
 {
-    public abstract class GameState: IState<GameStateId>
+    public abstract class GameState: BaseState<GameStateId>
     {
         protected abstract string scene { get;  }
-        public abstract GameStateId id { get; }
-        
-        public void StartContext(IStateMachine<GameStateId> sm, object param)
+        public abstract override GameStateId id { get; }
+
+        protected internal override void StartContext(IStateMachine<GameStateId> sm, object param)
         {
             if(scene.notNullOrEmpty()) LevelManager.instance.LoadLevel(scene);
-        }
-
-        public void OnEndContext()
-        {
         }
     }
 }

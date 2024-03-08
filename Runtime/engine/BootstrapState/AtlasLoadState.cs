@@ -3,10 +3,11 @@ using UnityEngine.U2D;
 
 namespace CofyEngine
 {
-    public class AtlasLoadState: IState<BootStateId>
+    public class AtlasLoadState: BaseState<BootStateId>
     {
-        public BootStateId id => BootStateId.AtlasLoad;
-        public void StartContext(IStateMachine<BootStateId> sm, object param)
+        public override BootStateId id => BootStateId.AtlasLoad;
+
+        protected internal override void StartContext(IStateMachine<BootStateId> sm, object param)
         {
 
             var preloadAtlas = ConfigSO.inst.preloadAtlas;
@@ -20,10 +21,6 @@ namespace CofyEngine
             LoadingUIPanel.instance.MonitorProgress(group, "Loading cute monster");
             
             group.OnSucceed(_ => { sm.GoToState(BootStateId.UI); });
-        }
-
-        public void OnEndContext()
-        {
         }
     }
 }

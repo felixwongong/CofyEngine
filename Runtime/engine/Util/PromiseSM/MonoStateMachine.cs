@@ -14,7 +14,7 @@ namespace CofyEngine
             _sm = new StateMachine<TStateId>(logging);
         }
 
-        public void RegisterState(IState<TStateId> state)
+        public void RegisterState(BaseState<TStateId> state)
         {
             _sm.RegisterState(state);
         }
@@ -29,7 +29,7 @@ namespace CofyEngine
             _sm.GoToStateNoRepeat(id, param);
         }
 
-        public T GetState<T>(TStateId id) where T : IState<TStateId>
+        public T GetState<T>(TStateId id) where T : BaseState<TStateId>
         {
             return _sm.GetState<T>(id);
         }
