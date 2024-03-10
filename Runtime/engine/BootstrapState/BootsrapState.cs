@@ -6,6 +6,6 @@
         AtlasLoad,
         UI,
         Login,
-        Terminate,
+        GamePreload
     }
 }

@@ -41,11 +41,11 @@ namespace CofyEngine
             {
                 if (sceneValidate.hasException)
                 {
-                    FLog.LogException(sceneValidate.target.ex);    
+                    FLog.LogException(sceneValidate.ex);    
                 }
                 else
                 {
-                    var loadedInst = sceneValidate.target.result;
+                    var loadedInst = sceneValidate.result;
                     _sceneInstances.TryAdd(sceneName, loadedInst);
                     after?.Invoke(disposingScene, loadedInst.Scene);
                     if (!additive && !persistentScenes.Contains(disposingScene.name))
