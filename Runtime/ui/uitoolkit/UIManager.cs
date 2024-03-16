@@ -17,7 +17,7 @@ namespace CofyEngine
 
         public static Func<string, Future<VisualTreeAsset>> assetLoader;
         
-        public Future<T> Bind<T>(T panel, string uxmlPath, BindingOption option = BindingOption.None) where T: UIPanel
+        public Future<bool> Bind<T>(T panel, string uxmlPath, BindingOption option = BindingOption.None) where T: UIPanel
         {
             _panels.Add(typeof(T), new Triplet<UIPanel,string, Future<VisualTreeAsset>>()
             {
@@ -26,13 +26,13 @@ namespace CofyEngine
                 c = null
             });
             
-            var bindingPromise = new Promise<T>();
+            var bindingPromise = new Promise<bool>();
 
             switch (option)
             {
-                case BindingOption.None: bindingPromise.Resolve(panel); break;
+                case BindingOption.None: bindingPromise.Resolve(false); break;
                 case BindingOption.CreateInstance:
-                    LoadAsset(panel).Then(_ => bindingPromise.Resolve(panel));
+                    LoadAsset(panel).Then(_ => bindingPromise.Resolve(true));
                     break;
                 default:
                     bindingPromise.Reject(new Exception(string.Format("BindingOption {0} not supported", option)));
