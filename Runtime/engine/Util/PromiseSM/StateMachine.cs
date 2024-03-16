@@ -25,7 +25,9 @@ namespace CofyEngine
 
         private bool logging;
         
+        #pragma warning disable 0414
         IRegistration loggingReg;
+        #pragma warning restore 0414
         
         public StateMachine(bool logging = false)
         {
